@@ -1,6 +1,8 @@
 export default async function Loading() {
 
   return (
-    <>Loading Test Page?</>
+    <section className="loading">
+      Awaiting for 1 seconds...
+    </section>
   )
 }

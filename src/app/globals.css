@@ -16,12 +16,76 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply relative bg-black text-white mx-auto container my-8 rounded-lg
+}
+
+div {
+  @apply font-bold
+}
+p{
+  @apply text-sm text-gray-300
+}
+
+
+section {
+  @apply p-8 outline-dashed rounded-lg relative bg-zinc-900
+}
+section::after{
+  @apply absolute -top-[3px] -left-[3px] px-4 text-xs font-mono text-white rounded-tl-lg rounded-br-lg
+}
+
+section.page {
+  @apply outline-green-600 rounded-lg animate-render
+}
+section.page::after {
+  @apply bg-green-600 content-['page.tsx']
+}
+
+
+section.loading{
+  @apply outline-blue-600 italic text-sm text-gray-500 animate-render
+}
+section.loading::after {
+  @apply bg-blue-600 content-['loading.tsx']
+}
+
+
+section.layout{
+  @apply outline-gray-600 relative animate-render
+}
+section.layout::after {
+  @apply bg-gray-600 content-['layout.tsx']
+}
+section.layout.root::after {
+  @apply content-['Root_layout.tsx']
+}
+
+
+
+section.children{
+  @apply p-3 relative outline-gray-800 rounded-2xl bg-black mt-8
+}
+section.children::after{
+  @apply bg-gray-800 content-['children'] text-gray-500 -top-4 left-4 rounded-tr-lg 
+}
+
+a, button {
+  @apply 
+  bg-gray-600 
+  text-gray-300
+  hover:brightness-75
+  p-2 px-4 text-xs font-semibold inline-block mr-2
+  rounded-md
+  shadow-xl
+  mb-4
+  mt-4
+}
+
+code{
+  @apply px-1 py-0.5 bg-gray-700 rounded-md
 }

@@ -1,5 +1,7 @@
 export default function LoadingPage() {
   return (
-    <div> Loading ... </div>
+    <section className="loading">
+      Awaiting for 2 seconds...
+    </section>
   )
 }
