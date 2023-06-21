@@ -1,9 +1,7 @@
 import Link from 'next/link'
 import './globals.css'
 import { Inter } from 'next/font/google'
-import GenerateLinks from './client'
 import Timer from '@/components/client'
-import { cache } from 'react'
 import { addGlobal, getRandomNumber } from '@/components/server'
 
 const inter = Inter({
