@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -24,4 +24,103 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+} */
+
+
+body{
+  background: #000;
+  color: #fff;
 }
+
+article header{
+  margin-bottom: 1.5rem;
+}
+
+article ul, article ol {
+  margin-bottom: 1rem;
+}
+
+article ul > li {
+  list-style-type: disc;
+  margin-left: 2rem
+}
+
+article ol > li {
+  list-style-type: decimal;
+  margin-left: 2rem
+}
+
+article > * {
+  line-height: 1.5rem;
+  font-size: 14px;
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+article p {
+  margin-bottom: 0.5rem;
+}
+article h1{
+  @apply text-3xl font-semibold
+}
+article h2{
+  @apply text-2xl font-semibold my-4 mt-14
+}
+article h3{
+  @apply text-lg font-semibold my-4 px-2 
+}
+article h1+p, article h2+p, article h3+p {
+  @apply py-0
+}
+
+article blockquote{
+  @apply border-l-2 border-l-zinc-400 pl-4 text-lg italic text-zinc-400 my-4
+}
+article span{
+  padding-inline: 0.25rem;
+  border-radius: 2px;
+  padding-block: 0.15rem;
+}
+article code {
+  padding-inline: 0.25rem;
+  border-radius: 2px;
+  padding-block: 0.15rem;
+  @apply bg-zinc-400/30
+}
+article pre {
+  margin: 0 !important;
+  border-radius: 0 !important;
+  background-color: #0c0c0c !important;
+  @apply border border-zinc-800 rounded-lg
+}
+article div > pre {
+  border: 0
+}
+article pre + pre {
+  margin-top: 0 !important;
+}
+article pre > code, pre {
+  background-color:unset !important;
+  line-height: 1.2 !important;
+}
+article pre span {
+  padding-inline: unset;
+  border-radius: unset;
+  padding-block: unset;
+  background-color: unset !important;
+  letter-spacing: -0.5px;
+}
+article strong{
+  font-weight: 600;
+}
+article hr{
+  margin-top: 2rem;
+  @apply border-t-zinc-500
+}
+
+article a {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+  @apply text-zinc-400
+}
+
