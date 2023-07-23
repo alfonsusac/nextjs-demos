@@ -4,6 +4,7 @@ import clsx from "clsx"
 import { SVGProps, useState, useEffect } from "react"
 import { usePathname, useSelectedLayoutSegments, useRouter } from "next/navigation"
 import Link from "next/link"
+import path from "path"
 
 export function Browser(p: {
   children: React.ReactNode
@@ -32,27 +33,30 @@ function Header(p: {
   )
 }
 
+
 function BackButton() {
   const [disabled, setDisabled] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
     console.log(history.state.tree[1].children)
-  },[])
+  }, [])
 
   return (
-    <Button onClick={() => router.back()}>
-      <BackLogo className={clsx("w-5 h-5", disabled ? "text-zinc-500" : "")}/>
+    <Button onClick={ () => router.back() }>
+      <BackLogo className={ clsx("w-5 h-5", disabled ? "text-zinc-500" : "") } />
     </Button>
   )
 }
+
+
 function ForwardButton() {
   const [disabled, setDisabled] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
-    
-  },[])
+
+  }, [])
 
   return (
     <Button onClick={ () => router.forward() }>
@@ -60,28 +64,40 @@ function ForwardButton() {
     </Button>
   )
 }
+
+
 function BreadCrumb() {
 
   const homePath = usePathname()
-  const firstTwoSegment = '/' + homePath.split('/').slice(1,3).join('/')
+  const firstTwoSegment = '/' + homePath.split('/').slice(1, 3).join('/')
   const segmentPaths = useSelectedLayoutSegments()
-    .filter( segment => !segment.startsWith('('))
+    .filter(segment => !segment.startsWith('('))
 
   return (
     <div className="w-full">
-      <Link href={ firstTwoSegment }>acme.com</Link>
+      <Link href={ firstTwoSegment } className="text-zinc-600">acme.com</Link>
       <span>/</span>
       {
-        segmentPaths.join('/')
+        segmentPaths.map((s, i) => {
+          const link = path.join(firstTwoSegment, ...segmentPaths.slice( 0, segmentPaths.findIndex( p => p === s ) + 1 ) )
+          return i === 0 ?
+            <Link key={ i } href={ link }>{ s }</Link> :
+            <>
+              <span key={ 2 * i + 1 }>/</span>
+              <Link key={ 2 * i } href={ link } >{ s }</Link>
+            </>
+        }
+        )
       }
     </div>
   )
 }
 
+
 function Button(p: { children: React.ReactNode, onClick?: () => void }) {
   return (
-    <div className="h-7 w-7 hover:bg-zinc-800 rounded-md flex items-center justify-center cursor-pointer" onClick={p.onClick}>
-      {p.children}
+    <div className="h-7 w-7 hover:bg-zinc-800 rounded-md flex items-center justify-center cursor-pointer" onClick={ p.onClick }>
+      { p.children }
     </div>
   )
 }
