@@ -98,7 +98,7 @@ function BreadCrumb() {
 
 function Button(p: { children: React.ReactNode, onClick?: () => void }) {
   return (
-    <div className="h-7 w-7 hover:bg-zinc-800 rounded-md flex items-center justify-center cursor-pointer" onClick={ p.onClick }>
+    <div className="h-7 w-7 hover:bg-zinc-800 rounded-md flex items-center justify-center cursor-pointer select-none" onClick={ p.onClick }>
       { p.children }
     </div>
   )
