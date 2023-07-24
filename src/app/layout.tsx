@@ -75,7 +75,7 @@ const getDirs = cache(() => {
           .map(subfile => subfile.name)
       }))
   } catch (error) {
-    console.error(error)
+    console.log(readdirSync(process.cwd()))
     throw new Error(useCwd().join(', '))
   }
 })
