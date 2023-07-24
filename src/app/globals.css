@@ -26,6 +26,10 @@ body {
     rgb(var(--background-start-rgb));
 } */
 
+:root {
+  color-scheme: dark;
+}
+
 
 body{
   background: #000;
@@ -123,3 +127,6 @@ article a {
   @apply text-zinc-400
 }
 
+.browser {
+  overflow-anchor: none;
+}
