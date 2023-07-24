@@ -29,13 +29,13 @@ export default function RootLayout(p: {
       <body className={ inter.className + " flex flex-col min-h-screen sm:p-8" }>
         <Header />
 
-        {cwd.join(', ')}
+        { cwd.join(', ') }
 
         <Content>
           <Sidebar>
             <Page label="▼ Home" path='/' />
             { dirs.map(category =>
-              <div key={category.name}>
+              <div key={ category.name }>
                 <Category label={ category.name } />
                 { category.pages.map(page =>
                   <Page key={ page } label={ page } path={ `/${category.name}/${page}` } />
@@ -64,15 +64,21 @@ const useAppDir = (join?: string) => {
 }
 
 
-const getDirs = cache(() => readdirSync(useAppDir(), { withFileTypes: true })
-  .filter(file => !file.isFile())
-  .map(file => ({
-    name: file.name,
-    pages: readdirSync(useAppDir(file.name), { withFileTypes: true })
-      .filter(subfile => !subfile.name.match(/\./))
-      .map(subfile => subfile.name)
-  }))
-)
+const getDirs = cache(() => {
+  try {
+    return readdirSync(useAppDir(), { withFileTypes: true })
+      .filter(file => !file.isFile())
+      .map(file => ({
+        name: file.name,
+        pages: readdirSync(useAppDir(file.name), { withFileTypes: true })
+          .filter(subfile => !subfile.name.match(/\./))
+          .map(subfile => subfile.name)
+      }))
+  } catch (error) {
+    console.error(error)
+    throw new Error(useCwd().join(', '))
+  }
+})
 
 
 function Header() {
