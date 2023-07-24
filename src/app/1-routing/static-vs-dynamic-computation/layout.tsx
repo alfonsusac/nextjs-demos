@@ -23,7 +23,7 @@ export default function Layout(p: { children: ReactNode }) {
         <Link href={currentPath + "fruits"}>Fruits - Dynamic Routes using Generated Params</Link>
       </div> */}
 
-      <div className="p-4">
+      <div className="m-4">
         { p.children }
       </div>
     </Browser>

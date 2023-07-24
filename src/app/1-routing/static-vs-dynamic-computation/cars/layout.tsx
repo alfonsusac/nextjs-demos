@@ -20,11 +20,11 @@ export default function Layout(p: { children: React.ReactNode }) {
       code={ <DynamicRouteTurnedStaticCode /> }
     />
     <CodeSnippet
-      filepath="client.js"
+      filepath="ClientSideParams - client.js"
       code={ <DynamicRouteTurnedStaticClientCode /> }
     />
 
-    <div className="pt-4">
+    <div className="mt-4">
 
       <span>[carID]: </span>
 
