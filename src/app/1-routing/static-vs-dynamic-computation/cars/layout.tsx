@@ -28,13 +28,13 @@ export default function Layout(p: { children: React.ReactNode }) {
 
       <span>[carID]: </span>
 
-      <Link className="px-2" href={ currentPath + "BMW"}>
+      <Link className="px-2" href={ currentPath + "BMW" }>
         BMW
       </Link>
-      <Link className="px-2" href={ currentPath + "Nissan"}>
+      <Link className="px-2" href={ currentPath + "Nissan" }>
         Nissan
       </Link>
-        <Link className="px-2" href={ currentPath + "Ford"}>
+      <Link className="px-2" href={ currentPath + "Ford" }>
         Ford
       </Link>
 
