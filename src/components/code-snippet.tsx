@@ -18,14 +18,18 @@ export default function CodeSnippet(p: {
     }, [] as string[])
   
   return (
-    <div className="border border-zinc-800 rounded-lg my-4 relative">
+    <div className="border border-zinc-800 rounded-lg my-4 relative w-full">
       <input 
-        type="checkbox" 
-        className="peer group absolute block w-full h-10 opacity-0" 
-        checked={opened} 
-        onChange={()=>setOpened(prev => !prev)} 
+        type="checkbox"
+        className="peer group absolute block w-full h-10 opacity-0"
+        checked={ opened }
+        onChange={ () => setOpened(prev => !prev) }
+        title={ p.filepath }
       />
-      <div className="p-3 text-xs text-zinc-400 px-4 flex justify-between after:content-['expand'] peer-checked:after:content-['collapse']">
+      <label
+        className="p-3 text-xs text-zinc-400 px-4 flex justify-between after:content-['expand'] peer-checked:after:content-['collapse']"
+        htmlFor={p.filepath}
+      >
         <div className="flex gap-1">
           <MdiCodeJson className="h-full mr-2"/>
           {
@@ -36,7 +40,7 @@ export default function CodeSnippet(p: {
             )
           }
         </div>
-      </div>
+      </label>
       <div className="overflow-hidden h-0 peer-checked:h-full">
         { p.code }
       </div>
