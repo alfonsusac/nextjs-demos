@@ -10,7 +10,7 @@ export function Browser(p: {
   children: React.ReactNode
 }) {
   return (
-    <div className="w-full border border-zinc-600 rounded-xl min-h-96 mb-12">
+    <div className="w-full border border-zinc-600 rounded-xl mb-12 browser">
       <Header>
         <BackButton />
         <ForwardButton />
