@@ -1,6 +1,7 @@
 import Link from "next/link"
 import CodeSnippet from "@/components/code-snippet"
-import MDXCode from "./code.mdx"
+import DynamicRouteTurnedStaticCode from "./code.mdx"
+import DynamicRouteTurnedStaticClientCode from "./code_client.mdx"
 
 const currentPath = '/1-routing/static-vs-dynamic-computation/cars/'
 
@@ -16,7 +17,11 @@ export default function Layout(p: { children: React.ReactNode }) {
 
     <CodeSnippet
       filepath="app/cars/[carID]/page.js"
-      code={ <MDXCode /> }
+      code={ <DynamicRouteTurnedStaticCode /> }
+    />
+    <CodeSnippet
+      filepath="client.js"
+      code={ <DynamicRouteTurnedStaticClientCode /> }
     />
 
     <div className="pt-4">

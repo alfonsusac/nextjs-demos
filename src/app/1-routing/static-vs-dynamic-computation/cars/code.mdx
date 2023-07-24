@@ -1,9 +1,11 @@
 ```jsx
+import { ClientSideParams } from "./client"
 export default function Page({ params }) {
   return (
     <div>
-      <h1>{ params.carID }</h1>
+      <h1><ClientSideParams /></h1>
     </div>
   )
 }
+export const dynamic = 'force-static'
 ```

@@ -14,16 +14,20 @@ export default function Layout(p: { children: ReactNode }) {
         <Link href={"/1-routing/static-vs-dynamic-computation"}>Home</Link>
       </div>
       <div>
-        <Link href={currentPath + "books"}>Books (Dynamic Routes)</Link>
+        <Link href={currentPath + "books"}>Books - Dynamic Routes</Link>
       </div>
       <div>
-        <Link href={currentPath + "cars"}>Cars (Dynamic Routes using Route Segment Config)</Link>
+        <Link href={currentPath + "cars"}>Cars - Dynamic Routes using Route Segment Config</Link>
+      </div>
+      <div>
+        <Link href={currentPath + "cars"}>Cars - Dynamic Routes using Route Segment Config</Link>
       </div>
 
       <div className="p-4">
         {p.children}
       </div>
     </Browser>
+
     <Content />
   </>
 }
