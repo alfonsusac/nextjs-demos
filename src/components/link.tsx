@@ -2,19 +2,27 @@
 import clsx from "clsx"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import path from "path"
+
+
+
 export function InlineLink(p: {
   children: React.ReactNode
   href: string
   prefetch?: false
+  exact?: true
 }) {
   const pathname = usePathname()
-  const selected = pathname.match(p.href)
+  const selected = pathname === removeTrailingSlash(p.href)
+
+  console.log(pathname)
+  console.log(p.href)
 
   return (
     <Link
       href={ p.href }  
       className={ clsx(
-        "mx-2",
+        "inline flex-shrink-0",
         selected ?
           "text-blue-500 hover:text-blue-400" :
           "text-zinc-400 hover:text-zinc-300"
@@ -24,4 +32,12 @@ export function InlineLink(p: {
       {p.children}
     </Link>
   )
+}
+
+function removeTrailingSlash(str: string) {
+  if (str.at(-1) === '/' || str.at(-1) === '\\') {
+    return str.slice(0, -1)
+  } else {
+    return str
+  }
 }
