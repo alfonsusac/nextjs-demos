@@ -52,6 +52,8 @@ export function Article(p: {
   return (
     <article className="p-4 w-full min-w-0">
 
+      
+
       <header className="pt-4 pb-4">
         <h1>{ titleCase(title.replaceAll('-', ' ')) }</h1>
       </header>
