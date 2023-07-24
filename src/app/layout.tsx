@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { readdirSync } from 'fs'
+import { readFile, readFileSync, readdir, readdirSync } from 'fs'
 import { Category, Article, Page } from './client'
 import clsx from 'clsx'
 import Link from "next/link"
@@ -65,18 +65,70 @@ const useAppDir = (join?: string) => {
 
 
 const getDirs = cache(() => {
-  try {
-    return readdirSync(useAppDir(), { withFileTypes: true })
-      .filter(file => !file.isFile())
-      .map(file => ({
-        name: file.name,
-        pages: readdirSync(useAppDir(file.name), { withFileTypes: true })
-          .filter(subfile => !subfile.name.match(/\./))
-          .map(subfile => subfile.name)
-      }))
-  } catch (error) {
-    console.log(readdirSync(path.join(process.cwd(), '.next')))
-    throw new Error(useCwd().join(', '))
+
+  if (readdirSync(process.cwd()).includes('src')) {
+    const dirs = readdirSync(useAppDir(), { withFileTypes: true })
+    .filter(file => !file.isFile())
+    .map(file => ({
+      name: file.name,
+      pages: readdirSync(useAppDir(file.name), { withFileTypes: true })
+      .filter(subfile => !subfile.name.match(/\./))
+      .map(subfile => subfile.name)
+    }))
+    console.info("Build Time Routes")
+    console.info(dirs)
+    return dirs
+  }
+  else {
+    const filepath = path.join(process.cwd(), '.next/prerender-manifest.json')
+    const routesCache = JSON.parse(readFileSync(filepath, 'utf-8')) as {
+      version: number,
+      routes: {
+        [key: string]: {
+          initialRevalidateSeconds: boolean,
+          srcRoute: string,
+          dataRoute: string,
+        }
+      },
+      dynamicRoutes: {
+        [key: string]: {
+          routeRegex: string,
+          dataRoute: string,
+          fallback: null,
+          dataRouteRegex: string
+        }
+      },
+      notFoundRoutes: [],
+      preview: {
+        previewModeId: string,
+        previewModeSigningKey: string,
+        previewModeEncryptionKey: string
+      }
+    }
+    let routes: {
+      name: string
+      pages: string[]
+    }[] = []
+
+    for (const route in routesCache.routes) {
+      if (route.match('.')) continue;
+      const segments = route.split('/').slice(1)
+      const categoriesInRoutes = routes.find(r => r.name === segments[0] )
+      if (categoriesInRoutes) {
+        const pagesInCategory = categoriesInRoutes.pages.includes(segments[1])
+        if (!pagesInCategory) {
+          categoriesInRoutes.pages.push(segments[1])
+        }
+      } else {
+        routes.push({
+          name: segments[0],
+          pages: []
+        })
+      }
+    }
+    console.info("Serverless Env Routes")
+    console.info(routes)
+    return routes
   }
 })
 
