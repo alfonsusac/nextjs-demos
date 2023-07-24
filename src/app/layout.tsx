@@ -22,11 +22,14 @@ export default function RootLayout(p: {
 }) {
 
   const dirs = getDirs()
+  const cwd = useCwd()
 
   return (
     <html lang="en">
       <body className={ inter.className + " flex flex-col min-h-screen sm:p-8" }>
         <Header />
+
+        {cwd.join(', ')}
 
         <Content>
           <Sidebar>
@@ -50,6 +53,10 @@ export default function RootLayout(p: {
     </html>
   )
 }
+
+const useCwd = cache(() => {
+  return readdirSync(process.cwd())
+})
 
 const useAppDir = (join?: string) => {
   return path.join(process.cwd(), '/src/app', join ?? "")
