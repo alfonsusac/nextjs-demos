@@ -62,6 +62,7 @@ const useNextFolder = cache(() => {
 
 const useCwd = cache(() => {
   console.log(readdirSync(process.cwd()))
+  console.log(readdirSync(path.join(process.cwd(),'.next')))
   return readdirSync(process.cwd())
 })
 
