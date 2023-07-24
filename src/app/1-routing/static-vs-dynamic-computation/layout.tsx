@@ -5,13 +5,17 @@ import Link from "next/link"
 
 const currentPath = '/1-routing/static-vs-dynamic-computation/'
 
-export default function Layout(p: { children: ReactNode }) {
+const layoutGeneratedAt = new Date()
+
+
+export default async function Layout(p: { children: ReactNode }) {
+
 
   return <>
     <Browser>
 
       <div>
-        <Link href={ "/1-routing/static-vs-dynamic-computation" }>Home</Link>
+        Page generated at { layoutGeneratedAt.getMinutes() }:{ layoutGeneratedAt.getSeconds() }
       </div>
       <div>
         <Link href={ currentPath + "books" }>Books - Dynamic Routes</Link>
@@ -19,9 +23,9 @@ export default function Layout(p: { children: ReactNode }) {
       <div>
         <Link href={ currentPath + "cars" }>Cars - Dynamic Routes using Route Segment Config</Link>
       </div>
-      {/* <div>
-        <Link href={currentPath + "fruits"}>Fruits - Dynamic Routes using Generated Params</Link>
-      </div> */}
+      <div>
+        <Link href={currentPath + "dogs"}>Dogs - Dynamic Routes using Generated Params</Link>
+      </div>
 
       <div className="m-4">
         { p.children }
@@ -31,3 +35,5 @@ export default function Layout(p: { children: ReactNode }) {
     <Content />
   </>
 }
+
+export { layoutGeneratedAt }
