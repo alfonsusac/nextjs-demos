@@ -1,0 +1,14 @@
+```jsx
+export async function generateStaticParams() {
+  return [
+    { dogID: 'Labrador' },
+    { dogID: 'Pomeranian' },
+  ]
+}
+
+export default function Page(p: { params: any }) {
+  return <div>
+    <h1>{ p.params.dogID }</h1>
+  </div>
+}
+```
