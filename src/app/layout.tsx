@@ -22,14 +22,13 @@ export default function RootLayout(p: {
 }) {
 
   const dirs = getDirs()
-  const cwd = useCwd()
 
   return (
     <html lang="en">
       <body className={ inter.className + " flex flex-col min-h-screen sm:p-8" }>
         <Header />
 
-        { cwd.join(', ') }
+        { dirs.join(', ') }
 
         <Content>
           <Sidebar>
@@ -54,15 +53,7 @@ export default function RootLayout(p: {
   )
 }
 
-const useNextFolder = cache(() => {
-  const dir = 
-  console.log(readdirSync(path.join(process.cwd(), '.next')))
-  return readdirSync(process.cwd())
-})
-
 const useCwd = cache(() => {
-  console.log(readdirSync(process.cwd()))
-  console.log(readdirSync(path.join(process.cwd(),'.next')))
   return readdirSync(process.cwd())
 })
 
@@ -75,51 +66,23 @@ const getDirs = cache(() => {
 
   if (readdirSync(process.cwd()).includes('src')) {
     const dirs = readdirSync(useAppDir(), { withFileTypes: true })
-    .filter(file => !file.isFile())
-    .map(file => ({
-      name: file.name,
-      pages: readdirSync(useAppDir(file.name), { withFileTypes: true })
-      .filter(subfile => !subfile.name.match(/\./))
-      .map(subfile => subfile.name)
-    }))
+      .filter(file => !file.isFile())
+      .map(file => ({
+        name: file.name,
+        pages: readdirSync(useAppDir(file.name), { withFileTypes: true })
+          .filter(subfile => !subfile.name.match(/\./))
+          .map(subfile => subfile.name)
+      }))
     console.info("Build Time Routes")
     console.info(dirs)
     return dirs
   }
+
   else {
     console.info("Serverless Env Routes")
 
-    // console.info(readdirSync(process.cwd()))
-    // console.info(readdirSync(path.join(process.cwd(), '.next')))
-    // console.info(readFileSync(path.join(process.cwd(), '.next/app-build-manifest.json'), 'utf-8'))
-    // console.info(JSON.parse(readFileSync(path.join(process.cwd(), '.next/app-build-manifest.json'), 'utf-8')))
-    // console.info(readFileSync(path.join(process.cwd(), '.next/routes-manifest.json'), 'utf-8'))
-    // console.info(readFileSync(path.join(process.cwd(), '.next/prerender-manifest.json'), 'utf-8'))
-
     const filepath = path.join(process.cwd(), '.next/app-build-manifest.json')
     const routesCache = JSON.parse(readFileSync(filepath, 'utf-8')) as {
-      // version: number,
-      // routes: {
-      //   [key: string]: {
-      //     initialRevalidateSeconds: boolean,
-      //     srcRoute: string,
-      //     dataRoute: string,
-      //   }
-      // },
-      // dynamicRoutes: {
-      //   [key: string]: {
-      //     routeRegex: string,
-      //     dataRoute: string,
-      //     fallback: null,
-      //     dataRouteRegex: string
-      //   }
-      // },
-      // notFoundRoutes: [],
-      // preview: {
-      //   previewModeId: string,
-      //   previewModeSigningKey: string,
-      //   previewModeEncryptionKey: string
-      // },
       pages: {
         [key: string]: string[]
       }
@@ -129,12 +92,13 @@ const getDirs = cache(() => {
       pages: string[]
     }[] = []
 
-    console.info(Object.keys(routesCache.pages))
 
     for (const route in routesCache.pages) {
-      if (route.match('.')) continue;
+      if (route === '/page' || route === '/layout') continue
+      // console.info(route)
       const segments = route.split('/').slice(1)
-      const categoriesInRoutes = routes.find(r => r.name === segments[0] )
+      // console.info(segments)
+      const categoriesInRoutes = routes.find(r => r.name === segments[0])
       if (categoriesInRoutes) {
         const pagesInCategory = categoriesInRoutes.pages.includes(segments[1])
         if (!pagesInCategory) {
@@ -148,6 +112,7 @@ const getDirs = cache(() => {
       }
     }
     console.info(routes)
+    return []
     return routes
   }
 })
