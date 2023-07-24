@@ -6,6 +6,8 @@ import { Category, Article, Page } from './client'
 import clsx from 'clsx'
 import Link from "next/link"
 import "prism-themes/themes/prism-one-dark.min.css"
+import path from 'path'
+import { cache } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -38,7 +40,7 @@ export default function RootLayout(p: {
               </>
             ) }
           </Sidebar>
-          
+
           <Article>
             { p.children }
           </Article>
@@ -49,17 +51,21 @@ export default function RootLayout(p: {
   )
 }
 
-const getDirs = () => {
-  return readdirSync("./src/app", { withFileTypes: true })
-    .filter(file => !file.isFile())
-    .map(file => ({
-      name: file.name,
-      pages: readdirSync(`./src/app/${file.name}`, { withFileTypes: true })
-        .filter(subfile => !subfile.name.match(/\./))
-        .map(subfile => subfile.name)
-    })
-    )
+const useAppDir = (join?: string) => {
+  return path.join(process.cwd(), '/src/app', join ?? "")
 }
+
+
+const getDirs = cache(() => readdirSync(useAppDir(), { withFileTypes: true })
+  .filter(file => !file.isFile())
+  .map(file => ({
+    name: file.name,
+    pages: readdirSync(useAppDir(file.name), { withFileTypes: true })
+      .filter(subfile => !subfile.name.match(/\./))
+      .map(subfile => subfile.name)
+  }))
+)
+
 
 function Header() {
   return (
@@ -104,7 +110,7 @@ function Sidebar(p: {
       "h-full sm:h-auto"
     ) }>
       <div className="absolute right-8 sm:hidden">
-        <CloseIcon className="w-6 h-6"/>
+        <CloseIcon className="w-6 h-6" />
       </div>
       <ul>
         { p.children }
@@ -116,16 +122,6 @@ function Sidebar(p: {
 function CloseIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" { ...props }><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6L6.4 19Z"></path></svg>
-  )
-}
-
-function Group(p: {
-  children: React.ReactNode
-}) {
-  return (
-    <div className="text-xs font-semibold pt-6">
-      { p.children }
-    </div>
   )
 }
 
