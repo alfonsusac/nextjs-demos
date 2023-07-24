@@ -112,7 +112,7 @@ const getDirs = cache(() => {
       }
     }
     console.info(routes)
-    return []
+    // return []
     return routes
   }
 })
