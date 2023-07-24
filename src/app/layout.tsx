@@ -54,6 +54,12 @@ export default function RootLayout(p: {
   )
 }
 
+const useNextFolder = cache(() => {
+  const dir = 
+  console.log(readdirSync(path.join(process.cwd(), '.next')))
+  return readdirSync(process.cwd())
+})
+
 const useCwd = cache(() => {
   console.log(readdirSync(process.cwd()))
   return readdirSync(process.cwd())
@@ -80,6 +86,8 @@ const getDirs = cache(() => {
     return dirs
   }
   else {
+    console.info("Serverless Env Routes")
+
     const filepath = path.join(process.cwd(), '.next/prerender-manifest.json')
     const routesCache = JSON.parse(readFileSync(filepath, 'utf-8')) as {
       version: number,
@@ -110,6 +118,8 @@ const getDirs = cache(() => {
       pages: string[]
     }[] = []
 
+    console.log(routesCache)
+
     for (const route in routesCache.routes) {
       if (route.match('.')) continue;
       const segments = route.split('/').slice(1)
@@ -126,7 +136,6 @@ const getDirs = cache(() => {
         })
       }
     }
-    console.info("Serverless Env Routes")
     console.info(routes)
     return routes
   }
