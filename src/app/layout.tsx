@@ -89,10 +89,10 @@ const getDirs = cache(() => {
   else {
     console.info("Serverless Env Routes")
 
-    console.info(readdirSync(process.cwd()))
-    console.info(readdirSync(path.join(process.cwd(), '.next')))
-    console.info(readFileSync(path.join(process.cwd(), '.next/app-build-manifest.json'), 'utf-8'))
-    console.info(JSON.parse(readFileSync(path.join(process.cwd(), '.next/app-build-manifest.json'), 'utf-8')))
+    // console.info(readdirSync(process.cwd()))
+    // console.info(readdirSync(path.join(process.cwd(), '.next')))
+    // console.info(readFileSync(path.join(process.cwd(), '.next/app-build-manifest.json'), 'utf-8'))
+    // console.info(JSON.parse(readFileSync(path.join(process.cwd(), '.next/app-build-manifest.json'), 'utf-8')))
     // console.info(readFileSync(path.join(process.cwd(), '.next/routes-manifest.json'), 'utf-8'))
     // console.info(readFileSync(path.join(process.cwd(), '.next/prerender-manifest.json'), 'utf-8'))
 
@@ -129,7 +129,7 @@ const getDirs = cache(() => {
       pages: string[]
     }[] = []
 
-    console.log(routesCache)
+    console.info(Object.keys(routesCache.pages))
 
     for (const route in routesCache.pages) {
       if (route.match('.')) continue;
