@@ -89,6 +89,9 @@ const getDirs = cache(() => {
   else {
     console.info("Serverless Env Routes")
 
+    console.info(readdirSync(process.cwd()))
+    console.info(readdirSync(path.join(process.cwd(), '.next')))
+
     const filepath = path.join(process.cwd(), '.next/prerender-manifest.json')
     const routesCache = JSON.parse(readFileSync(filepath, 'utf-8')) as {
       version: number,
