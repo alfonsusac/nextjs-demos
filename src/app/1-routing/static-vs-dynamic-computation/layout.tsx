@@ -12,6 +12,8 @@ export default async function Layout(p: { children: ReactNode }) {
 
 
   return <>
+
+
     <Browser>
 
       <div>
@@ -24,15 +26,17 @@ export default async function Layout(p: { children: ReactNode }) {
         <Link href={ currentPath + "cars" }>Cars - Dynamic Routes using Route Segment Config</Link>
       </div>
       <div>
-        <Link href={currentPath + "dogs"}>Dogs - Dynamic Routes using Generated Params</Link>
+        <Link href={ currentPath + "dogs" }>Dogs - Dynamic Routes using Generated Params</Link>
       </div>
 
-      <div className="m-4">
+      <div className="m-4 h-full">
         { p.children }
       </div>
+
     </Browser>
 
     <Content />
+
   </>
 }
 
