@@ -10,13 +10,13 @@ export function Browser(p: {
   children: React.ReactNode
 }) {
   return (
-    <div className="w-full border border-zinc-600 rounded-xl mb-12 browser">
+    <div className="w-full border border-zinc-600 rounded-xl mb-12 pb-1 browser">
       <Header>
         <BackButton />
         <ForwardButton />
         <BreadCrumb />
       </Header>
-      <div className="p-4 space-y-2">
+      <div className="p-4">
         { p.children }
       </div>
     </div>
