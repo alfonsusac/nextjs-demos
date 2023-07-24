@@ -9,7 +9,13 @@ const nextConfig = {
         hostname: 'avatars.githubusercontent.com',
       }
     ]
+  },
+  compiler: {
+    removeConsole: {
+      exclude: ['info', 'error']
+    }
   }
+  
 }
 
 const withMDX = createMDX({
