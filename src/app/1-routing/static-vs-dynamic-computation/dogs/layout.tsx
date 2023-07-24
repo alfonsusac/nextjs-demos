@@ -8,19 +8,19 @@ export default function Layout(p: { children: React.ReactNode }) {
     <h1>🐕‍🦺 Dogs</h1>
     <p>
       This page shows how dynamic routing can also be statically
-      precomputed at build-time specifically using
-      <code>generateStaticParams()</code>
+      precomputed at build-time specifically using <code>generateStaticParams()</code>
     </p>
     <p>
-      In the example below, only Labrador and Pom are statically generated. Retriever are prefetched using Link while on Pug prefetching is disabled.
+      In the example below, only <b>Labrador</b> and <b>Pomeranian</b> are the only params that are statically generated. Retriever are prefetched using Link while on Pug prefetching is disabled.
     </p>
+
     <nav>
       <InlineLink href={ currentPath }>Code</InlineLink>
       <span className="text-zinc-600 m-0">|</span>
       <InlineLink href={ currentPath + "Labrador" }>Labrador</InlineLink>
       <InlineLink href={ currentPath + "Pomeranian" }>Pomeranian</InlineLink>
       <InlineLink href={ currentPath + "Retriever" }>Retriever (Prefetch)</InlineLink>
-      <InlineLink href={ currentPath + "Pug" } prefetch={ false }>Pug (No prefetch)</InlineLink>
+      <InlineLink href={ currentPath + "Pug" } useAnchor>Pug (No Caching)</InlineLink>
     </nav>
 
     { p.children }
