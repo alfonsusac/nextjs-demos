@@ -12,7 +12,7 @@ export default function Layout(p: { children: React.ReactNode }) {
       Cars
     </h1>
     <p>
-      This page shows how dynamic routing can also be statically precomputed at build-time
+      This page shows how dynamic routing can also be statically precomputed at build-time specifically using { "\"" }Route Segment Config{ "\"" }.
     </p>
 
     <CodeSnippet
@@ -22,6 +22,7 @@ export default function Layout(p: { children: React.ReactNode }) {
     <CodeSnippet
       filepath="ClientSideParams - client.js"
       code={ <DynamicRouteTurnedStaticClientCode /> }
+      defaultClosed
     />
 
     <div className="mt-4">
