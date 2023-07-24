@@ -96,29 +96,32 @@ const getDirs = cache(() => {
     // console.info(readFileSync(path.join(process.cwd(), '.next/routes-manifest.json'), 'utf-8'))
     // console.info(readFileSync(path.join(process.cwd(), '.next/prerender-manifest.json'), 'utf-8'))
 
-    const filepath = path.join(process.cwd(), '.next/prerender-manifest.json')
+    const filepath = path.join(process.cwd(), '.next/app-build-manifest.json')
     const routesCache = JSON.parse(readFileSync(filepath, 'utf-8')) as {
-      version: number,
-      routes: {
-        [key: string]: {
-          initialRevalidateSeconds: boolean,
-          srcRoute: string,
-          dataRoute: string,
-        }
-      },
-      dynamicRoutes: {
-        [key: string]: {
-          routeRegex: string,
-          dataRoute: string,
-          fallback: null,
-          dataRouteRegex: string
-        }
-      },
-      notFoundRoutes: [],
-      preview: {
-        previewModeId: string,
-        previewModeSigningKey: string,
-        previewModeEncryptionKey: string
+      // version: number,
+      // routes: {
+      //   [key: string]: {
+      //     initialRevalidateSeconds: boolean,
+      //     srcRoute: string,
+      //     dataRoute: string,
+      //   }
+      // },
+      // dynamicRoutes: {
+      //   [key: string]: {
+      //     routeRegex: string,
+      //     dataRoute: string,
+      //     fallback: null,
+      //     dataRouteRegex: string
+      //   }
+      // },
+      // notFoundRoutes: [],
+      // preview: {
+      //   previewModeId: string,
+      //   previewModeSigningKey: string,
+      //   previewModeEncryptionKey: string
+      // },
+      pages: {
+        [key: string]: string[]
       }
     }
     let routes: {
@@ -128,7 +131,7 @@ const getDirs = cache(() => {
 
     console.log(routesCache)
 
-    for (const route in routesCache.routes) {
+    for (const route in routesCache.pages) {
       if (route.match('.')) continue;
       const segments = route.split('/').slice(1)
       const categoriesInRoutes = routes.find(r => r.name === segments[0] )
