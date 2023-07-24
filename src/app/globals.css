@@ -127,6 +127,22 @@ article a {
   @apply text-zinc-400
 }
 
-.browser {
+.browser{
   overflow-anchor: none;
 }
+
+.browser h1 {
+  @apply text-xl py-2
+}
+
+.browser nav {
+  @apply my-2 mt-0 flex gap-x-3 gap-y-2 flex-wrap
+}
+
+.browser article {
+  @apply mt-4 p-4 border border-zinc-800 rounded-lg
+}
+.browser article h2{
+  @apply text-xl pt-2 pb-1 my-0
+}
+

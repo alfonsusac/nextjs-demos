@@ -16,6 +16,9 @@ export const metadata = {
   description: 'Alfonsusac\'s Next.js Demo',
 }
 
+const layoutGenerationTime = new Date()
+
+
 
 export default function RootLayout(p: {
   children: React.ReactNode
@@ -172,4 +175,4 @@ function CloseIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 
-export { getDirs, Category }
+export { getDirs, Category, layoutGenerationTime }

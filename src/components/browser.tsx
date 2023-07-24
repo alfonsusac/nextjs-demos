@@ -87,7 +87,10 @@ function BreadCrumb() {
           if (s === '/')
             return <span key={ i }>/</span>
           else
-            return <Link key={ i } href={ link } >{ s }</Link>
+            // if (i === breadcrumbSegments.length - 1)
+            //   return <span key={ i } className="text-zinc-400" >{ s }</span>
+            // else
+              return <Link key={ i } href={ link } >{ s }</Link>
         }
         )
       }

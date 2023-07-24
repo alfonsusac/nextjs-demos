@@ -2,46 +2,27 @@ import { InlineLink } from "@/components/link"
 
 const currentPath = '/1-routing/static-vs-dynamic-computation/dogs/'
 
-const layoutGenerationTime = new Date()
-
 export default function Layout(p: { children: React.ReactNode }) {
 
-  return <div className="h-full px-2 pt-2 mt-4 border-t border-t-zinc-800 rounded-lg">
-    <h1 className="text-xl py-2">
-      Dogs
-    </h1>
-
-    <div className="my-2 mt-0 flex gap-x-3 gap-y-2  flex-wrap">
-
-      <InlineLink href={ currentPath }>
-        Home
-      </InlineLink>
+  return <>
+    <h1>🐕‍🦺 Dogs</h1>
+    <p>
+      This page shows how dynamic routing can also be statically
+      precomputed at build-time specifically using
+      <code>generateStaticParams()</code>
+    </p>
+    <p>
+      In the example below, only Labrador and Pom are statically generated. Retriever are prefetched using Link while on Pug prefetching is disabled.
+    </p>
+    <nav>
+      <InlineLink href={ currentPath }>Code</InlineLink>
       <span className="text-zinc-600 m-0">|</span>
-      <InlineLink href={ currentPath + "Labrador" }>
-        Labrador
-      </InlineLink>
-      <InlineLink href={ currentPath + "Pomeranian" }>
-        Pomeranian
-      </InlineLink>
-      <InlineLink href={ currentPath + "Retriever" }>
-        Retriever (Prefetch)
-      </InlineLink>
-      <InlineLink href={ currentPath + "Pug" } prefetch={ false }>
-        Pug (No prefetch)
-      </InlineLink>
+      <InlineLink href={ currentPath + "Labrador" }>Labrador</InlineLink>
+      <InlineLink href={ currentPath + "Pomeranian" }>Pomeranian</InlineLink>
+      <InlineLink href={ currentPath + "Retriever" }>Retriever (Prefetch)</InlineLink>
+      <InlineLink href={ currentPath + "Pug" } prefetch={ false }>Pug (No prefetch)</InlineLink>
+    </nav>
 
-    </div>
-
-    <div className="">
-      { p.children }
-    </div>
-
-
-
-
-
-
-  </div>
+    { p.children }
+  </>
 }
-
-export { layoutGenerationTime }
