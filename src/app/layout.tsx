@@ -25,21 +25,21 @@ export default function RootLayout(p: {
 
   return (
     <html lang="en">
-      <body className={ inter.className + " flex flex-col min-h-screen sm:p-8" }>
+      <body className={ inter.className + " flex flex-col min-h-screen sm:p-8 scroll-smooth	" }>
         <Header />
-
-        { dirs.join(', ') }
 
         <Content>
           <Sidebar>
             <Page label="▼ Home" path='/' />
             { dirs.map(category =>
-              <div key={ category.name }>
-                <Category label={ category.name } />
-                { category.pages.map(page =>
-                  <Page key={ page } label={ page } path={ `/${category.name}/${page}` } />
-                ) }
-              </div>
+              <li key={ category.name }>
+                <ul>
+                  <Category label={ category.name } />
+                  { category.pages.map(page =>
+                    <Page key={ page } label={ page } path={ `/${category.name}/${page}` } />
+                  ) }
+                </ul>
+              </li>
             ) }
           </Sidebar>
 
@@ -53,12 +53,18 @@ export default function RootLayout(p: {
   )
 }
 
-const useCwd = cache(() => {
-  return readdirSync(process.cwd())
-})
-
 const useAppDir = (join?: string) => {
   return path.join(process.cwd(), '/src/app', join ?? "")
+}
+
+const useAppBuildManifestPagesList = () => {
+  const filepath = path.join(process.cwd(), '.next/app-build-manifest.json')
+  const data = JSON.parse(readFileSync(filepath, 'utf-8')) as {
+    pages: {
+      [key: string]: string[]
+    }
+  }
+  return data.pages
 }
 
 
@@ -73,31 +79,22 @@ const getDirs = cache(() => {
           .filter(subfile => !subfile.name.match(/\./))
           .map(subfile => subfile.name)
       }))
-    console.info("Build Time Routes")
-    console.info(dirs)
     return dirs
   }
 
   else {
-    console.info("Serverless Env Routes")
+    // SRC dir doesn't exist, so retrieve from Build Manifest (Serverless Function)
 
-    const filepath = path.join(process.cwd(), '.next/app-build-manifest.json')
-    const routesCache = JSON.parse(readFileSync(filepath, 'utf-8')) as {
-      pages: {
-        [key: string]: string[]
-      }
-    }
+    const routesCache = useAppBuildManifestPagesList()
+
     let routes: {
       name: string
       pages: string[]
     }[] = []
 
-
-    for (const route in routesCache.pages) {
+    for (const route in routesCache) {
       if (route === '/page' || route === '/layout') continue
-      // console.info(route)
       const segments = route.split('/').slice(1)
-      // console.info(segments)
       const categoriesInRoutes = routes.find(r => r.name === segments[0])
       if (categoriesInRoutes) {
         const pagesInCategory = categoriesInRoutes.pages.includes(segments[1])
@@ -111,8 +108,7 @@ const getDirs = cache(() => {
         })
       }
     }
-    console.info(routes)
-    // return []
+    
     return routes
   }
 })
@@ -121,6 +117,7 @@ const getDirs = cache(() => {
 function Header() {
   return (
     <header className="px-4 ">
+      
       <div className="text-2xl font-semibold flex gap-2 items-center py-4 pt-4 border-b border-b-zinc-800">
         <Image
           src="https://avatars.githubusercontent.com/u/20208219?v=4"
@@ -134,9 +131,7 @@ function Header() {
           Next.js Notes
         </Link>
       </div>
-      <div>
 
-      </div>
     </header>
   )
 }
@@ -154,7 +149,7 @@ function Sidebar(p: {
 }) {
   return (
     <nav className={ clsx(
-      "hidden sm:block",
+      "hidden md:block",
       "flex-shrink-0 border-r-zinc-800 bg-black",
       "absolute sm:static sm:border-r",
       "w-full sm:w-44",
