@@ -50,7 +50,7 @@ export function Article(p: {
   
   
   return (
-    <article className="p-4 w-full">
+    <article className="p-4 w-full min-w-0">
 
       <header className="pt-4 pb-4">
         <h1>{ titleCase(title.replaceAll('-', ' ')) }</h1>
@@ -72,10 +72,4 @@ export function Article(p: {
 
     </article>
   )
-}
-
-export function Sidebar(p: {
-  children: React.ReactNode
-}) {
-  
 }
