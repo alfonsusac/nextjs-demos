@@ -32,12 +32,12 @@ export default function RootLayout(p: {
           <Sidebar>
             <Page label="▼ Home" path='/' />
             { dirs.map(category =>
-              <>
-                <Category key={ category.name } label={ category.name } />
+              <div key={category.name}>
+                <Category label={ category.name } />
                 { category.pages.map(page =>
                   <Page key={ page } label={ page } path={ `/${category.name}/${page}` } />
                 ) }
-              </>
+              </div>
             ) }
           </Sidebar>
 
