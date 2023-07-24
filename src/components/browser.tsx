@@ -69,23 +69,25 @@ function ForwardButton() {
 function BreadCrumb() {
 
   const homePath = usePathname()
-  const firstTwoSegment = '/' + homePath.split('/').slice(1, 3).join('/')
-  const segmentPaths = useSelectedLayoutSegments()
+  const commonSegment = '/' + homePath.split('/').slice(1, 3).join('/')
+  const breadcrumbSegments = useSelectedLayoutSegments()
     .filter(segment => !segment.startsWith('('))
+    .reduce((acc, val) => {
+      acc.push('/')
+      acc.push(val)
+      return acc
+    }, [] as string[])
 
   return (
-    <div className="w-full">
-      <Link href={ firstTwoSegment } className="text-zinc-600">acme.com</Link>
-      <span>/</span>
+    <div className="w-full flex gap-1">
+      <Link href={ commonSegment } className="text-zinc-600">acme.com</Link>
       {
-        segmentPaths.map((s, i) => {
-          const link = path.join(firstTwoSegment, ...segmentPaths.slice( 0, segmentPaths.findIndex( p => p === s ) + 1 ) )
-          return i === 0 ?
-            <Link key={ i } href={ link }>{ s }</Link> :
-            <>
-              <span key={ 2 * i + 1 }>/</span>
-              <Link key={ 2 * i } href={ link } >{ s }</Link>
-            </>
+        breadcrumbSegments.map((s, i) => {
+          const link = path.join(commonSegment, ...breadcrumbSegments.slice(0, breadcrumbSegments.findIndex(p => p === s) + 1)).replace(/\\/g, '/')
+          if (s === '/')
+            return <span key={ i }>/</span>
+          else
+            return <Link key={ i } href={ link } >{ s }</Link>
         }
         )
       }
