@@ -15,7 +15,7 @@ export default async function Page(p: { params: any }) {
   const data = await new Promise(resolve => setTimeout(resolve ,1000));
 
 
-  return <div className="p-4 border border-zinc-800 rounded-lg">
+  return <div className="mt-4 p-4 border border-zinc-800 rounded-lg">
     <h1 className="text-xl pt-2 pb-1">🐶 { p.params.dogID }</h1>
 
     <div className="mb-2">

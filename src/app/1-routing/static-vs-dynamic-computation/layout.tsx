@@ -2,6 +2,7 @@ import { Browser } from "@/components/browser"
 import Content from "./content.mdx"
 import { ReactNode } from "@mdx-js/react/lib"
 import Link from "next/link"
+import { InlineLink } from "@/components/link"
 
 const currentPath = '/1-routing/static-vs-dynamic-computation/'
 
@@ -17,21 +18,16 @@ export default async function Layout(p: { children: ReactNode }) {
     <Browser>
 
       <div>
-        Page generated at { layoutGeneratedAt.getMinutes() }:{ layoutGeneratedAt.getSeconds() }
+        <InlineLink href={ currentPath + "books" }>Books - Dynamic Routes</InlineLink>
       </div>
       <div>
-        <Link href={ currentPath + "books" }>Books - Dynamic Routes</Link>
+        <InlineLink href={ currentPath + "cars" }>Cars - Dynamic Routes using Route Segment Config</InlineLink>
       </div>
       <div>
-        <Link href={ currentPath + "cars" }>Cars - Dynamic Routes using Route Segment Config</Link>
-      </div>
-      <div>
-        <Link href={ currentPath + "dogs" }>Dogs - Dynamic Routes using Generated Params</Link>
+        <InlineLink href={ currentPath + "dogs" }>Dogs - Dynamic Routes using Generated Params</InlineLink>
       </div>
 
-      <div className="m-4 h-full">
-        { p.children }
-      </div>
+      { p.children }
 
     </Browser>
 
