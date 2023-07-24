@@ -11,28 +11,41 @@ export function InlineLink(p: {
   href: string
   prefetch?: false
   loose?: true
+  useAnchor?: true
 }) {
   const pathname = usePathname()
   const selected = !p.loose ?
-    pathname === removeTrailingSlash(p.href) : 
+    pathname === removeTrailingSlash(p.href) :
     pathname.match(p.href)
 
   console.log(pathname)
   console.log(p.href)
 
-  return (
+  return !p.useAnchor ? (
     <Link
-      href={ p.href }  
+      href={ p.href }
       className={ clsx(
         "inline flex-shrink-0",
         selected ?
           "text-blue-500 hover:text-blue-400" :
           "text-zinc-400 hover:text-zinc-300"
       ) }
-      prefetch={p.prefetch}
+      prefetch={ p.prefetch }
     >
-      {p.children}
+      { p.children }
     </Link>
+  ) : (
+    <a
+      href={ p.href }
+      className={ clsx(
+        "inline flex-shrink-0",
+        selected ?
+          "text-blue-500 hover:text-blue-400" :
+          "text-zinc-400 hover:text-zinc-300"
+      ) }
+    >
+      { p.children }
+    </a>
   )
 }
 
