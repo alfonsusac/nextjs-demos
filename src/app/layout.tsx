@@ -55,6 +55,7 @@ export default function RootLayout(p: {
 }
 
 const useCwd = cache(() => {
+  console.log(readdirSync(process.cwd()))
   return readdirSync(process.cwd())
 })
 
