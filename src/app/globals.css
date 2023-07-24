@@ -55,26 +55,32 @@ article ol > li {
 }
 
 article > * {
-  line-height: 1.5rem;
-  font-size: 14px;
   max-width: 36rem;
   margin-inline: auto;
+  @apply text-zinc-300
 }
 
 article p {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  @apply leading-7 text-zinc-300
+}
+article strong{
+  @apply text-white
 }
 article h1{
-  @apply text-3xl font-semibold
+  @apply text-3xl font-semibold text-white
 }
 article h2{
-  @apply text-2xl font-semibold my-4 mt-14
+  @apply text-2xl font-semibold my-4 mt-14 text-white
 }
 article h3{
   @apply text-lg font-semibold my-4 px-2 
 }
 article h1+p, article h2+p, article h3+p {
   @apply py-0
+}
+article li{
+  @apply my-2
 }
 
 article blockquote{
@@ -88,7 +94,7 @@ article p span{
 article code {
   border-radius: 2px;
   padding-block: 0.15rem;
-  @apply bg-zinc-400/30
+  @apply bg-zinc-400/20 text-sm
 }
 article pre {
   margin: 0 !important;
@@ -127,8 +133,14 @@ article a {
   @apply text-zinc-400
 }
 
+article h3{
+  @apply text-zinc-400
+}
+
+
+
 .browser{
-  overflow-anchor: none;
+  @apply text-sm leading-relaxed
 }
 
 .browser h1 {
@@ -145,4 +157,3 @@ article a {
 .browser article h2{
   @apply text-xl pt-2 pb-1 my-0
 }
-
