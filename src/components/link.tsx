@@ -10,10 +10,12 @@ export function InlineLink(p: {
   children: React.ReactNode
   href: string
   prefetch?: false
-  exact?: true
+  loose?: true
 }) {
   const pathname = usePathname()
-  const selected = pathname === removeTrailingSlash(p.href)
+  const selected = !p.loose ?
+    pathname === removeTrailingSlash(p.href) : 
+    pathname.match(p.href)
 
   console.log(pathname)
   console.log(p.href)
