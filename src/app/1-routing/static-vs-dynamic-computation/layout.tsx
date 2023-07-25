@@ -12,18 +12,12 @@ export default async function Layout(p: { children: ReactNode }) {
 
 
     <Browser>
-      
-      
 
-      <div>
-        <InlineLink href={ currentPath + "books" } loose>Books - Dynamic Routes</InlineLink>
-      </div>
-      <div>
-        <InlineLink href={ currentPath + "cars" } loose>Cars - Dynamic Routes using &apos;force-static&apos;</InlineLink>
-      </div>
-      <div>
-        <InlineLink href={ currentPath + "dogs" } loose>Dogs - Dynamic Routes using Generated Params</InlineLink>
-      </div>
+      <InlineLink href={ currentPath } block>○ Static Route (Home)</InlineLink>
+      <InlineLink href={ currentPath + "books" } loose block>λ Dynamic Routes (Books)</InlineLink>
+      <InlineLink href={ currentPath + "cars" } loose block>○ Dynamic Routes using &apos;force-static&apos; (Cars)</InlineLink>
+      <InlineLink href={ currentPath + "dogs" } loose block>● Dynamic Routes using Generated Params (Dogs)</InlineLink>
+      <InlineLink href={ currentPath + "episodes" } loose block>● Dynamic Routes using Generated Params and dynamicParams = false (Episodes)</InlineLink>
 
       <div className="h-full px-2 pt-2 mt-4 border-t border-t-zinc-800 rounded-lg">
         { p.children }

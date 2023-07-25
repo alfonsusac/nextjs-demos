@@ -6,6 +6,7 @@ export default function CodeSnippet(p: {
   filepath: string,
   code: JSX.Element,
   defaultClosed?: boolean,
+  children?: React.ReactNode
 }) {
   const [opened, setOpened] = useState(!p.defaultClosed)
 
@@ -43,6 +44,7 @@ export default function CodeSnippet(p: {
       </label>
       <div className="overflow-hidden h-0 peer-checked:h-full">
         { p.code }
+        { p.children }
       </div>
     </div>
   )

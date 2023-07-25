@@ -1,4 +1,6 @@
+import { GenerateRandomLink } from "@/components/client"
 import { InlineLink } from "@/components/link"
+import { nanoid } from "nanoid"
 
 const currentPath = '/1-routing/static-vs-dynamic-computation/cars/'
 
@@ -16,6 +18,7 @@ export default function Layout(p: { children: React.ReactNode }) {
       <InlineLink href={ currentPath + "Nissan" } >Nissan</InlineLink>
       <InlineLink href={ currentPath + "Ford" } prefetch={ false }>Ford (No prefetch)</InlineLink>
       <InlineLink href={ currentPath + "Hyundai" } useAnchor>Hyundai (No caching)</InlineLink>
+      <GenerateRandomLink href={ currentPath } useAnchor>Random ID</GenerateRandomLink>
     </nav>
 
     { p.children }

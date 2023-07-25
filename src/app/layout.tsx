@@ -35,7 +35,7 @@ export default function RootLayout(p: {
           <Sidebar>
             <Page label="▼ Home" path='/' />
             { dirs.map(category =>
-              <li key={ category.name }>
+              <li key={ category.name } className="my-8">
                 <ul>
                   <Category label={ category.name } />
                   { category.pages.map(page =>
@@ -44,11 +44,15 @@ export default function RootLayout(p: {
                 </ul>
               </li>
             ) }
+            <Page label="Trigger 404 by notFound()" path='/self-404' />
+            <Page label="Go to default 404" path='/404' />
           </Sidebar>
 
-          <Article>
-            { p.children }
-          </Article>
+          <main className="w-full">
+            <Article>
+              { p.children }
+            </Article>
+          </main>
         </Content>
 
       </body>

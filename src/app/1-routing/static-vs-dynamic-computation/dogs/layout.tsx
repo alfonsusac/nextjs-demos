@@ -1,3 +1,4 @@
+import { GenerateRandomLink } from "@/components/client"
 import { InlineLink } from "@/components/link"
 
 const currentPath = '/1-routing/static-vs-dynamic-computation/dogs/'
@@ -8,7 +9,7 @@ export default function Layout(p: { children: React.ReactNode }) {
     <h1>🐕‍🦺 Dogs</h1>
     <p>
       This page shows how dynamic routing can also be statically
-      precomputed at build-time specifically using <code>generateStaticParams()</code>
+      precomputed using <code>generateStaticParams()</code>
     </p>
     <p>
       In the example below, only <b>Labrador</b> and <b>Pomeranian</b> are the only params that are statically generated. Retriever are prefetched using Link while on Pug prefetching is disabled.
@@ -21,6 +22,7 @@ export default function Layout(p: { children: React.ReactNode }) {
       <InlineLink href={ currentPath + "Pomeranian" }>Pomeranian</InlineLink>
       <InlineLink href={ currentPath + "Retriever" }>Retriever (Prefetch)</InlineLink>
       <InlineLink href={ currentPath + "Pug" } useAnchor>Pug (No Caching)</InlineLink>
+      <GenerateRandomLink href={ currentPath } useAnchor>Random ID</GenerateRandomLink>
     </nav>
 
     { p.children }

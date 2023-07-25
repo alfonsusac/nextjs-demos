@@ -56,7 +56,7 @@ article ol > li {
 
 article > * {
   max-width: 36rem;
-  margin-inline: auto;
+  margin-inline: auto !important;
   @apply text-zinc-300
 }
 
@@ -65,7 +65,7 @@ article p {
   @apply leading-7 text-zinc-300
 }
 article strong{
-  @apply text-white
+  @apply text-zinc-100 font-bold
 }
 article h1{
   @apply text-3xl font-semibold text-white
@@ -94,13 +94,16 @@ article p span{
 article code {
   border-radius: 2px;
   padding-block: 0.15rem;
-  @apply bg-zinc-400/20 text-sm
+  @apply bg-zinc-400/20 text-sm font-extrabold px-1
 }
 article pre {
-  margin: 0 !important;
+  /* margin: 0 !important; */
   border-radius: 0 !important;
   background-color: #0c0c0c !important;
   @apply border border-zinc-800 rounded-lg
+}
+article pre > code {
+  @apply px-0
 }
 article div > pre {
   border: 0
@@ -119,9 +122,6 @@ article pre span {
   background-color: unset !important;
   letter-spacing: -0.5px;
 }
-article strong{
-  font-weight: 600;
-}
 article hr{
   margin-top: 2rem;
   @apply border-t-zinc-500
@@ -139,21 +139,26 @@ article h3{
 
 
 
-.browser{
-  @apply text-sm leading-relaxed
+div.browser, div.browser p{
+  @apply text-sm leading-normal
 }
 
-.browser h1 {
+div.browser h1 {
   @apply text-xl py-2
 }
 
-.browser nav {
+div.browser nav {
   @apply my-2 mt-0 flex gap-x-3 gap-y-2 flex-wrap
 }
 
-.browser article {
+div.browser article {
   @apply mt-4 p-4 border border-zinc-800 rounded-lg
 }
-.browser article h2{
+div.browser article h2{
   @apply text-xl pt-2 pb-1 my-0
+}
+
+
+article pre[class*=language-]{
+  margin:0
 }

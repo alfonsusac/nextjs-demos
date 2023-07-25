@@ -69,7 +69,7 @@ function ForwardButton() {
 function BreadCrumb() {
 
   const homePath = usePathname()
-  const commonSegment = '/' + homePath.split('/').slice(1, 3).join('/')
+  const commonSegment = '/' + homePath?.split('/').slice(1, 3).join('/')
   const breadcrumbSegments = useSelectedLayoutSegments()
     .filter(segment => !segment.startsWith('('))
     .reduce((acc, val) => {

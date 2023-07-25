@@ -2,8 +2,6 @@
 import clsx from "clsx"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import path from "path"
-
 
 
 export function InlineLink(p: {
@@ -12,40 +10,47 @@ export function InlineLink(p: {
   prefetch?: false
   loose?: true
   useAnchor?: true
+  block?: true
 }) {
-  const pathname = usePathname()
+  const pathname = usePathname()?.replaceAll('%20', ' ')
   const selected = !p.loose ?
     pathname === removeTrailingSlash(p.href) :
-    pathname.match(p.href)
+    pathname?.match(p.href)
 
   console.log(pathname)
   console.log(p.href)
 
   return !p.useAnchor ? (
+
     <Link
       href={ p.href }
       className={ clsx(
-        "inline flex-shrink-0",
+        "flex-shrink-0",
         selected ?
           "text-blue-500 hover:text-blue-400" :
-          "text-zinc-400 hover:text-zinc-300"
+          "text-zinc-400 hover:text-zinc-300",
+        p.block ? "block" : "inline"
       ) }
       prefetch={ p.prefetch }
     >
       { p.children }
     </Link>
+
   ) : (
+
     <a
       href={ p.href }
       className={ clsx(
-        "inline flex-shrink-0",
+        "flex-shrink-0",
         selected ?
           "text-blue-500 hover:text-blue-400" :
-          "text-zinc-400 hover:text-zinc-300"
+          "text-zinc-400 hover:text-zinc-300",
+        p.block ? "block" : "inline"
       ) }
     >
       { p.children }
     </a>
+
   )
 }
 

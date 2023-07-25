@@ -8,7 +8,10 @@ export default function Home() {
   const dirs = getDirs()
 
   return (
-    <main>
+    <>
+      <h1>
+        Welcome to Alfon&apos;s Next.js Notes
+      </h1>
       { dirs.map(category =>
         <>
           <Category key={ category.name } label={ category.name } />
@@ -17,7 +20,7 @@ export default function Home() {
           ) }
         </>
       ) }
-    </main>
+    </>
   )
 }
 

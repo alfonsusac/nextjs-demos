@@ -1,0 +1,18 @@
+```jsx
+export async function generateStaticParams() {
+  return [
+    { episodeID: '1' },
+    { episodeID: '2' },
+  ]
+}
+
+export default function Page({ params }) {
+  const title = await fetchTitle(params.episodeID)
+
+  return <div>
+    <h1>🍿 Episode { params.dogID }: { title }</h1>
+  </div>
+}
+
+export const dynamicParams = false
+```

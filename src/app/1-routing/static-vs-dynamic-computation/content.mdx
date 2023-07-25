@@ -1,4 +1,9 @@
 import { Blue, B, LG, Purple, White } from "@/components/inlines"
+import CodeSnippet from "@/components/code-snippet"
+
+
+
+
 
 ## Introduction
 
@@ -20,22 +25,39 @@ Generally, routes in Next.js are computed either <Blue>statically</Blue> or <Pur
   Meaning that in a single route, as of now, it is impossible to mix components that are rendered at build time and request time.
 
 
+
+---
+
+
+
 ## Static Generation
 
-Generation of static routes can happen either at <b>built-time</b> or at <b>request-time</b>. 
+Static routes are statically computed routes. Generation of static routes can happen either at <b>built-time</b> or at <b>request-time</b>. 
 
-- Static Routes that are generated at <Blue>build-time</Blue> is commonly referred as **Static Site Generation (SSG)**. Those routes are cached indefinetly until the next time the project is re-built.
+- Static Routes that are generated at <Blue>build-time</Blue> is commonly referred as **Static Site Generation (SSG)**. Those routes are cached indefinetly until the next time the project is re-built. 
 
-- Static routes that are generated at request-time is when the information to build that route has not yet existed or has been invalidated. This is what is referred as **Incremental Static Regeneration (ISR)**.
+  In build log, it is represented as ○ or ●
 
-Request-time static routes can happens by two things:
+  <CodeSnippet filepath="Build Log">
+  ```txt
+  ├ ○ /dogs               1.36 kB        78.9 kB
+  ├ ● /dogs/[dogID]       1.01 kB        89.7 kB
+  ├   ├ /dogs/Labrador
+  ├   └ /dogs/Pomeranian
+  ```
+  </CodeSnippet>
 
-- **generateStaticParams**: Generated static params does not cover new params. (See )
-- The route has been invalidated by either: running out revalidation time or on-demand invalidation
+  API Handlers can also be evaluated statically if they are GET and don't use the request object ([Docs](https://nextjs.org/docs/app/building-your-application/routing/router-handlers#static-route-handlers))
+
+- Some Static routes are generated at <Purple>request-time</Purple> because the information to build that route has not yet existed or has been invalidated. This is what is referred as **Incremental Static Regeneration (ISR)**.
+
+Request-time generation can happens by two things:
+
+- **generateStaticParams**: Generated static params does not cover new params. (See [Dogs Example](/1-routing/static-vs-dynamic-computation/dogs/Retriever)). This can be disabled by adding `dynamicParams = false`
+- **Revalidation**: The route has been invalidated by either: running out revalidation time or on-demand invalidation
 
 
-
- and they can also be revalidated after a define period of time. This is what is referred as **Incremental Static Regeneration (ISR)**
+---
 
 
 ## Dynamic Routes vs Dynamically Computed Routes
@@ -44,49 +66,64 @@ Request-time static routes can happens by two things:
 
 In Next.js the use of the dynamic keyword can have two context/meaning. It is important to distinghuish the difference between those two as it gets mixed up frequently when explaining this concept.
 
-- <B>Dynamic Routes</B> refers to the ability for developer to declare a variable in their route\
+- <B>Dynamic Routes</B> refers to the ability for developer to declare a variable in their route.\
   i.e `/shop/[itemID]` where `itemID` is a placeholder for a variable.
 
-- <B>Dynamically Computed Routes</B> refers to the ability for a route to be computed at request-time. This is denoted with the lambda (`λ`) symbol in the list of routes shown in the build log 
+- <B>Dynamically Computed Routes</B> refers to the ability for a route to be computed at <Purple>request-time</Purple>. This is denoted with the lambda (`λ`) symbol in the list of routes shown in the build log 
+
+- Dynamic Routes are **by default dynamically computed**. However, one can Generate static params to predefine the static path that the dynamic route can process, making it Statically Computed Routes.
+
+  One can handle the behavior if the accessed params are outside of the generated params by using `dynamicParams`. If set to `true`, the server will statically build new route at request time, allowing ISR. If set to `false`, the user will be redirected to a 404 page.
+
+
 
 Developers can check the staticity of all of the routes by looking at the Next.js build logs. (i.e at `npx next build`)
 
 
 
-## Things that Affect Precomputation of a Route
+---
+
+
+
+## Things that Affect Staticity of a Route
 
 > "Why is my route dynamic?"
 
-It is important to know that all routes are <span className="bg-blue-600/40">statically computed by default</span> However, the usage of following things will change a static route into a dynamically computed route:
+All routes are <B>statically computed by default</B> However, the usage of following things will change a static route into a dynamically computed route:
 
-1. <span className="bg-blue-600/40">Dynamic routes</span> i.e. `/articles/[articleID]`
-
-2. <span className="bg-blue-600/40">Dynamic functions</span> i.e. `cookies()`, `headers()`
-
-3. <span className="bg-blue-600/40">Segment route configs</span> i.e. `export const dynamic = 'force-dynamic';`
+1. <B>Dynamic Routes</B> i.e. `/articles/[articleID]`
+2. <B>Dynamic Functions</B> i.e. `cookies()`, `headers()` and `searchParams` either from the hook or from the props
+3. <B>Route Segment Configs</B> i.e. `dynamic = 'force-dynamic';`'
+4. <B>Using Request Object</B> in API handlers
 
 
 The following things will change a dynamically computed route into a static route: 
 
 1. The use of `generateStaticParams()` in dynamic routes.
+2. The use of `dynamic = 'force-static';`
 
-2. The use of `export const dynamic = 'force-static';`
 
 
-## Dynamic Routes
-
-Testasdfasd afsd fasd fasd 
+---
 
 
 
 ## Quick Examples
 
-- ○ `/about` -> static
-- ○ `/articles` -> static
+- ○ `/about` -> SSG
+- ○ `/articles` -> SSG
 - **λ** `/dashboard` that uses `headers()` to check user auth -> dynamic
 - **λ** `/articles/[articleID]` -> dynamic
-- ○ `/articles/[articleID]` but uses `generateStaticParams()` -> static
-- ○ `/articles/[articleID]` but `dynamic = 'force-static'` -> static
+- ○ `/articles/[articleID]` but `dynamic = 'force-static'` -> ISR
+- ● `/articles/[articleID]` but uses `generateStaticParams()` is ISR because ungenerated Params are still statically generated at request time
+- ● `/articles/[articleID]` but uses `generateStaticParams()` and `dynamicParams = false` is static because ungenerated params forces 404
+
+
+
+
+---
+
+
 
 
 ## References
