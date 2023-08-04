@@ -71,7 +71,7 @@ article h1{
   @apply text-3xl font-semibold text-white
 }
 article h2{
-  @apply text-2xl font-semibold my-4 mt-14 text-white
+  @apply text-2xl font-semibold my-6 mt-14 text-white
 }
 article h3{
   @apply text-lg font-semibold my-4 px-2 
@@ -124,7 +124,7 @@ article pre span {
 }
 article hr{
   margin-top: 2rem;
-  @apply border-t-zinc-500
+  @apply border-t-zinc-700
 }
 
 article a {

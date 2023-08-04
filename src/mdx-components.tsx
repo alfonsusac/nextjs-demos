@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import type { MDXComponents } from 'mdx/types'
-import { DetailedHTMLProps, HTMLAttributes } from 'react'
+import { Component, DetailedHTMLProps, HTMLAttributes } from 'react'
+import { ApreventDefault } from './components/link'
 
 // This file allows you to provide custom React components
 // to be used in MDX files. You can import and use any
@@ -25,10 +26,10 @@ function getAnchor(text: string) {
   return { id: res, link: `#${res}` }
 }
 
-const H2 = (p: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
+function H2(p: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) {
   const anchor = getAnchor(p.children as string)
   return (
-    <a
+    <ApreventDefault
       href={ anchor.link }
       className="block group cursor-pointer no-underline"
     >
@@ -36,18 +37,18 @@ const H2 = (p: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeading
         { ...p }
         id={ anchor.id }
         className={
-          clsx(p.className, "group-hover:cursor-pointer")
+          clsx(p.className, "group-hover:cursor-pointer flex gap-4")
         }
       >
-        <span className="inline-block text-zinc-600 w-8 group-hover:text-yellow-400">
-          <div className="transition-all group-hover:rotate-[30deg] w-min">
-            §
-          </div>
-        </span>
-        <span className="group-hover:border-b-zinc-500 transition-all border-b-2 border-b-zinc-500/0">
-          { p.children }
-        </span>
+        <div className="transition-all group-hover:rotate-[30deg] w-min h-min inline-block text-zinc-600 group-hover:text-yellow-400"> 
+          §
+        </div>
+        <div>
+          <span className="group-hover:border-b-zinc-500 transition-all border-b-2 border-b-zinc-500/0">
+            { p.children }
+          </span>
+        </div>
       </h2>
-    </a>
+    </ApreventDefault>
   )
 }

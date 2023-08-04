@@ -157,15 +157,17 @@ function Sidebar(p: {
   return (
     <nav className={ clsx(
       "hidden md:block",
-      "flex-shrink-0 border-r-zinc-800 bg-black",
-      "absolute sm:static sm:border-r",
-      "w-full sm:w-44",
-      "h-full sm:h-auto"
+      "flex-shrink-0 bg-black",
+      // "sm:border-r border-r-zinc-800",
+      "absolute sm:static",
+      "w-full sm:w-60",
+      "h-full sm:h-auto",
+      ""
     ) }>
       <div className="absolute right-8 sm:hidden">
         <CloseIcon className="w-6 h-6" />
       </div>
-      <ul>
+      <ul className="sticky top-8">
         { p.children }
       </ul>
     </nav>
