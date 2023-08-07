@@ -1,7 +1,7 @@
 import { GenerateRandomLink } from "@/components/client"
 import { InlineLink } from "@/components/link"
 
-const currentPath = '/1-routing/static-vs-dynamic-computation/dogs/'
+const currentPath = '/routing/static-vs-dynamic-computation/dogs/'
 
 export default function Layout(p: { children: React.ReactNode }) {
 

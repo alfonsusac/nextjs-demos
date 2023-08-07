@@ -1,15 +1,16 @@
 import { Browser } from "@/components/browser"
-import Content from "./content.mdx"
 import { ReactNode } from "@mdx-js/react/lib"
 import { InlineLink } from "@/components/link"
 
-const currentPath = '/1-routing/static-vs-dynamic-computation/'
+const currentPath = '/routing/static-vs-dynamic-computation/'
+
+import Content from "./content.mdx"
+import { TOCContent } from "@/components/toc/rsc"
 
 export default async function Layout(p: { children: ReactNode }) {
 
 
   return <>
-
 
     <Browser>
 
@@ -25,9 +26,12 @@ export default async function Layout(p: { children: ReactNode }) {
 
     </Browser>
 
-    <Content components={ {
-      
-    }} />
+
+    {/* <TestHeading className="Test" /> */}
+
+    <TOCContent>
+      <Content />
+    </TOCContent>
 
   </>
 }

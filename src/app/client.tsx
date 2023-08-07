@@ -2,33 +2,39 @@
 
 import Link from "next/link"
 import { titleCase } from "title-case"
-import { usePathname, useSelectedLayoutSegments } from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import { useTOC } from "@/components/toc/context"
+import { slug } from "github-slugger"
+import { TOCItemType } from "@/components/toc/rsc"
 
 function useSelected(path: string) {
   const pathname = usePathname()
-  const layoutSegments = useSelectedLayoutSegments()
-  const urlSegments = path.split('/')
-
   const firstTwoPath = ('/' + pathname?.split('/').slice(1, 3).join('/'))
-
   return pathname === path || firstTwoPath === path
 }
 
 export function Page(p:{
-  path: string,
-  label?: string
+  category?: string,
+  label: string
+  children?: React.ReactNode
+  path?: string
 }) {
-  const selected = useSelected(p.path)
-  const label = p.label ?? p.path.split('/').at(-1)!
+  const path = p.path ?? (p.category !== undefined ? `/${slug(p.category!)}/${slug(p.label)}` : `/${slug(p.label)}`)
+  const selected = useSelected(path)
 
   return (
     <li className={ "text-sm font-normal mt-2 leading-5 " + (selected ? "text-blue-500" : "text-zinc-400")}>
-      <Link href={ p.path }>
-        { titleCase(label.replaceAll('-', ' ')) }
+      <Link href={ path }>
+        { p.label }
       </Link>
+      {
+        selected ? p.children : null
+      }
     </li>
   )
 }
+
+
 
 export function Category(p: {
   label: string,
@@ -37,7 +43,7 @@ export function Category(p: {
 
   return (
     <li className={ "text-xs font-semibold" + (selected ? " text-blue-500" : "") }>
-      { titleCase(p.label.split('-')[1]) }
+      { titleCase(p.label) }
     </li>
   )
 }
@@ -46,7 +52,6 @@ export function Article(p: {
   children: React.ReactNode
 }) {
   let title = usePathname()?.split('/').at(2)?.replace(/[0-9]-/, '')
-  let pathname = usePathname()
   if(!title) title = ""
   
   

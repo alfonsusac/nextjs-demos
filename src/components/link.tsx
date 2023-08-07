@@ -62,7 +62,7 @@ function removeTrailingSlash(str: string) {
   }
 }
 
-export function ApreventDefault({ onClick, children, ...props}:React.HTMLProps<HTMLAnchorElement>) {
+export function A_preventDefault({ onClick, children, ...props}:React.HTMLProps<HTMLAnchorElement>) {
   return <a
     onClick={ (e) => {
       e.preventDefault()

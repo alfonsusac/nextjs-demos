@@ -30,7 +30,7 @@ function Category(p: {
 }) {
   return (
     <li className={ "text-base font-semibold pt-6 list-none" }>
-      { titleCase(p.label.split('-')[1]) }
+      { titleCase(p.label) }
     </li>
   )
 }

@@ -2,7 +2,7 @@ import { GenerateRandomLink } from "@/components/client"
 import { InlineLink } from "@/components/link"
 import { nanoid } from "nanoid"
 
-const currentPath = '/1-routing/static-vs-dynamic-computation/cars/'
+const currentPath = '/routing/static-vs-dynamic-computation/cars/'
 
 export default function Layout(p: { children: React.ReactNode }) {
 

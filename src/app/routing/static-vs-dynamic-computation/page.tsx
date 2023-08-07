@@ -1,6 +1,6 @@
 import { InlineLink } from "@/components/link"
 
-const currentPath = '/1-routing/static-vs-dynamic-computation/books/'
+const currentPath = '/routing/static-vs-dynamic-computation/books/'
 
 export default function Page() {
   return <>

@@ -1,7 +1,9 @@
 import clsx from 'clsx'
 import type { MDXComponents } from 'mdx/types'
-import { Component, DetailedHTMLProps, HTMLAttributes } from 'react'
-import { ApreventDefault } from './components/link'
+import { DetailedHTMLProps, HTMLAttributes } from 'react'
+import { A_preventDefault } from './components/link'
+import { slug } from 'github-slugger'
+import innerText from "react-innertext"
 
 // This file allows you to provide custom React components
 // to be used in MDX files. You can import and use any
@@ -18,37 +20,36 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
   }
 }
 
-function getAnchor(text: string) {
-  const res = text
-    .toLowerCase()
-    .replace(/[^a-z0-9 ]/g, '')
-    .replace(/[ ]/g, '-')
-  return { id: res, link: `#${res}` }
+function getAnchor(jsx: React.ReactNode) {
+  const text = innerText(jsx)
+  const slugged = slug(text)
+  return {
+    id: slugged, link: `#${slugged}`
+  }
 }
 
 function H2(p: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) {
-  const anchor = getAnchor(p.children as string)
+  const anchor = getAnchor(p.children)
+  
   return (
-    <ApreventDefault
+    <A_preventDefault
       href={ anchor.link }
-      className="block group cursor-pointer no-underline"
+      className="group cursor-pointer no-underline mt-14 flex gap-4"
     >
+      <div className="text-2xl transition-all group-hover:rotate-[30deg] w-min h-min inline-block text-zinc-600 group-hover:text-yellow-400 before:content-['§']"> 
+      </div>
       <h2
         { ...p }
         id={ anchor.id }
         className={
-          clsx(p.className, "group-hover:cursor-pointer flex gap-4")
+          clsx(p.className,
+            "group-hover:cursor-pointer h-full block pt-44 -mt-44",
+            "group-hover:border-b-zinc-500 transition-all border-b-2 border-b-zinc-500/0"
+          )
         }
       >
-        <div className="transition-all group-hover:rotate-[30deg] w-min h-min inline-block text-zinc-600 group-hover:text-yellow-400"> 
-          §
-        </div>
-        <div>
-          <span className="group-hover:border-b-zinc-500 transition-all border-b-2 border-b-zinc-500/0">
-            { p.children }
-          </span>
-        </div>
+          { p.children }
       </h2>
-    </ApreventDefault>
+    </A_preventDefault>
   )
 }
