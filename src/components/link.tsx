@@ -17,8 +17,7 @@ export function InlineLink(p: {
     pathname === removeTrailingSlash(p.href) :
     pathname?.match(p.href)
 
-  console.log(pathname)
-  console.log(p.href)
+  // console.info(p.href)
 
   return !p.useAnchor ? (
 

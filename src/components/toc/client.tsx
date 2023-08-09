@@ -53,13 +53,10 @@ function useActiveHeadings(headingIds: string[]) {
 
   useEffect(() => {
 
-
     const observer = new IntersectionObserver(
       entries => {
 
         entries.map(e => {
-
-
 
           // Ignore initial intersection detection
           if (e.boundingClientRect.top > (window.innerHeight / 2)) return

@@ -219,11 +219,6 @@ function CloseIcon(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
-function getHeaders() {
-
-}
 
 
-
-
-export { getDirs, Category, layoutGenerationTime }
+export { dirs, Category, layoutGenerationTime }
