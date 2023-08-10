@@ -3,7 +3,7 @@ import { getFileSpans } from "@/components/code-snippet/utilt"
 import { Toggle } from "@/components/notion/client"
 import { getArticles, notion } from "@/components/notion/data"
 import { NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
-import { NotionRichText, flattenRichText } from "@/components/notion/rsc"
+import { NotionCalloutIcon, NotionRichText, flattenRichText } from "@/components/notion/rsc"
 import { CheckboxSVG } from "@/components/svg"
 import { JSONStringify } from "@/components/tool"
 import { Code } from "bright"
@@ -188,7 +188,7 @@ const NotionASTJSXMap: {
   paragraph: ({ children, className, node, ...props }) => {
     return (
       <>
-        <p className={ clsx("", className) } { ...props }>
+        <p className={ clsx("m-0", className) } { ...props }>
           <NotionRichText rich_text={ node.content! } />
         </p>
         {
@@ -292,19 +292,29 @@ const NotionASTJSXMap: {
 
 
 
-  callout: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+  callout: ({ children, className, node, ...props }) => {
+    return (
+      <div className={ clsx("flex gap-4 p-4 bg-zinc-900 rounded-md border-zinc-800 my-2", className) } { ...props } >
+        <NotionCalloutIcon icon={node.props.icon} />
+        <div>
+          <NotionRichText rich_text={ node.content! } />
+          { children }
+        </div>
+      </div>
+    )
   },
 
+  column: ({ className, node, ...props }) => {
+    return (
+      <div className={ clsx("w-full my-2", className) } { ...props } />
+    )
+  },
 
 
 
 
   column_list: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  column: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+    return (<div className={ clsx("flex flex-row gap-2", className) } { ...props } />)
   },
 
   table: ({ className, node, ...props }) => {
