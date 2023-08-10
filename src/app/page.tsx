@@ -2,7 +2,7 @@ import { dirs } from './layout'
 import Link from 'next/link'
 import { titleCase } from 'title-case'
 import { slug } from 'github-slugger'
-import { getArticles, notion } from '#/notion'
+import { getArticles, notion } from '@/components/notion/data'
 
 export default async function Home() {
 
