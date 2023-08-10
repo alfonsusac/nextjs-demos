@@ -199,45 +199,6 @@ const NotionASTJSXMap: {
     )
   },
 
-
-  toggle: ({ children, className, node, ...props }) => {
-    return (
-      <Toggle headerSlot={
-        <NotionRichText rich_text={ node.content! } />
-      }>
-        <div className="pl-4">
-          { children }
-        </div>
-      </Toggle>
-    )
-  },
-
-
-  file: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-
-
-
-  quote: ({ className, node, ...props }) => {
-    return (<blockquote className={ clsx("", className) } { ...props } />)
-  },
-  template: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  synced_block: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  child_page: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  child_database: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  equation: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-
   code: ({ className, node, ...props }) => {
     return (
       <Code
@@ -280,33 +241,91 @@ const NotionASTJSXMap: {
     )
   },
 
+
+  toggle: ({ children, className, node, ...props }) => {
+    return (
+      <Toggle headerSlot={
+        <NotionRichText rich_text={ node.content! } />
+      }>
+        <div className="pl-4">
+          { children }
+        </div>
+      </Toggle>
+    )
+  },
+
+
+  quote: ({ children, className, node, ...props }) => {
+    return (
+      <blockquote className={ clsx("", className) } { ...props }>
+        <NotionRichText rich_text={ node.content! } />
+        {
+            node.children ? (
+              <div className="">
+                { children }
+              </div>
+            ) : null
+          }
+      </blockquote>
+    )
+  },
+  equation: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
   callout: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
   divider: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
-  breadcrumb: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  table_of_contents: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
+
   column_list: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
   column: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
-  link_to_page: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
+
   table: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
   table_row: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
+
+
+  file: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+  template: ({ className, node, ...props }) => {
+    return (<></>)
+  },
+  synced_block: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+  child_page: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+  child_database: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+  breadcrumb: ({ className, node, ...props }) => {
+    return (<></>)
+  },
+  table_of_contents: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+  link_to_page: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+
+
+
+
+
+
+
+
   embed: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },

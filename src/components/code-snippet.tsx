@@ -12,8 +12,8 @@ export default function CodeSnippet(p: {
   const [opened, setOpened] = useState(!p.defaultClosed)
 
   if(p.title === undefined) return <></>
-  console.info(JSON.stringify(p.title))
-  console.info("Title: "+p.title)
+  // console.info(JSON.stringify(p.title))
+  // console.info("Title: "+p.title)
   const textspans = getFileSpans(p.title)
   
   return (
