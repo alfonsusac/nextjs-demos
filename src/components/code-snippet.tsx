@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react"
+import { getFileSpans } from "./code-snippet/utilt"
 
 export default function CodeSnippet(p: {
   title: string,
@@ -10,6 +11,9 @@ export default function CodeSnippet(p: {
 }) {
   const [opened, setOpened] = useState(!p.defaultClosed)
 
+  if(p.title === undefined) return <></>
+  console.info(JSON.stringify(p.title))
+  console.info("Title: "+p.title)
   const textspans = getFileSpans(p.title)
   
   return (
@@ -56,14 +60,4 @@ function MdiConsoleLine(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" { ...props }><path fill="currentColor" d="M13 19v-3h8v3h-8m-4.5-6L2.47 7h4.24l4.96 4.95c.58.59.58 1.55 0 2.12L6.74 19H2.5l6-6Z"></path></svg>
   )
-}
-
-export function getFileSpans(text: string) {
-  return text
-    .split('/')
-    .reduce((acc, val, i) => {
-      if (i === 0) acc.push(val)
-      else acc.push('/', val)
-      return acc
-    }, [] as string[])
 }
