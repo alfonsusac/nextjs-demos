@@ -1,6 +1,11 @@
 import { RichTextItemResponse, RichTextPropertyItemObjectResponse, TextRichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
-import { JSONStringify } from "./tool"
+import { JSONStringify } from "../tool"
 import clsx from "clsx"
+
+export function flattenRichText(rt?: RichTextItemResponse[]) {
+  return rt?.map(r => r.plain_text).join('')
+}
+
 
 export function NotionRichText(p: {
   rich_text: RichTextItemResponse[]
@@ -16,7 +21,7 @@ export function NotionRichText(p: {
       const { bold, italic, strikethrough, underline, code, color } = t.annotations
 
       if (!bold && !italic && !strikethrough && !underline && !code && color === 'default')
-        return t.text
+        return <>{t.plain_text}</>
       
       else {
         return <span key={ i } className={ clsx(
@@ -26,9 +31,9 @@ export function NotionRichText(p: {
           strikethrough && 'line-through',
           underline && 'underline',
           code && '',
-          color === 'red'  && '',
-        )}>
-          {t.text.content}
+          color === 'red' && '',
+        ) }>
+          { t.text.content }
         </span>
       }
 
@@ -39,6 +44,8 @@ export function NotionRichText(p: {
     } else if (t.type === 'mention') {
       // WIP
       return <JSONStringify key={ i } data={ t } />
+    } else {
+      return <></>
     }
   })
 }
