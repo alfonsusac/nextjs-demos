@@ -17,6 +17,7 @@
     "@next/mdx": "latest",
     "@notionhq/client": "^2.2.10",
     "@radix-ui/react-collapsible": "^1.0.3",
+    "@types/katex": "^0.16.2",
     "@types/node": "^20.4.4",
     "@types/react": "^18.2.16",
     "@types/react-dom": "^18.2.7",

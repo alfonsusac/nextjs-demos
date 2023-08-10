@@ -9,6 +9,9 @@ import { JSONStringify } from "@/components/tool"
 import { Code } from "bright"
 import clsx from "clsx"
 import { notFound } from "next/navigation"
+import 'katex/dist/katex.min.css'
+// import TeX from '@matejmazur/react-katex';
+import katex, { type KatexOptions, ParseError } from 'katex' 
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -274,14 +277,24 @@ const NotionASTJSXMap: {
   },
 
 
-  
-  equation: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+  equation: ({ children, className, node, ...props }) => {
+    return (
+      <TeXRSC
+        settings={ {
+          
+        }}
+        className="py-2 hover:bg-zinc-900"
+        math={ node.props.expression }
+        block
+      />
+    )
   },
+
+
+
   callout: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
-
 
 
 
@@ -366,4 +379,62 @@ const NotionASTJSXMap: {
     return (<div className={ clsx("", className) } { ...props } />)
   },
 
+}
+
+
+//https://gist.github.com/filipesmedeiros/c10b3065e20c4d61ba746ab78c6a7a9e
+
+import { type ComponentProps, type ReactElement } from 'react'
+
+export type Props<T extends keyof JSX.IntrinsicElements = 'div'> =
+  ComponentProps<T> &
+  Partial<{
+    as: T
+    block: boolean
+    errorColor: string
+    renderError: (error: ParseError | TypeError) => ReactElement
+    settings: KatexOptions
+  }> & {
+    math: string
+  }
+
+async function TeXRSC({
+  children,
+  math,
+  block,
+  errorColor,
+  renderError,
+  settings,
+  as: asComponent,
+  ...props
+}: Props) {
+  // @ts-expect-error CSS not JS
+  await import('katex/dist/katex.min.css')
+
+  const Component = asComponent || (block ? 'div' : 'span')
+  const content = (children ?? math) as string
+
+  let innerHtml: string
+  try {
+    innerHtml = katex.renderToString(content, {
+      displayMode: !!block,
+      errorColor,
+      throwOnError: !!renderError,
+      ...settings,
+    })
+  } catch (error) {
+    if (error instanceof ParseError || error instanceof TypeError) {
+      if (renderError) {
+        return renderError(error)
+      } else {
+        innerHtml = error.message
+      }
+    } else {
+      throw error
+    }
+  }
+
+  return (
+    <Component { ...props } dangerouslySetInnerHTML={ { __html: innerHtml } } />
+  )
 }
