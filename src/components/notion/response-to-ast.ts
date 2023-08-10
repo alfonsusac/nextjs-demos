@@ -1,6 +1,5 @@
 import { BlockObjectResponse, ListBlockChildrenResponse, RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
-import { Block } from "notion-types"
-import { notion } from "./notion"
+import { notion } from "./data"
 
 
 
@@ -103,7 +102,7 @@ export class NotionASTNode {
 
   constructor(
     public parent?: NotionASTNode,
-    private readonly block?: BlockObjectResponse,
+    block?: BlockObjectResponse,
     onCreate?: (node: NotionASTNode) => void,
   ) {
 
