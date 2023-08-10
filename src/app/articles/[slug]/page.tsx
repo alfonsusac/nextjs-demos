@@ -1,5 +1,8 @@
-import { getArticles, notion } from "@/_lib/notion"
-import { NotionASTNode, convertChildrenToAST } from "@/_lib/notion-to-ast"
+import { MdiCodeJson } from "@/components/code-snippet"
+import { getFileSpans } from "@/components/code-snippet/utilt"
+import { getArticles, notion } from "@/components/notion/data"
+import { NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
+import { NotionRichText, flattenRichText } from "@/components/notion/rsc"
 import { JSONStringify } from "@/components/tool"
 import { Code } from "bright"
 import clsx from "clsx"
@@ -35,6 +38,7 @@ export default async function Page({ params }: any) {
     } */}
     <JSONStringify data={ unknowns } />
     <JSONStringify data={ ast } />
+
     <NotionASTRenderer node={ ast } />
     {/* <section>
       {
@@ -68,33 +72,13 @@ function NotionASTRenderer(p: { node: NotionASTNode }) {
         console.log(e.type)
         const Component = NotionASTJSXMap[e.type] ?? 'div'
 
-        if (e.children.length > 0) {
-          if (e.type === 'paragraph') {
-            return (
-              <>
-                <Component key={ i } node={ e }>
-                  { e.content?.map(c => c.plain_text).join('') }
-                </Component>
-                <div className="pl-4">
-                  <NotionASTRenderer node={ e } />
-                </div>
-              </>
-            )
-          }
-          return (
-            <Component key={ i } node={ e }>
-              { e.content?.map(c => c.plain_text).join('') }
-              <NotionASTRenderer node={ e } />
-            </Component>
-          )
-        }
-        else {
-          return (
-            <Component key={ i } node={ e }>
-              { e.content?.map(c => c.plain_text).join('') }
-            </Component>
-          )
-        }
+        return (
+          <Component key={ i } node={ e }>
+            {
+              e.children ? <NotionASTRenderer node = { e } /> : null
+            }
+          </Component>
+        )
       })
     }
   </>
@@ -109,6 +93,7 @@ const NotionASTJSXMap: {
     node: NotionASTNode
   }) => React.ReactNode
 } = {
+
   bulleted_list_item: ({ children, className, node, ...props }) => {
     return (
       <ul className={ clsx("", className) } { ...props }>
@@ -123,36 +108,94 @@ const NotionASTJSXMap: {
       </ol>
     )
   },
-  list_item: ({ className, node, ...props }) => {
+  list_item: ({ children, className, node, ...props }) => {
     return (
-      <li className={ clsx("", className) } { ...props } />
+      <li className={ clsx("", className) } { ...props }>
+        <NotionRichText rich_text={ node.content! } />
+        {
+          node.children ? (
+            <div className="">
+              { children }
+            </div>
+          ) : null
+        }
+      </li>
     )
   },
 
-  heading_1: ({ className, node, ...props }) => {
-    return (<h1 className={ clsx("", className) } { ...props } />)
+
+
+
+  heading_1: ({ children, className, node, ...props }) => {
+    return (
+      <h1 className={ clsx("", className) } { ...props } >
+        <NotionRichText rich_text={ node.content! } />
+      </h1>
+    )
   },
-  heading_2: ({ className, node, ...props }) => {
-    return (<h2 className={ clsx("", className) } { ...props } />)
+  heading_2: ({ children, className, node, ...props }) => {
+    return (
+      <h2 className={ clsx("", className) } { ...props }>
+        <NotionRichText rich_text={ node.content! } />
+      </h2>
+    )
   },
   heading_3: ({ className, node, ...props }) => {
-    return (<h3 className={ clsx("", className) } { ...props } />)
+    return (
+      <h3 className={ clsx("", className) } { ...props } >
+        <NotionRichText rich_text={ node.content! } />
+      </h3>
+    )
   },
+
+
+
+
+
+  paragraph: ({ children, className, node, ...props }) => {
+    return (
+      <>
+        <p className={ clsx("", className) } { ...props }>
+          <NotionRichText rich_text={ node.content! } />
+        </p>
+        {
+          node.children ? (
+            <div className="pl-4">
+              { children }
+            </div>
+          ) : null
+        }
+      </>
+    )
+  },
+
+
+
+
   file: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
-  paragraph: ({ className, node, ...props }) => {
-    return (<p className={ clsx("", className) } { ...props } />)
-  },
 
-  quote: ({ className, node, ...props }) => {
-    return (<blockquote className={ clsx("", className) } { ...props } />)
-  },
+
   to_do: ({ className, node, ...props }) => {
     return (<ul className={ clsx("", className) } { ...props } />)
   },
-  toggle: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+  toggle: ({ children, className, node, ...props }) => {
+    return (
+      <div
+        className={ clsx("border border-zinc-800 rounded-lg relative w-full p-2", className) }
+        { ...props }
+      >
+        <NotionRichText rich_text={ node.content! } />
+      </div>
+    )
+  },
+
+
+
+
+  quote: ({ className, node, ...props }) => {
+    return (<blockquote className={ clsx("", className) } { ...props } />)
   },
   template: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
@@ -172,8 +215,42 @@ const NotionASTJSXMap: {
 
   code: ({ className, node, ...props }) => {
     return (
-      <Code lang={node.props.language} theme="github-dark-dimmed">
-        {node.content?.map(c => c.plain_text).join('') as any}  
+      <Code
+        lang={ node.props.language }
+        theme="one-dark-pro"
+        title={ flattenRichText(node.props.caption) }
+        className='border border-zinc-800 rounded-lg my-4 relative w-full bg-black'
+        codeClassName='p-0 -mt-1'
+        extensions={ [
+          {
+            name: 'titleBar',
+            TitleBarContent(props) {
+              const { title, colors, theme } = props
+              const { editor, background } = colors
+              const textspans = getFileSpans(title ?? '')
+              return (
+                <label
+                  className="p-3 text-xs text-zinc-400 px-4 flex justify-between bg-black w-full"
+                  htmlFor={ title }
+                >
+                  <div className="flex gap-1">
+                    <MdiCodeJson className="h-full mr-2" />
+                    {
+                      textspans.map((t, i) =>
+                        t === '/' ?
+                          <span key={ i }>/</span> :
+                          <span key={ i }>{ t }</span>
+                      )
+                    }
+                  </div>
+                </label>
+              )
+            }
+          },
+        ] }
+
+      >
+        { node.content?.map(c => c.plain_text).join('') as any }
       </Code>
     )
   },
@@ -226,6 +303,10 @@ const NotionASTJSXMap: {
   link_preview: ({ className, node, ...props }) => {
     return (<a className={ clsx("", className) } { ...props } />)
   },
+
+
+
+
   unsupported: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
