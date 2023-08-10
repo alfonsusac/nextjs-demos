@@ -6,16 +6,16 @@ import DynamicRouteTurnedStaticBuildLog from "./buildlog.mdx"
 export default function Page() {
   return <>
     <CodeSnippet
-      filepath="app/cars/[carID]/page.js"
+      title="app/cars/[carID]/page.js"
       code={ <DynamicRouteTurnedStaticCode /> }
     />
     <CodeSnippet
-      filepath="ClientSideParams - client.js"
+      title="ClientSideParams - client.js"
       code={ <DynamicRouteTurnedStaticClientCode /> }
       defaultClosed
     />
     <CodeSnippet
-      filepath="Build logs"
+      title="Build logs"
       code={ <DynamicRouteTurnedStaticBuildLog /> }
       defaultClosed
     />
