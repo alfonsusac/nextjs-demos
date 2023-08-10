@@ -269,15 +269,23 @@ const NotionASTJSXMap: {
       </blockquote>
     )
   },
+  divider: ({ children, className, node, ...props }) => {
+    return (<hr className={ clsx("", className) } { ...props } />)
+  },
+
+
+  
   equation: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
   callout: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
-  divider: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
+
+
+
+
+
 
   column_list: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
