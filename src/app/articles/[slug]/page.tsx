@@ -11,7 +11,7 @@ import clsx from "clsx"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
 // import TeX from '@matejmazur/react-katex';
-import katex, { type KatexOptions, ParseError } from 'katex' 
+import katex, { type KatexOptions, ParseError } from 'katex'
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -80,7 +80,7 @@ function NotionASTRenderer(p: { node: NotionASTNode }) {
         return (
           <Component key={ i } node={ e }>
             {
-              e.children ? <NotionASTRenderer node = { e } /> : null
+              e.children ? <NotionASTRenderer node={ e } /> : null
             }
           </Component>
         )
@@ -263,12 +263,12 @@ const NotionASTJSXMap: {
       <blockquote className={ clsx("", className) } { ...props }>
         <NotionRichText rich_text={ node.content! } />
         {
-            node.children ? (
-              <div className="">
-                { children }
-              </div>
-            ) : null
-          }
+          node.children ? (
+            <div className="">
+              { children }
+            </div>
+          ) : null
+        }
       </blockquote>
     )
   },
@@ -281,8 +281,8 @@ const NotionASTJSXMap: {
     return (
       <TeXRSC
         settings={ {
-          
-        }}
+
+        } }
         className="py-2 hover:bg-zinc-900"
         math={ node.props.expression }
         block
@@ -295,7 +295,7 @@ const NotionASTJSXMap: {
   callout: ({ children, className, node, ...props }) => {
     return (
       <div className={ clsx("flex gap-4 p-4 bg-zinc-900 rounded-md border-zinc-800 my-2", className) } { ...props } >
-        <NotionCalloutIcon icon={node.props.icon} />
+        <NotionCalloutIcon icon={ node.props.icon } />
         <div>
           <NotionRichText rich_text={ node.content! } />
           { children }
@@ -309,25 +309,108 @@ const NotionASTJSXMap: {
       <div className={ clsx("w-full my-2", className) } { ...props } />
     )
   },
-
-
-
-
   column_list: ({ className, node, ...props }) => {
     return (<div className={ clsx("flex flex-row gap-2", className) } { ...props } />)
   },
 
-  table: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+
+
+
+
+  table: ({ children, className, node, ...props }) => {
+    const { has_row_header, has_column_header } = node.props
+
+    const [headRow, ...rest] = node.children
+
+    return (
+      <table className={ clsx("my-3 bg-zinc-900/70", className) } { ...props }>
+        {
+          has_row_header === true ? (
+            <thead>
+              <tr>
+                {
+                  node.children[0].props.cells.map((c: RichTextItemResponse[], i: number) => {
+                    return (
+                      <th scope="row" key={ i } className="border border-zinc-800 p-2 px-2.5 bg-black">
+                        <NotionRichText rich_text={ c! } />
+                      </th>
+                    )
+                  })
+                }
+              </tr>
+            </thead>
+          ) : null
+        }
+        <tbody>
+          {
+            (has_row_header ? rest : node.children).map((c, i) => {
+              return (
+                <tr key={ i }>
+                  {
+                    c.props.cells.map((c: RichTextItemResponse[], i: number) => {
+                      if (has_column_header && i === 0) {
+                        return (
+                          <th scope="col" key={ i } className="border border-zinc-800 p-2 px-2.5 bg-black">
+                            <NotionRichText rich_text={ c! } />
+                          </th>
+                        )
+                      } else
+                        return (
+                          <td key={ i } className="border border-zinc-800 p-2 px-2.5">
+                            <NotionRichText rich_text={ c! } />
+                          </td>
+                        )
+                    })
+                  }
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+    )
   },
   table_row: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+    return (
+      <tr className={ clsx("", className) } { ...props }>
+        {
+          node.props.cells.map((cell: RichTextItemResponse[], i: number) => {
+            return (
+              <td key={ i } className="border border-zinc-800 p-1.5 px-2.5">
+                <NotionRichText rich_text={ cell! } />
+              </td>
+            )
+          })
+        }
+      </tr>
+    )
+    return (
+      <div className={ clsx("", className) } { ...props } />
+    )
   },
 
 
   file: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
+
+  bookmark: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+  image: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+  video: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+  pdf: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+  audio: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
+
+
   template: ({ className, node, ...props }) => {
     return (<></>)
   },
@@ -360,21 +443,7 @@ const NotionASTJSXMap: {
   embed: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
-  bookmark: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  image: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  video: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  pdf: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  audio: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
+
   link_preview: ({ className, node, ...props }) => {
     return (<a className={ clsx("", className) } { ...props } />)
   },
@@ -395,6 +464,7 @@ const NotionASTJSXMap: {
 //https://gist.github.com/filipesmedeiros/c10b3065e20c4d61ba746ab78c6a7a9e
 
 import { type ComponentProps, type ReactElement } from 'react'
+import { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
 
 export type Props<T extends keyof JSX.IntrinsicElements = 'div'> =
   ComponentProps<T> &
