@@ -132,6 +132,7 @@ export class NotionASTNode {
       has_children: this.has_children,
       content: this.content?.map( c => c.plain_text ).join(''),
       children: this.children,
+      props: this.props
     }
   }
 }

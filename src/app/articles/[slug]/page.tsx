@@ -1,8 +1,10 @@
 import { MdiCodeJson } from "@/components/code-snippet"
 import { getFileSpans } from "@/components/code-snippet/utilt"
+import { Toggle } from "@/components/notion/client"
 import { getArticles, notion } from "@/components/notion/data"
 import { NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
 import { NotionRichText, flattenRichText } from "@/components/notion/rsc"
+import { CheckboxSVG } from "@/components/svg"
 import { JSONStringify } from "@/components/tool"
 import { Code } from "bright"
 import clsx from "clsx"
@@ -108,19 +110,47 @@ const NotionASTJSXMap: {
       </ol>
     )
   },
-  list_item: ({ children, className, node, ...props }) => {
+  to_do: ({ children, className, node, ...props }) => {
     return (
-      <li className={ clsx("", className) } { ...props }>
-        <NotionRichText rich_text={ node.content! } />
-        {
-          node.children ? (
-            <div className="">
-              { children }
-            </div>
-          ) : null
-        }
-      </li>
+      <ul className={ clsx("", className) } { ...props }>
+        { children }
+      </ul>
     )
+  },
+  list_item: ({ children, className, node, ...props }) => {
+    if (
+      'checked' in node.props
+    ) {
+      return (
+        <li className={ clsx("list-none ml-0", className) } { ...props }>
+          <CheckboxSVG
+            checked={ node.props.checked }
+            className="inline w-8 h-6 my-auto mb-1" />
+          <NotionRichText rich_text={ node.content! } />
+          {
+            node.children ? (
+              <div className="">
+                { children }
+              </div>
+            ) : null
+          }
+        </li>
+      )
+    } else {
+      return (
+        <li className={ clsx("", className) } { ...props }>
+
+          <NotionRichText rich_text={ node.content! } />
+          {
+            node.children ? (
+              <div className="">
+                { children }
+              </div>
+            ) : null
+          }
+        </li>
+      )
+    }
   },
 
 
@@ -170,27 +200,22 @@ const NotionASTJSXMap: {
   },
 
 
+  toggle: ({ children, className, node, ...props }) => {
+    return (
+      <Toggle headerSlot={
+        <NotionRichText rich_text={ node.content! } />
+      }>
+        <div className="pl-4">
+          { children }
+        </div>
+      </Toggle>
+    )
+  },
 
 
   file: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
-
-
-  to_do: ({ className, node, ...props }) => {
-    return (<ul className={ clsx("", className) } { ...props } />)
-  },
-  toggle: ({ children, className, node, ...props }) => {
-    return (
-      <div
-        className={ clsx("border border-zinc-800 rounded-lg relative w-full p-2", className) }
-        { ...props }
-      >
-        <NotionRichText rich_text={ node.content! } />
-      </div>
-    )
-  },
-
 
 
 
