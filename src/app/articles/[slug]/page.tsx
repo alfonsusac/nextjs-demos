@@ -1,5 +1,5 @@
 import { MdiCodeJson } from "@/components/code-snippet"
-import { getFileSpans } from "@/components/code-snippet/utilt"
+import { getFileSpans } from "@/components/code-snippet/util"
 import { Toggle } from "@/components/notion/client"
 import { getArticles, notion } from "@/components/notion/data"
 import { NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
@@ -10,8 +10,9 @@ import { Code } from "bright"
 import clsx from "clsx"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
-// import TeX from '@matejmazur/react-katex';
 import katex, { type KatexOptions, ParseError } from 'katex'
+import urlMetadata from "url-metadata"
+import Image from "next/image"
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -384,25 +385,32 @@ const NotionASTJSXMap: {
         }
       </tr>
     )
+  },
+
+
+
+
+  bookmark: async ({ children, className, node, ...props }) => {
+    const metadata = await urlMetadata(node.props.url)
     return (
-      <div className={ clsx("", className) } { ...props } />
+      <div className={ clsx("", className) } { ...props } >
+        {/* <Image
+          alt="Link Image Preview"
+          src={ metadata. }
+
+        /> */}
+        <JSONStringify data={metadata} />
+      </div>
     )
-  },
-
-
-  file: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-
-  bookmark: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
   },
   image: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
+  
   video: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
+
   pdf: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
   },
@@ -410,6 +418,10 @@ const NotionASTJSXMap: {
     return (<div className={ clsx("", className) } { ...props } />)
   },
 
+
+  file: ({ className, node, ...props }) => {
+    return (<div className={ clsx("", className) } { ...props } />)
+  },
 
   template: ({ className, node, ...props }) => {
     return (<></>)

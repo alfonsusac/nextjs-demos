@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react"
-import { getFileSpans } from "./code-snippet/utilt"
+import { getFileSpans } from "./code-snippet/util"
 
 export default function CodeSnippet(p: {
   title: string,
