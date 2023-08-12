@@ -587,11 +587,8 @@ const NotionASTJSXMap: {
     const spotify = url?.includes('open.spotify.com') ? url.replaceAll('/track/', '/embed/track/') : undefined
     const soundcloud = url?.includes('soundcloud.com') ? url : undefined
     
-    // https://soundcloud.com/2023anotheruser/kyoufuu-all-backraon-cover?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-
     return (
       <div className={ clsx("my-4 p-2 bg-black", className) } { ...props } >
-        {/* <iframe src="https://open.spotify.com/embed/track/0R8JLNP107Hr7V7lL9oh13?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> */}
         {
           spotify ? (
             <iframe
@@ -605,7 +602,6 @@ const NotionASTJSXMap: {
             >
             </iframe>
           ) : null
-          // <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1535688346&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/2023anotheruser" title="J-Pop for life" target="_blank" style="color: #cccccc; text-decoration: none;">J-Pop for life</a> · <a href="https://soundcloud.com/2023anotheruser/kyoufuu-all-backraon-cover" title="強風オールバック (Kyoufuu All Back)┃Raon Cover" target="_blank" style="color: #cccccc; text-decoration: none;">強風オールバック (Kyoufuu All Back)┃Raon Cover</a></div>
         }
         {
           soundcloud ? (
@@ -614,7 +610,7 @@ const NotionASTJSXMap: {
                 width="100%"
                 height="166"
                 allow="autoplay"
-                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1535688346&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
+                src={"https://w.soundcloud.com/player/?url=" + encodeURIComponent(soundcloud)}>
               </iframe>
             </>
           ) : null
