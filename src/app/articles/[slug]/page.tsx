@@ -38,14 +38,16 @@ export default async function Page({ params }: any) {
   console.info("Done generating page!")
 
   return (<>
-    <JSONStringify data={ params.slug } />
     {/* {
       unknowns
     } */}
-    <JSONStringify data={ unknowns } />
-    <JSONStringify data={ ast } />
+    <JSONStringify data={ params.slug } />
 
     <NotionASTRenderer node={ ast } />
+
+    <JSONStringify data={ ast } />
+    <JSONStringify data={ unknowns } />
+
     {/* <section>
       {
         (function mapChildren(node: Node): JSX.Element {
@@ -467,18 +469,50 @@ const NotionASTJSXMap: {
           />
         }
 
-        <NotionFigureCaption caption={ node.props.caption } />
+        <NotionFigureCaption caption={ node.props.caption } center/>
       </div>
     )
   },
 
-  video: ({ className, node, ...props }) => {
+
+
+  video: ({ children, className, node, ...props }) => {
     const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
+    const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
 
     return (
-      <div className={ clsx("", className) } { ...props } />
+      <div className={ clsx("my-2", className) }>
+        {/* <JSONStringify data={ node.props } /> */}
+        {
+          external ? (
+            <iframe 
+              className="rounded-md mx-auto"
+              width="560"
+              height="315"
+              src={external.url.replace('watch?v=', 'embed/')}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen>
+            </iframe>
+          ) : null
+        }
+        {
+          file ? (
+            <video
+              controls 
+              src={ file.url }
+              className="rounded-md mx-auto"
+            >
+            </video>
+          ) : null
+        }
+        <NotionFigureCaption caption={ node.props.caption } center/>
+      </div>
     )
   },
+
+
 
   pdf: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)

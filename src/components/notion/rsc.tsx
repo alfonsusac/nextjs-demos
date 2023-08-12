@@ -84,12 +84,17 @@ export function NotionRichText(p: {
 
 export function NotionFigureCaption(p: {
   caption: RichTextItemResponse[]
+  center?: true
 }) {
   return (
     <>
       {
         p.caption ? (
-          <div className="text-sm text-zinc-400 mt-2">
+          <div className={
+            clsx(
+              "text-sm text-zinc-400 mt-2 w-full",
+              p.center ? 'mx-auto text-center' : ""
+            ) }>
             <NotionRichText rich_text={ p.caption } />
           </div>
         ) : null
