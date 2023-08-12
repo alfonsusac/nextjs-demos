@@ -555,6 +555,7 @@ const NotionASTJSXMap: {
 
     return (
       <div className={ clsx("my-4 no-underline", className) } { ...props }>
+        <NotionFigureCaption caption={ node.props.caption } className="mt-0" />
         <a
           href={ url }
           target="_blank"
@@ -569,7 +570,6 @@ const NotionASTJSXMap: {
           </span>
         </a>
         {/* <JSONStringify data={ node } /> */}
-        <NotionFigureCaption caption={ node.props.caption } className="mt-1" />
       </div>
     )
   },

@@ -2,6 +2,7 @@ import { CalloutBlockObjectResponse, RichTextItemResponse, RichTextPropertyItemO
 import { JSONStringify } from "../tool"
 import clsx from "clsx"
 import Image from "next/image"
+import { twMerge } from "tailwind-merge"
 
 export function flattenRichText(rt?: RichTextItemResponse[]) {
   return rt?.map(r => r.plain_text).join('')
@@ -56,7 +57,7 @@ export function NotionRichText(p: {
         return <>{t.plain_text}</>
       
       else {
-        return <span key={ i } className={ clsx(
+        return <span key={ i } className={ twMerge(clsx(
           '',
           bold && 'font-bold',
           italic && 'italic',
@@ -64,7 +65,7 @@ export function NotionRichText(p: {
           underline && 'underline',
           code && '',
           color === 'red' && '',
-        ) }>
+        )) }>
           { t.text.content }
         </span>
       }
@@ -91,18 +92,18 @@ export function NotionFigureCaption(p: {
   >, HTMLDivElement
 >
 ) {
-  const { className, caption, center } = p
+  const { className, caption, center, ...props } = p
   return (
     <>
       {
         p.caption ? (
           <div className={
-            clsx(
+            twMerge(clsx(
               "text-sm text-zinc-400 mt-2 w-full",
               center ? 'mx-auto text-center' : "",
-              className
-            ) }
-            {...p}
+              className,
+            )) }
+            {...props}
           >
             <NotionRichText rich_text={ caption } />
           </div>

@@ -39,7 +39,7 @@ function BackButton() {
   const router = useRouter()
 
   useEffect(() => {
-    console.log(history.state.tree[1].children)
+    // console.log(history.state.tree[1].children)
   }, [])
 
   return (
