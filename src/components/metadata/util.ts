@@ -41,6 +41,21 @@ export async function getMetaInfo(source: string) {
 }
 
 
+export async function getFileName(url: string) {
+
+  try {
+    const metadata = await getMetaInfo(url)
+
+    if (metadata.title === url) {
+      metadata.title = new URL(url).pathname.split('/').at(-1) ?? url
+    }
+    return metadata
+  } catch (error) {
+    return url
+  }
+}
+
+
 function urlMetadata_withFavicon(url: string, options?: any) {
   if (!options || typeof options !== 'object') options = {}
 

@@ -534,8 +534,6 @@ const NotionASTJSXMap: {
   audio: ({ children, className, node, ...props }) => {
     const file = Object.hasOwn(node.props, 'file') ? node.props.file : undefined
       
-
-    
     return (
       <div className={ clsx("my-4 p-2", className) } { ...props }>
         {
@@ -549,8 +547,12 @@ const NotionASTJSXMap: {
   },
 
 
-  file: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+  file: ({ children, className, node, ...props }) => {
+    return (
+      <div className={ clsx("my-4 p-2", className) } { ...props }>
+        <JSONStringify data={node} />
+      </div>
+    )
   },
 
   template: ({ className, node, ...props }) => {
