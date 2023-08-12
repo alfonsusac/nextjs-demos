@@ -77,7 +77,6 @@ function NotionASTRenderer(p: { node: NotionASTNode }) {
   return <>
     {
       p.node.children.map((e, i) => {
-        console.log(e.type)
         const Component = NotionASTJSXMap[e.type] ?? 'div'
 
         return (

@@ -52,6 +52,9 @@ export async function getFileName(url: string) {
       metadata.title = url      
     }
   }
+  if (metadata.url === undefined) {
+    (metadata.url as any) = new URL(url)
+  }
   return metadata
 
 }
