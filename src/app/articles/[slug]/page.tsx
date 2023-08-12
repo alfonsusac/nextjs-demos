@@ -4,7 +4,7 @@ import { Toggle } from "@/components/notion/client"
 import { getArticles, notion } from "@/components/notion/data"
 import { NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
 import { NotionCalloutIcon, NotionFigureCaption, NotionRichText, flattenRichText } from "@/components/notion/rsc"
-import { CheckboxSVG } from "@/components/svg"
+import { CheckboxSVG, FileDownload } from "@/components/svg"
 import { JSONStringify } from "@/components/tool"
 import { Code } from "bright"
 import clsx from "clsx"
@@ -525,7 +525,7 @@ const NotionASTJSXMap: {
           className="max-h-[60vh] aspect-[6/7] w-full rounded-md"
           src={ url }
         />
-        <NotionFigureCaption caption={ node.props.caption } center />
+        <NotionFigureCaption caption={ node.props.caption } />
       </div>
     )
   },
@@ -541,16 +541,34 @@ const NotionASTJSXMap: {
             <audio src={ file.url } controls className="w-full" />
           ) : null
         }
-        <NotionFigureCaption caption={ node.props.caption } center />
+        <NotionFigureCaption caption={ node.props.caption } />
       </div>
     )
   },
 
 
-  file: ({ children, className, node, ...props }) => {
+  file: async ({ children, className, node, ...props }) => {
+    const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
+    const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
+    const url = external ? external.url : file ? file.url : undefined
+    const filename = url ? await getFileName(url) : undefined
+    const source = filename?.url?.toString().includes('notion.so') ? 'notion' : filename?.url?.hostname
+
+
+    const data = await getFileName(node.props.url)
     return (
-      <div className={ clsx("my-4 p-2", className) } { ...props }>
-        <JSONStringify data={node} />
+      <div className={ clsx("my-4 no-underline", className) } { ...props }>
+        <a className="p-2 no-underline hover:bg-zinc-900 w-full rounded-md flex flex-row gap-1">
+          <FileDownload className="inline text-2xl" />
+          <span className="text-white">
+            { filename ? filename.title : "Unknown File Source" }
+          </span>
+          <span>
+
+          </span>
+        </a>
+        {/* <JSONStringify data={ node } /> */}
+        <NotionFigureCaption caption={ node.props.caption } />
       </div>
     )
   },
@@ -639,11 +657,15 @@ const NotionASTJSXMap: {
 }
 
 
+
+
+
+
 //https://gist.github.com/filipesmedeiros/c10b3065e20c4d61ba746ab78c6a7a9e
 
 import { type ComponentProps, type ReactElement } from 'react'
 import { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
-import { getMetaInfo } from "@/components/metadata/util"
+import { getFileName, getMetaInfo } from "@/components/metadata/util"
 
 export type Props<T extends keyof JSX.IntrinsicElements = 'div'> =
   ComponentProps<T> &

@@ -43,16 +43,17 @@ export async function getMetaInfo(source: string) {
 
 export async function getFileName(url: string) {
 
-  try {
-    const metadata = await getMetaInfo(url)
+  const metadata = await getMetaInfo(url)
 
-    if (metadata.title === url) {
+  if (metadata.title === url) {
+    try {
       metadata.title = new URL(url).pathname.split('/').at(-1) ?? url
+    } catch (error) {
+      metadata.title = url      
     }
-    return metadata
-  } catch (error) {
-    return url
   }
+  return metadata
+
 }
 
 
