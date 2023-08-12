@@ -551,23 +551,25 @@ const NotionASTJSXMap: {
     const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
     const url = external ? external.url : file ? file.url : undefined
     const filename = url ? await getFileName(url) : undefined
-    const source = filename?.url?.toString().includes('notion.so') ? 'notion' : filename?.url?.hostname
+    const source = url?.includes('notion-static.com') ? 'notion-static.com' : filename?.url?.hostname
 
-
-    const data = await getFileName(node.props.url)
     return (
       <div className={ clsx("my-4 no-underline", className) } { ...props }>
-        <a className="p-2 no-underline hover:bg-zinc-900 w-full rounded-md flex flex-row gap-1">
+        <a
+          href={ url }
+          target="_blank"
+          download={filename}
+          className="p-2 no-underline hover:bg-zinc-900 w-full rounded-md flex flex-row gap-1 items-end cursor-pointer">
           <FileDownload className="inline text-2xl" />
-          <span className="text-white">
+          <span className="text-zinc-200">
             { filename ? filename.title : "Unknown File Source" }
           </span>
-          <span>
-
+          <span className="text-sm mx-2">
+            ({source})
           </span>
         </a>
         {/* <JSONStringify data={ node } /> */}
-        <NotionFigureCaption caption={ node.props.caption } />
+        <NotionFigureCaption caption={ node.props.caption } className="mt-1" />
       </div>
     )
   },

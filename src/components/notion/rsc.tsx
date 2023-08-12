@@ -85,7 +85,13 @@ export function NotionRichText(p: {
 export function NotionFigureCaption(p: {
   caption: RichTextItemResponse[]
   center?: true
-}) {
+} & React.DetailedHTMLProps<
+  React.HTMLAttributes<
+    HTMLDivElement
+  >, HTMLDivElement
+>
+) {
+  const { className, caption, center } = p
   return (
     <>
       {
@@ -93,9 +99,12 @@ export function NotionFigureCaption(p: {
           <div className={
             clsx(
               "text-sm text-zinc-400 mt-2 w-full",
-              p.center ? 'mx-auto text-center' : ""
-            ) }>
-            <NotionRichText rich_text={ p.caption } />
+              center ? 'mx-auto text-center' : "",
+              className
+            ) }
+            {...p}
+          >
+            <NotionRichText rich_text={ caption } />
           </div>
         ) : null
       }
