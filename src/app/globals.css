@@ -87,9 +87,9 @@ article blockquote{
   @apply border-l-2 border-l-zinc-400 pl-4 text-lg italic text-zinc-400 my-4
 }
 article p span{
-  padding-inline: 0.25rem;
-  border-radius: 2px;
-  padding-block: 0.15rem;
+  /* padding-inline: 0.25rem; */
+  /* border-radius: 2px; */
+  /* padding-block: 0.15rem; */
 }
 article code {
   border-radius: 2px;
