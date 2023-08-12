@@ -3,7 +3,7 @@ import { getFileSpans } from "@/components/code-snippet/util"
 import { Toggle } from "@/components/notion/client"
 import { getArticles, notion } from "@/components/notion/data"
 import { NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
-import { NotionCalloutIcon, NotionRichText, flattenRichText } from "@/components/notion/rsc"
+import { NotionCalloutIcon, NotionFigureCaption, NotionRichText, flattenRichText } from "@/components/notion/rsc"
 import { CheckboxSVG } from "@/components/svg"
 import { JSONStringify } from "@/components/tool"
 import { Code } from "bright"
@@ -416,12 +416,12 @@ const NotionASTJSXMap: {
           } */}
           <div className="p-3 w-full flex flex-col">
             <div className="text-zinc-200 truncate w-full">
-              {metadata.title}
+              { metadata.title }
             </div>
             {
               metadata.description ? (
                 <div className="text-sm text-zinc-400 mt-1 mb-2 h-10 w-full line-clamp-2">
-                  {metadata.description}
+                  { metadata.description }
                 </div>
               ) : null
             }
@@ -445,22 +445,39 @@ const NotionASTJSXMap: {
               </div>
             </div>
           </div>
-          {/* <JSONStringify data={metadata.faviconpath} /> */}
+          {/* <JSONStringify data={metadata.faviconpath} /> */ }
         </a>
-        {
-          <div className="text-sm text-zinc-400 mt-2">
-            <NotionRichText rich_text={ node.props.caption } />
-          </div>
-        }
+        <NotionFigureCaption caption={ node.props.caption } />
       </div>
     )
   },
-  image: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+  image: ({ children, className, node, ...props }) => {
+    const src = Object.hasOwn(node.props, 'external') ? node.props.external.url :
+      Object.hasOwn(node.props, 'file') ? node.props.file.url : ''
+
+
+    return (
+      <div className={ clsx("my-2 relative w-full p-2", className) } { ...props }>
+
+        {// eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={ src }
+            alt="a Picture"
+            className="h-auto w-auto mx-auto rounded-md"
+          />
+        }
+
+        <NotionFigureCaption caption={ node.props.caption } />
+      </div>
+    )
   },
-  
+
   video: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+    const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
+
+    return (
+      <div className={ clsx("", className) } { ...props } />
+    )
   },
 
   pdf: ({ className, node, ...props }) => {
