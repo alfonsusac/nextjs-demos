@@ -5,7 +5,7 @@ import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { KaTeXRSC } from "../katex/rsx"
 import { getMetaInfo } from "../metadata/util"
-import { DatabasePage } from "../svg"
+import { CalendarInlineIcon, DatabasePageIcon } from "../svg"
 
 type Annotation = RichTextItemResponse['annotations']
 
@@ -89,10 +89,10 @@ export function NotionRichText(p: {
           <a
             href={ t.href! }
             key={ i }
-            className={ annotationToClassName('no-underline inline-flex flex-row items-center px-2.5 bg-zinc-900 hover:bg-zinc-800 rounded-md ', t.annotations) }
+            className={ annotationToClassName('no-underline inline-flex flex-row items-center px-2.5 hover:bg-zinc-800/80 rounded-md ', t.annotations) }
           >
-            <DatabasePage className="inline w-4 h-4 mr-1.5 text-zinc-600" />
-            <span className="decoration-zinc-600 underline font-medium">
+            <DatabasePageIcon className="inline mr-1.5 text-zinc-600" />
+            <span className="decoration-zinc-600 underline font-medium text-zinc-300">
               { t.plain_text }
             </span>
           </a>
@@ -101,9 +101,12 @@ export function NotionRichText(p: {
         return (
           <span
             key={ i }
-            className={ annotatedClassNames }
+            className={ annotationToClassName('no-underline inline-flex flex-row items-center px-2.5 hover:bg-zinc-800/80 rounded-md ', t.annotations) }
           >
-            { t.plain_text }
+            <CalendarInlineIcon className="inline w-4 h-4 mr-1.5 text-zinc-600" />
+            <span className="decoration-zinc-600 underline underline-offset-4 font-medium text-zinc-300">
+              { t.plain_text }
+            </span>
           </span>
         )
       } else if (t.mention.type === 'link_preview') {
