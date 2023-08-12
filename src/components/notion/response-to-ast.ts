@@ -127,12 +127,11 @@ export class NotionASTNode {
 
   toJSON() {
     return {
-      type: this.type,
-      parent: this.parent?.type,
-      has_children: this.has_children,
+      info: `${this.type} | ${this.has_children ? "hasChildren" : "noChildren"} | ${this.id}`,
+      type: `${this.type} | parent:${this.parent?.type}`,
       content: this.content?.map( c => c.plain_text ).join(''),
+      props: this.props,
       children: this.children,
-      props: this.props
     }
   }
 }
