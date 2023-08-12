@@ -5,14 +5,12 @@ import { getArticles, notion } from "@/components/notion/data"
 import { NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
 import { NotionCalloutIcon, NotionFigureCaption, NotionRichText, flattenRichText } from "@/components/notion/rsc"
 import { CheckboxSVG, FileDownload } from "@/components/svg"
-import { JSONStringify } from "@/components/tool"
 import { Code } from "bright"
 import clsx from "clsx"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
 import katex, { type KatexOptions, ParseError } from 'katex'
 import Image from "next/image"
-import { Document } from 'react-pdf'
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -38,35 +36,7 @@ export default async function Page({ params }: any) {
   console.info("Done generating page!")
 
   return (<>
-    {/* {
-      unknowns
-    } */}
-    <JSONStringify data={ params.slug } />
-
     <NotionASTRenderer node={ ast } />
-
-    <JSONStringify data={ ast } />
-    <JSONStringify data={ unknowns } />
-
-    {/* <section>
-      {
-        (function mapChildren(node: Node): JSX.Element {
-          if (node.type === 'root')
-            return <></>
-          if (node.type === 'h1')
-            return (
-              <h1 key={node.id}>
-                { node.content?.map(t => t.plain_text ).join('') }
-              </h1>
-            )
-          
-          if (node.has_children) {
-            return <>{ node.children.map( c => mapChildren(c) ) }</>
-          }
-          return <></>
-        })(nodeTree)
-      }
-    </section> */}
   </>)
 }
 
@@ -468,7 +438,7 @@ const NotionASTJSXMap: {
           />
         }
 
-        <NotionFigureCaption caption={ node.props.caption } center/>
+        <NotionFigureCaption caption={ node.props.caption } center />
       </div>
     )
   },
@@ -480,15 +450,15 @@ const NotionASTJSXMap: {
     const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
 
     return (
-      <div className={ clsx("my-2", className) } {...props}>
-        {/* <JSONStringify data={ node.props } /> */}
+      <div className={ clsx("my-2", className) } { ...props }>
+        {/* <JSONStringify data={ node.props } /> */ }
         {
           external ? (
-            <iframe 
+            <iframe
               className="rounded-md mx-auto"
               width="560"
               height="315"
-              src={external.url.replace('watch?v=', 'embed/')}
+              src={ external.url.replace('watch?v=', 'embed/') }
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -499,14 +469,14 @@ const NotionASTJSXMap: {
         {
           file ? (
             <video
-              controls 
+              controls
               src={ file.url }
               className="rounded-md mx-auto"
             >
             </video>
           ) : null
         }
-        <NotionFigureCaption caption={ node.props.caption } center/>
+        <NotionFigureCaption caption={ node.props.caption } center />
       </div>
     )
   },
@@ -532,7 +502,7 @@ const NotionASTJSXMap: {
 
   audio: ({ children, className, node, ...props }) => {
     const file = Object.hasOwn(node.props, 'file') ? node.props.file : undefined
-      
+
     return (
       <div className={ clsx("my-4 p-2", className) } { ...props }>
         {
@@ -554,60 +524,34 @@ const NotionASTJSXMap: {
     const source = url?.includes('notion-static.com') ? 'notion-static.com' : filename?.url?.hostname
 
     return (
-      <div className={ clsx("my-4 no-underline", className) } { ...props }>
-        <NotionFigureCaption caption={ node.props.caption } className="mt-0" />
+      <div className={ clsx("my-4 no-underline ", className) } { ...props }>
         <a
           href={ url }
           target="_blank"
-          download={filename}
-          className="p-2 no-underline hover:bg-zinc-900 w-full rounded-md flex flex-row gap-1 items-end cursor-pointer">
-          <FileDownload className="inline text-2xl" />
-          <span className="text-zinc-200">
-            { filename ? filename.title : "Unknown File Source" }
-          </span>
-          <span className="text-sm mx-2">
-            ({source})
-          </span>
+          download={ filename }
+          className="p-4 no-underline bg-zinc-900/50 rounded-md hover:bg-zinc-900 w-full flex flex-col cursor-pointer">
+          <FileDownload className="inline text-2xl mb-1" />
+          <div className="flex flex-row items-end">
+            <span className="text-zinc-200">
+              { filename ? filename.title : "Unknown File Source" }
+            </span>
+            <span className="text-sm mx-2 text-zinc-500">
+              ({ source })
+            </span>
+          </div>
+          <NotionFigureCaption caption={ node.props.caption } className="mt-0" />
         </a>
-        {/* <JSONStringify data={ node } /> */}
+        {/* <JSONStringify data={ node } /> */ }
       </div>
     )
   },
-
-  template: ({ className, node, ...props }) => {
-    return (<></>)
-  },
-  synced_block: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  child_page: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  child_database: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  breadcrumb: ({ className, node, ...props }) => {
-    return (<></>)
-  },
-  table_of_contents: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-  link_to_page: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
-  },
-
-
-
-
-
-
 
 
   embed: ({ children, className, node, ...props }) => {
     const url = node.props.url as string
     const spotify = url?.includes('open.spotify.com') ? url.replaceAll('/track/', '/embed/track/') : undefined
     const soundcloud = url?.includes('soundcloud.com') ? url : undefined
-    
+
     return (
       <div className={ clsx("my-4 p-2 bg-black", className) } { ...props } >
         {
@@ -631,7 +575,7 @@ const NotionASTJSXMap: {
                 width="100%"
                 height="166"
                 allow="autoplay"
-                src={"https://w.soundcloud.com/player/?url=" + encodeURIComponent(soundcloud)}>
+                src={ "https://w.soundcloud.com/player/?url=" + encodeURIComponent(soundcloud) }>
               </iframe>
             </>
           ) : null
@@ -640,19 +584,38 @@ const NotionASTJSXMap: {
       </div>
     )
   },
-
   link_preview: ({ className, node, ...props }) => {
     return (<a className={ clsx("", className) } { ...props } />)
   },
 
 
 
-
+  synced_block: ({ className, node, ...props }) => {
+    return (<></>)
+  },
+  child_page: ({ className, node, ...props }) => {
+    return (<></>)
+  },
+  child_database: ({ className, node, ...props }) => {
+    return (<></>)
+  },
+  breadcrumb: ({ className, node, ...props }) => {
+    return (<></>)
+  },
+  table_of_contents: ({ className, node, ...props }) => {
+    return (<></>)
+  },
+  link_to_page: ({ className, node, ...props }) => {
+    return (<></>)
+  },
+  template: ({ className, node, ...props }) => {
+    return (<></>)
+  },
   unsupported: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+    return (<></>)
   },
   root: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+    return (<></>)
   },
 
 }

@@ -58,7 +58,7 @@ export function NotionRichText(p: {
       
       else {
         return <span key={ i } className={ twMerge(clsx(
-          '',
+          'm-0 p-0',
           bold && 'font-bold',
           italic && 'italic',
           strikethrough && 'line-through',
