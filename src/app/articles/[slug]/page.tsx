@@ -305,13 +305,16 @@ const NotionASTJSXMap: {
     )
   },
 
+  column_list: ({ className, node, ...props }) => {
+    return (
+      <div className={ clsx("grid grid-flow-col auto-cols-fr gap-x-4", className) } { ...props } />
+    )
+  },
+
   column: ({ className, node, ...props }) => {
     return (
       <div className={ clsx("w-full my-2", className) } { ...props } />
     )
-  },
-  column_list: ({ className, node, ...props }) => {
-    return (<div className={ clsx("flex flex-row gap-2", className) } { ...props } />)
   },
 
 
@@ -391,15 +394,64 @@ const NotionASTJSXMap: {
 
 
   bookmark: async ({ children, className, node, ...props }) => {
-    const metadata = await urlMetadata(node.props.url)
+    const metadata = await getMetaInfo(node.props.url)
     return (
-      <div className={ clsx("", className) } { ...props } >
-        {/* <Image
-          alt="Link Image Preview"
-          src={ metadata. }
-
-        /> */}
-        <JSONStringify data={metadata} />
+      <div className="my-2">
+        <a
+          target="_blank"
+          href={ node.props.url }
+          className={ clsx(
+            "w-full flex flex-row rounded-md border border-zinc-800 no-underline"
+            , "hover:bg-zinc-900/70"
+            , className) } { ...props } >
+          {/* {
+            metadata.image ? (
+              <div className="w-24">
+                <img
+                  src={ metadata.image }
+                  alt="Metadata Image"
+                />
+              </div>
+            ) : null
+          } */}
+          <div className="p-3 w-full flex flex-col">
+            <div className="text-zinc-200 truncate w-full">
+              {metadata.title}
+            </div>
+            {
+              metadata.description ? (
+                <div className="text-sm text-zinc-400 mt-1 mb-2 h-10 w-full line-clamp-2">
+                  {metadata.description}
+                </div>
+              ) : null
+            }
+            <div className="text-sm text-zinc-500 flex flex-row gap-2">
+              {
+                metadata.faviconpath ? (
+                  <div className="flex items-center">
+                    <Image
+                      unoptimized
+                      width="16"
+                      height="16"
+                      src={ metadata.faviconpath }
+                      alt="Link Icon URL"
+                      className="w-4 h-4"
+                    />
+                  </div>
+                ) : null
+              }
+              <div>
+                { metadata.url ? metadata.url.host : node.props.url }
+              </div>
+            </div>
+          </div>
+          {/* <JSONStringify data={metadata.faviconpath} /> */}
+        </a>
+        {
+          <div className="text-sm text-zinc-400 mt-2">
+            <NotionRichText rich_text={ node.props.caption } />
+          </div>
+        }
       </div>
     )
   },
@@ -477,6 +529,7 @@ const NotionASTJSXMap: {
 
 import { type ComponentProps, type ReactElement } from 'react'
 import { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
+import { getMetaInfo } from "@/components/metadata/util"
 
 export type Props<T extends keyof JSX.IntrinsicElements = 'div'> =
   ComponentProps<T> &

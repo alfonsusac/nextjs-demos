@@ -40,7 +40,7 @@ export function NotionCalloutIcon({
 export function NotionRichText(p: {
   rich_text: RichTextItemResponse[]
 }) {
-  
+
 
   return p.rich_text.map((t, i) => {
     if (t.type === 'text') {

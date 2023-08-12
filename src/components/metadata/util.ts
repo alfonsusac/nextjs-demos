@@ -1,38 +1,43 @@
 import * as cheerio from 'cheerio'
-import urlMetadata from 'url-metadata'
 //@ts-ignore
 import parse from 'url-metadata/lib/parse'
-
 
 export async function getMetaInfo(source: string) {
   try {
     const sourceurl = new URL(source)
 
-    const metadata = await urlMetadata_withFavicon(sourceurl.toString())
-    
+    const metadata = await urlMetadata_withFavicon(sourceurl.toString(), {
+      descriptionLength: 100
+    })
+
+    const rawfaviconpath = metadata['fluid-faviconpath'] ? metadata['fluid-faviconpath'] as string :
+      metadata['faviconpath'] ? metadata['faviconpath'] as string : undefined
+
+    const faviconpath = rawfaviconpath ? rawfaviconpath.startsWith('/')
+      ? sourceurl.origin + rawfaviconpath
+      : rawfaviconpath
+      : undefined
+
     return {
-      title: metadata['twitter:title'] ? metadata['twitter:title'] :
-        metadata['og:title'] ? metadata['og:title'] : 
-          metadata['title'] ? metadata['title'] :
-            sourceurl.hostname,
-      description: metadata['twitter:description'] ? metadata['twitter:description'] :
-        metadata['og:description'] ? metadata['og:description'] :
-          metadata['description'] ? metadata['description'] : undefined,
-      image: metadata['twitter:image'] ? metadata['twitter:image'] :
-        metadata['og:image'] ? metadata['og:image'] : undefined
-      
+      title: metadata['twitter:title'] ? metadata['twitter:title'] as string :
+        metadata['og:title'] ? metadata['og:title'] as string :
+          metadata['title'] ? metadata['title'] as string :
+            metadata['title2'] ? metadata['title2'] as string :
+              sourceurl.hostname,
+      description: metadata['twitter:description'] ? metadata['twitter:description'] as string :
+        metadata['og:description'] ? metadata['og:description'] as string :
+          metadata['description'] ? metadata['description'] as string : undefined,
+      image: metadata['twitter:image'] ? metadata['twitter:image'] as string :
+        metadata['og:image'] ? metadata['og:image'] as string : undefined,
+      faviconpath: faviconpath ? faviconpath as string : undefined,
+      url: sourceurl,
+      raw: metadata
     }
   } catch (error) {
     return {
       title: source,
-      url: 'source',
     }
   }
-
-  const title = ''
-  const description = ''
-  const image = ''
-  const url = ''
 }
 
 
@@ -88,14 +93,21 @@ function urlMetadata_withFavicon(url: string, options?: any) {
     })
     .then((body) => {
       const metadata = parse(url, body, opts) as Record<string, string | boolean | Record<string, string>>
-      
+
       const $ = cheerio.load(body)
       const faviconpath = $('link[rel=icon]').first().attr('href')
-
       if (faviconpath) {
         metadata['faviconpath'] = faviconpath
       }
-      
+      const fluidFaviconpath = $('link[rel=fluid-icon]').first().attr('href')
+      if (fluidFaviconpath) {
+        metadata['fluid-faviconpath'] = fluidFaviconpath
+      }
+      const title2 = $('title').first().text()
+      if (title2) {
+        metadata['title2'] = title2
+      }
+
       return metadata
     })
 }
