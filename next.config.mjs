@@ -14,11 +14,11 @@ const nextConfig = {
       }
     ]
   },
-  compiler: {
-    removeConsole: {
-      exclude: ['info', 'error']
-    }
-  },
+  // compiler: {
+  //   removeConsole: {
+  //     exclude: ['info', 'error']
+  //   }
+  // },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.node/,
