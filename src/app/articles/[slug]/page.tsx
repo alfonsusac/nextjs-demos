@@ -11,8 +11,8 @@ import clsx from "clsx"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
 import katex, { type KatexOptions, ParseError } from 'katex'
-import urlMetadata from "url-metadata"
 import Image from "next/image"
+import { Document } from 'react-pdf'
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -515,7 +515,19 @@ const NotionASTJSXMap: {
 
 
   pdf: ({ className, node, ...props }) => {
-    return (<div className={ clsx("", className) } { ...props } />)
+    const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
+    const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
+    const url = external ? external.url : file ? file.url : undefined
+
+    return (
+      <div className="my-4 p-2">
+        <embed
+          className="max-h-[60vh] aspect-[6/7] w-full rounded-md"
+          src={ url }
+        />
+        <NotionFigureCaption caption={ node.props.caption } center />
+      </div>
+    )
   },
   audio: ({ className, node, ...props }) => {
     return (<div className={ clsx("", className) } { ...props } />)
