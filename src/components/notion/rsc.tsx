@@ -5,6 +5,7 @@ import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { KaTeXRSC } from "../katex/rsx"
 import { getMetaInfo } from "../metadata/util"
+import { DatabasePage } from "../svg"
 
 type Annotation = RichTextItemResponse['annotations']
 
@@ -88,8 +89,13 @@ export function NotionRichText(p: {
           <a
             href={ t.href! }
             key={ i }
-            className={ annotatedClassNames }
-          >{ t.plain_text }</a>
+            className={ annotationToClassName('no-underline inline-flex flex-row items-center px-2.5 bg-zinc-900 hover:bg-zinc-800 rounded-md ', t.annotations) }
+          >
+            <DatabasePage className="inline w-4 h-4 mr-1.5 text-zinc-600" />
+            <span className="decoration-zinc-600 underline font-medium">
+              { t.plain_text }
+            </span>
+          </a>
         )
       } else if (t.mention.type === 'date') {
         return (
