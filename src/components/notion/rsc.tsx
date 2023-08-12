@@ -81,3 +81,20 @@ export function NotionRichText(p: {
     }
   })
 }
+
+export function NotionFigureCaption(p: {
+  caption: RichTextItemResponse[]
+}) {
+  return (
+    <>
+      {
+        p.caption ? (
+          <div className="text-sm text-zinc-400 mt-2">
+            <NotionRichText rich_text={ p.caption } />
+          </div>
+        ) : null
+      }
+    </>
+
+  )
+}
