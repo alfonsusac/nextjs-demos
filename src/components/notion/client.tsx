@@ -2,6 +2,7 @@
 
 import clsx from "clsx"
 import * as Collapsible from '@radix-ui/react-collapsible'
+import * as Tooltip from '@radix-ui/react-tooltip'
 import { useState } from "react"
 
 
@@ -48,3 +49,42 @@ export function AkarIconsTriangleRightFill(props: React.SVGProps<SVGSVGElement>)
   )
 }
 
+
+export function InlineMentionTooltip (p: {
+  children: React.ReactNode,
+  content: React.ReactNode,
+}) {
+  return (
+    <Tooltip.Provider>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          {p.children}
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content
+            forceMount={true}
+            side="bottom"
+            className={ clsx(
+              "data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade",
+              "data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade",
+              "data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade",
+              "data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade",
+              "text-violet11 select-none rounded-[4px]",
+              // "leading-none",
+              "shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]",
+              "will-change-[transform,opacity]",
+              "bg-zinc-800 p-1 pb-0.5 pr-1.5 text-xs text-zinc-400",
+              "border-zinc-700 border",
+              "inline-block align-middle"
+            ) }
+            sideOffset={ 3 }
+          >
+            {p.content}
+            {/* Add to library */}
+            {/* <Tooltip.Arrow className="fill-zinc-800" /> */}
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  )
+}
