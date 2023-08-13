@@ -5,7 +5,7 @@ import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { KaTeXRSC } from "../katex/rsx"
 import { getMetaInfo } from "../metadata/util"
-import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, GithubInlineIcon } from "../svg"
+import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, GithubInlineIcon, PhNotionLogoFill } from "../svg"
 import { formatRelative } from "date-fns"
 import { InlineMentionTooltip } from "./client"
 
@@ -205,85 +205,127 @@ export function NotionRichText(p: {
     async function InlineMention() {
       const mention = (t as MentionRichTextItemResponse).mention
 
-      const inlinePaddingCN = `no-underline inline-block items-center rounded-md relative`
-      const inlineHoverCN = 'before:absolute before:h-full before:hover:bg-zinc-800/80 before:rounded-md before:-z-10'
-      const inlineSpacingCN = 'before:-mx-2 before:left-0 before:right-0'
+      const inlinePaddingCN = `no-underline inline items-center rounded-[2px] relative`
+      const inlineHoverCN = 'hover:bg-[#1F1F22] hover:shadow-[0px_0px_0px_3px_#1F1F22]'
 
-      if (mention.type === 'database') {
-        return (
-          <a
-            href={ t.href! }
-            className={
-              clsx(annotationCN, inlinePaddingCN, inlineHoverCN, inlineSpacingCN,)
-            }
-          >
-            <span className="h-full inline-block text-zinc-600 text-sm pr-0.5">
-              <DatabasePageIcon className="inline w-4 h-4 text-zinc-600 mb-1" />
-            </span>
-            <span className="decoration-zinc-600 text-zinc-300 underline">
-              { t.plain_text }
-            </span>
-          </a>
-        )
-      }
-      else if (mention.type === 'date') {
-        const startDate = new Date(mention.date.start)
-        const endDate = mention.date.end ? new Date(mention.date.end) : undefined
-        const includeTime = mention.date.start.includes('T')
-        const now = new Date()
-
-        const start = formatRelative(startDate, now)
-        const end = endDate ? formatRelative(endDate, now) : undefined
+      switch (mention.type) {
 
 
+        case 'database':
+          return (
+            <a
+              href={ t.href! }
+              className={
+                clsx(annotationCN, inlinePaddingCN, inlineHoverCN, '')
 
-        return (
-          <InlineMentionTooltip content={
-            <>
-              <CalendarInlineIcon className="inline w-4 h-4 text-zinc-600 mr-1 leading mb-1" />
-              {
-                mention.date.start + (endDate ? ` → ${mention.date.end}` : '')
               }
-            </>
-          }>
-            <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, inlineSpacingCN) }>
+            >
               <span className="h-full inline-block text-zinc-600 text-sm pr-0.5">
-                <AtInlineSymbol className="inline w-4 h-4 mb-1" />
+                <DatabasePageIcon className="inline text-lg text-zinc-600 mb-1" />
+              </span>
+              <span className="decoration-zinc-600 text-zinc-300 underline">
+                { t.plain_text }
+              </span>
+            </a>
+          )
+
+
+        case 'date':
+          const startDate = new Date(mention.date.start)
+          const endDate = mention.date.end ? new Date(mention.date.end) : undefined
+          const includeTime = mention.date.start.includes('T')
+          const now = new Date()
+
+          const start = formatRelative(startDate, now)
+          const end = endDate ? formatRelative(endDate, now) : undefined
+          return (
+            <InlineMentionTooltip content={
+              <>
+                <CalendarInlineIcon className="inline text-zinc-600 mr-1 leading mb-1" />
+                {
+                  mention.date.start + (endDate ? ` → ${mention.date.end}` : '')
+                }
+              </>
+            }>
+              <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, 'hover:tex-zinc-300') }>
+                <span className="h-full inline text-zinc-600 text-sm pr-0.5">
+                  <AtInlineSymbol className="inline text-lg mb-1" />
+                </span>
+                <span className="decoration-zinc-600 text-zinc-400">
+                  {
+                    includeTime ? (
+                      `${start} ${end ? ' → ' + end : ''}`
+                    ) : (
+                      `${start.split(' at ')[0]} ${end ? ' → ' + end.split(' at ')[0] : ''}`
+                    )
+                  }
+                </span>
+              </span>
+            </InlineMentionTooltip>
+          )
+
+
+        case 'link_preview':
+          const metadata = await getMetaInfo(t.href!)
+          return (
+            <a className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN) } href={ t.href! } target="_blank">
+              <span className="h-full inline-block text-zinc-300 text-sm pr-0.5">
+                {// eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    alt={ metadata.url?.hostname }
+                    className="inline text-lg mb-1 w-4 h-4 rounded-sm"
+                    src={ metadata.faviconpath }
+                  /> }
               </span>
               <span className="decoration-zinc-600 text-zinc-400">
-                {
-                  includeTime ? (
-                    `${start} ${end ? ' → ' + end : ''}`
-                  ) : (
-                    `${start.split(' at ')[0]} ${end ? ' → ' + end.split(' at ')[0] : ''}`
-                  )
-                }
+                { metadata.title }
               </span>
-            </span>
-          </InlineMentionTooltip>
-        )
-      }
-      else if (mention.type === 'link_preview') {
-        const metadata = await getMetaInfo(t.href!)
-        return (
-          <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, inlineSpacingCN) }>
-            <span className="h-full inline-block text-zinc-600 text-sm pr-0.5">
-              <GithubInlineIcon className="inline w-4 h-4 mb-1" />
-            </span>
-            <span className="decoration-zinc-600 text-zinc-400">
-              {
-                includeTime ? (
-                  `${start} ${end ? ' → ' + end : ''}`
-                ) : (
-                  `${start.split(' at ')[0]} ${end ? ' → ' + end.split(' at ')[0] : ''}`
-                )
-              }
-            </span>
-          </span>
-        )
-      }
+            </a>
+          )
 
 
+        case 'page':
+          return (
+            <a className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN) } href={ t.href! } target="_blank">
+              <span className="h-full inline-block text-zinc-300 text-sm pr-0.5">
+                <PhNotionLogoFill className="inline text-lg mb-1" />
+              </span>
+              <span className="decoration-zinc-600 text-zinc-400">
+                { t.plain_text }
+              </span>
+            </a>
+          )
+        
+        
+        case 'user':
+
+          if ('type' in mention.user) {
+            
+            return (
+              <InlineMentionTooltip content={
+                <>
+                  <CalendarInlineIcon className="inline text-zinc-600 mr-1 leading mb-1" />
+                </>
+              }>
+                <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, 'hover:tex-zinc-300') }>
+                  <span className="h-full inline text-zinc-600 text-sm pr-0.5">
+                    <AtInlineSymbol className="inline text-lg mb-1" />
+                  </span>
+                  <span className="decoration-zinc-600 text-zinc-400">
+                    { mention.user.name }
+                  </span>
+                </span>
+              </InlineMentionTooltip>
+            )
+
+
+          } else return <></>
+
+        
+        default:
+          return <></>
+          break
+      }
     }
 
   })
