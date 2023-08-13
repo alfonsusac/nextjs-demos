@@ -34,7 +34,7 @@
     "mdast": "^3.0.0",
     "mdx-mermaid": "^2.0.0",
     "nanoid": "^4.0.2",
-    "next": "latest",
+    "next": "^13.4.14-canary.2",
     "notion-types": "^6.16.0",
     "postcss": "^8.4.27",
     "prism-themes": "^1.9.0",
