@@ -1,4 +1,4 @@
-import CodeSnippet from "@/components/code-snippet"
+import CodeSnippet from "@/components/code-snippet/client"
 import DynamicRouteTurnedStaticCode from "./code.mdx"
 import DynamicRouteTurnedStaticClientCode from "./code_client.mdx"
 import DynamicRouteTurnedStaticBuildLog from "./buildlog.mdx"
