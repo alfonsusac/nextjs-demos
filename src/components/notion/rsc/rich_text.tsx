@@ -1,13 +1,13 @@
 import { CalloutBlockObjectResponse, EquationRichTextItemResponse, MentionRichTextItemResponse, RichTextItemResponse, RichTextPropertyItemObjectResponse, TextRichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
-import { JSONStringify } from "../tool"
+import { JSONStringify } from "../../tool"
 import clsx from "clsx"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
-import { KaTeXRSC } from "../katex/rsx"
-import { getMetaInfo } from "../metadata/util"
-import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, GithubInlineIcon, PhNotionLogoFill } from "../svg"
+import { KaTeXRSC } from "../../katex/rsx"
+import { getMetaInfo } from "../../metadata/util"
+import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, GithubInlineIcon, MaterialSymbolsPerson, PhGlobe, PhNotionLogoFill } from "../../svg"
 import { formatRelative } from "date-fns"
-import { InlineMentionTooltip } from "./client"
+import { InlineMentionTooltip } from "../client"
 
 type Annotation = RichTextItemResponse['annotations']
 
@@ -54,129 +54,18 @@ export function NotionRichText(p: {
     const { bold, italic, strikethrough, underline, code, color } = t.annotations
     const isUnformatted = !bold && !italic && !strikethrough && !underline && !code && color === 'default'
 
-
-    if (t.type === 'text') {
-      return <InlineText key={ i } />
+    switch (t.type) {
+      case 'text':
+        return <InlineText key={ i } />         
+      case 'equation':
+        return <InlineEquation key={ i } />
+      case 'mention':
+        return <InlineMention key={ i } />
+      default:
+        return <></>
     }
-    else if (t.type === 'equation') {
-      return <InlineEquation key={ i } />
-    }
-    else if (t.type === 'mention') {
-      return <InlineMention key={ i } />
-    }
 
-
-    //   } else if (t.mention.type === 'date') {
-    //     //https://www.notion.so/alfonsusardani/Text-Notion-at-Next-js-Article-Part-V-9c3d8892ae384cd782585c041cba9c7b?pvs=4#6ecd81e152a54a8f9f40c9aaf9dc7f42
-
-    //     const startDate = new Date(t.mention.date.start)
-    //     const endDate = t.mention.date.end ? new Date(t.mention.date.end) : undefined
-    //     const includeTime = t.mention.date.start.includes('T')
-    //     const tz = t.mention.date.time_zone ? t.mention.date.time_zone : undefined
-    //     const now = new Date()
-
-    //     const start = formatRelative(startDate, now)
-    //     const end = endDate ? formatRelative(endDate, now) : undefined
-
-
-
-    //     return (
-    //       <InlineMentionTooltip key={ i } content={
-    //         t.mention.date.start + (endDate ? ` -> ${t.mention.date.end}` : '')
-    //       }>
-    //         <span
-    //           className={ annotationToClassName(clsx(
-    //             'no-underline inline-block items-center rounded-md relative',
-    //             'before:absolute before:h-full before:hover:bg-zinc-800/80 before:rounded-md before:-z-10',
-    //             'before:-mx-2 before:left-0 before:right-0',
-    //             'cursor-help'
-    //           ), t.annotations) }
-    //         >
-    //           <span className="h-full inline-block text-center">
-    //             <CalendarInlineIcon className="inline w-4 h-4 mr-1 text-zinc-600 flex-shrink-0 mb-1" />
-    //           </span>
-    //           <span className="decoration-zinc-600 text-zinc-400">
-    //           {
-    //             includeTime ? (
-    //               `${start} ${ end ? ' -> ' + end : '' }`
-    //             ) : (
-    //               `${start.split(' at ')[0]} ${ end ? ' -> ' + end.split(' at ')[0] : ''}`
-    //             )
-    //           }
-    //             {/* { t.plain_text } */}
-    //           </span>
-    //         </span>
-    //       </InlineMentionTooltip>
-    //     )
-    //   }
-    //   else if (t.mention.type === 'link_preview') {
-    //     const metadata = await getMetaInfo(t.href!)
-    //     return (
-    //       <span
-    //         key={ i }
-    //         className={ annotatedClassNames }
-    //       >
-    //         {
-    //           metadata.title
-    //         }
-    //       </span>
-    //       // <JSONStringify key={ i } data={ t } />
-    //     )
-    //   }
-    //   else if (t.mention.type === 'page') {
-    //     return (
-    //       <a
-    //         href={ t.href! }
-    //         key={ i }
-    //         className={ annotatedClassNames }
-    //       >
-    //         {
-    //           t.plain_text
-    //         }
-    //       </a>
-    //     )
-    //   } else if (t.mention.type === 'template_mention') {
-    //     return (
-    //       <JSONStringify key={ i } data={ t } />
-    //     )
-    //   } else if (t.mention.type === 'user') {
-    //     return (
-    //       <span
-    //         key={ i }
-    //         className={ annotatedClassNames }
-    //       >
-    //         {
-    //           (t.mention.user as any).avatar_url ? (
-    //             // eslint-disable-next-line @next/next/no-img-element
-    //             <img
-    //               className='w-4 h-4 inline rounded-full'
-    //               src={ (t.mention.user as any).avatar_url }
-    //               alt={ (t.mention.user as any).name + "'s profile picture" }
-    //             />
-    //           ) : (
-    //             <div
-    //               className='w-4 h-4 inline rounded-full bg-zinc-700'
-    //             />
-    //           )
-    //         }
-    //         <span>
-    //           { (t.mention.user as any).name }
-    //         </span>
-    //       </span>
-    //     )
-    //   } else {
-    //     return (
-    //       <JSONStringify key={ i } data={ t } />
-    //     )
-    //   }
-    // }
-    // else {
-    //   return (
-    //     <JSONStringify key={ i } data={ t } />
-    //   )
-    // }
-
-    return <></>
+    
 
     function InlineText() {
       const href = t.href
@@ -184,9 +73,16 @@ export function NotionRichText(p: {
       return (
         href
           ? (
-            <a className={ annotationCN } href={ href }>
-              { text.content }
-            </a>
+            <InlineMentionTooltip content={
+              <>
+                <PhGlobe className="inline text-zinc-600 mr-1 leading mb-1" />
+                { href }
+              </>
+            }>
+              <a className={ annotationCN } href={ href }>
+                { text.content }
+              </a>
+            </InlineMentionTooltip>
           ) : isUnformatted
             ? (<>{ text.content }</>)
             : (<span className={ annotationCN }>{ text.content }</span>)
@@ -295,16 +191,17 @@ export function NotionRichText(p: {
               </span>
             </a>
           )
-        
-        
+
+
         case 'user':
 
           if ('type' in mention.user) {
-            
+
             return (
               <InlineMentionTooltip content={
                 <>
-                  <CalendarInlineIcon className="inline text-zinc-600 mr-1 leading mb-1" />
+                  <MaterialSymbolsPerson className="inline text-zinc-600 mr-1 leading mb-1" />
+                  Person
                 </>
               }>
                 <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, 'hover:tex-zinc-300') }>
@@ -321,10 +218,8 @@ export function NotionRichText(p: {
 
           } else return <></>
 
-        
         default:
           return <></>
-          break
       }
     }
 
