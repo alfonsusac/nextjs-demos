@@ -5,7 +5,7 @@ import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { KaTeXRSC } from "../katex/rsx"
 import { getMetaInfo } from "../metadata/util"
-import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon } from "../svg"
+import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, GithubInlineIcon } from "../svg"
 import { formatRelative } from "date-fns"
 import { InlineMentionTooltip } from "./client"
 
@@ -202,7 +202,7 @@ export function NotionRichText(p: {
       />
     }
 
-    function InlineMention() {
+    async function InlineMention() {
       const mention = (t as MentionRichTextItemResponse).mention
 
       const inlinePaddingCN = `no-underline inline-block items-center rounded-md relative`
@@ -213,7 +213,6 @@ export function NotionRichText(p: {
         return (
           <a
             href={ t.href! }
-            key={ i }
             className={
               clsx(annotationCN, inlinePaddingCN, inlineHoverCN, inlineSpacingCN,)
             }
@@ -239,7 +238,7 @@ export function NotionRichText(p: {
 
 
         return (
-          <InlineMentionTooltip key={ i } content={
+          <InlineMentionTooltip content={
             <>
               <CalendarInlineIcon className="inline w-4 h-4 text-zinc-600 mr-1 leading mb-1" />
               {
@@ -262,6 +261,25 @@ export function NotionRichText(p: {
               </span>
             </span>
           </InlineMentionTooltip>
+        )
+      }
+      else if (mention.type === 'link_preview') {
+        const metadata = await getMetaInfo(t.href!)
+        return (
+          <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, inlineSpacingCN) }>
+            <span className="h-full inline-block text-zinc-600 text-sm pr-0.5">
+              <GithubInlineIcon className="inline w-4 h-4 mb-1" />
+            </span>
+            <span className="decoration-zinc-600 text-zinc-400">
+              {
+                includeTime ? (
+                  `${start} ${end ? ' → ' + end : ''}`
+                ) : (
+                  `${start.split(' at ')[0]} ${end ? ' → ' + end.split(' at ')[0] : ''}`
+                )
+              }
+            </span>
+          </span>
         )
       }
 
