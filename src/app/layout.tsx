@@ -9,9 +9,9 @@ import "prism-themes/themes/prism-one-dark.min.css"
 import path from 'path'
 import { cache } from 'react'
 import { TOCProvider } from '@/components/toc/context'
-import MDX_RoutingComputation from "./routing/static-vs-dynamic-computation/content.mdx"
 import { getHeadings } from '@/components/toc/rsc'
 import { ToCSidebar } from '@/components/toc/client'
+import MDX_RoutingComputation from "./(demos)/routing/static-vs-dynamic-computation/content.mdx"
 
 const inter = Inter({ subsets: ['latin'] })
 
