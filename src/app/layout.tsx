@@ -44,7 +44,7 @@ export default function RootLayout(p: {
 
                     { category.topics.map(page =>
                       <Page key={ page.title } label={ page.title } category={ `/${category.name}/` } >
-                        <ToCSidebar items={ getHeadings(page.content) } startDepth={2} depth={6} />
+                        <ToCSidebar items={ getHeadings(page.content) } startDepth={2} />
                       </Page>
                     ) }
 
