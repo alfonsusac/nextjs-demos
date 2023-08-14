@@ -15,6 +15,11 @@ if (process.env.NODE_ENV !== 'production') {
   globalForNotion.notion = notion
 }
 
+export const getPageContent = cache(async (id: string) => {
+  return await notion.blocks.children.list({
+    block_id: id,
+  })
+})
 
 function flattenNameProp(Name: {
   type: "title"
@@ -37,7 +42,17 @@ export const getArticles = cache(async () => {
   })
   const list = data.results.map(e => {
 
-    const {
+    const pageRes = (e as PageObjectResponse)
+    const { id, created_by, last_edited_by, cover, icon, archived, url, properties, created_time, last_edited_time } = pageRes
+
+    const flattenedTitle = flattenNameProp(pageRes.properties.Name as any)
+    const nameProp = properties.Name as {
+      type: "title"
+      title: Array<RichTextItemResponse>
+      id: string
+    }
+
+    return {
       id,
       created_time,
       last_edited_time,
@@ -47,23 +62,9 @@ export const getArticles = cache(async () => {
       icon,
       archived,
       url,
-      properties
-    } = (e as PageObjectResponse)
-
-    const title = flattenNameProp(properties.Name as any)
-
-    return {
-      id,
-      created_time: new Date(created_time),
-      last_edited_time: new Date(last_edited_time),
-      created_by,
-      last_edited_by,
-      cover,
-      icon,
-      archived,
-      url,
-      title,
-      slug: slug(title)
+      title: nameProp.title,
+      flattenedTitle,
+      slug: slug(flattenedTitle)
     }
 
   })
