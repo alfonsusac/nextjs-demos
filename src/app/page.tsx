@@ -47,9 +47,11 @@ export default async function Home() {
               >
 
                 <div className="flex gap-3">
+
                   <div className="w-5 h-5 text-lg">
                     <NotionIcon icon={r.icon} />
                   </div>
+
                   <div>
                     <div className="font-semibold mt-1 group-hover:text-white transition-all">
                       {r.flattenedTitle}
@@ -58,6 +60,7 @@ export default async function Home() {
                       { new Date(r.last_edited_time).toDateString() }
                     </div>
                   </div>
+                  
                 </div>
               </Link>
 
