@@ -1,5 +1,5 @@
 import { NodeTypes, NotionASTNode, convertChildrenToAST } from "../response-to-ast"
-import { NotionCalloutIcon, NotionFigureCaption, NotionRichText, flattenRichText } from "./rich-text"
+import { NotionIcon, NotionFigureCaption, NotionRichText, flattenRichText } from "./rich-text"
 import clsx from "clsx"
 import { CheckboxSVG, FileDownloadIcon } from "@/components/svg"
 import { Toggle } from "../client"
@@ -166,7 +166,7 @@ async function DefaultComponent({ children, className, node, ...props }:
         "flex gap-4 p-4 bg-zinc-900 rounded-md border-zinc-800 my-2"
         , className
       ) } { ...props } >
-        <NotionCalloutIcon icon={ node.props.icon } />
+        <NotionIcon icon={ node.props.icon } />
         <div>
           <RichText />
           <NestedChildren />

@@ -15,7 +15,7 @@ export function flattenRichText(rt?: RichTextItemResponse[]) {
   return rt?.map(r => r.plain_text).join('')
 }
 
-export function NotionCalloutIcon({
+export function NotionIcon({
   icon
 }: {
   icon: CalloutBlockObjectResponse['callout']['icon']
@@ -30,6 +30,7 @@ export function NotionCalloutIcon({
       alt='Callout Icon'
       width={ 24 }
       height={ 24 }
+      className="inline"
       src={ icon.external.url }
 
     />
@@ -39,6 +40,7 @@ export function NotionCalloutIcon({
       alt='Callout Icon'
       width={ 24 }
       height={ 24 }
+      className="inline"
       src={ icon.file.url }
     />
   // https://www.notion.so/alfonsusardani/Text-Notion-at-Next-js-Article-Part-V-9c3d8892ae384cd782585c041cba9c7b?pvs=4#89bbb406c1614043950a01f005da8afc
