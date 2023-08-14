@@ -19,7 +19,7 @@ export function ToCSidebar(p: {
   const startDepth = p.startDepth ?? 1
 
   return (
-    <ul className="text-gray-500 mt-1 pb-2 pt-1">
+    <ul className="text-gray-500 mt-1 pb-2 pt-1 m-2">
       { items.map(i => <li
         className={ clsx(
           "leading-tight py-1 transition-all",

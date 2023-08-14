@@ -34,7 +34,7 @@ export default async function Home() {
       <ul className="p-0">
         {
           articles.map(r => (
-            <li key={ r.id } className="list-none m-0 -mx-8 transition-all group -my-2">
+            <li key={ r.id } className="list-none m-0 transition-all group -my-2 sm:-mx-8">
 
               <Link
                 href={ `/articles/${r.slug}` }
