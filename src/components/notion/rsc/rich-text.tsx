@@ -15,33 +15,53 @@ export function flattenRichText(rt?: RichTextItemResponse[]) {
 }
 
 export function NotionIcon({
-  icon
+  icon,
+  className
 }: {
   icon: CalloutBlockObjectResponse['callout']['icon']
+  className?: string
 }) {
   if (!icon) return <></>
 
   if (icon.type === 'emoji')
-    return <span>{ icon.emoji }</span>
+    return <span
+      className={ className }
+      style={ {
+        height: '1em',
+        width: '1em',
+        // margin: '0 .05em 0 .1em',
+        verticalAlign: '-0.1em'
+      } }
+    >
+      { icon.emoji }
+    </span>
 
   if (icon.type === 'external')
-    return <Image
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img
       alt='Callout Icon'
-      width={ 24 }
-      height={ 24 }
-      className="inline"
+      className={ clsx("inline", className)}
       src={ icon.external.url }
-
+      style={ {
+        height: '1em',
+        width: '1em',
+        // margin: '0 .05em 0 .1em',
+        verticalAlign: '-0.1em'
+      } }
     />
 
   if (icon.type === 'file')
     // eslint-disable-next-line @next/next/no-img-element
     return <img
       alt='Callout Icon'
-      width={ 24 }
-      height={ 24 }
-      className="inline"
+      className={ clsx("inline", className) }
       src={ icon.file.url }
+      style={ {
+        height: '1em',
+        width: '1em',
+        // margin: '0 .05em 0 .1em',
+        verticalAlign: '-0.1em'
+      } }
     />
   // https://www.notion.so/alfonsusardani/Text-Notion-at-Next-js-Article-Part-V-9c3d8892ae384cd782585c041cba9c7b?pvs=4#89bbb406c1614043950a01f005da8afc
 }
@@ -68,21 +88,21 @@ export function NotionImage({
   alt,
   ...props
 }: {
-    nprop: ImageObject
-    alt: string
+  nprop: ImageObject
+  alt: string
 } & Omit<
   React.DetailedHTMLProps<
     React.ImgHTMLAttributes<
       HTMLImageElement
     >, HTMLImageElement
   >, 'src' | 'alt'
-  >) {
+>) {
   if (!nprop) return
 
   const url =
     'external' in nprop ? nprop.external.url :
       'file' in nprop ? nprop.file.url : ''
-  
+
 
   // eslint-disable-next-line @next/next/no-img-element
   return <img
