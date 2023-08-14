@@ -1,9 +1,7 @@
-import { getArticles, getPageContent, notion } from "@/components/notion/data"
-import { NodeTypes, NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
-import clsx from "clsx"
+import { getArticles, getPageContent } from "@/components/notion/data"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
-import { NotionASTRenderer, RenderNotionPage } from "@/components/notion/rsc/notion-ast-renderer"
+import { RenderNotionPage } from "@/components/notion/rsc/notion-ast-renderer"
 import { NotionIcon, NotionImage, NotionRichText } from "@/components/notion/rsc/rich-text"
 import { formatRelative } from "date-fns"
 
