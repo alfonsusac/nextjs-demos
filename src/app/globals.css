@@ -68,7 +68,7 @@ article strong{
   @apply text-zinc-100 font-bold
 }
 article h1{
-  @apply text-3xl font-semibold text-white
+  @apply text-4xl font-semibold text-white
 }
 article h2{
   @apply text-2xl font-semibold my-6 mt-14 text-white
