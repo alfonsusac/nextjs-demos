@@ -24,8 +24,8 @@ export function ToCSidebar(p: {
         className={ clsx(
           "leading-tight py-1 transition-all",
           "ml-1 pl-3",
-          "border-l-2 border-l-zinc-900",
-          activeAnchor === i.id ? 'text-zinc-400 border-l-zinc-600' : '',
+          "border-l-2",
+          activeAnchor === i.id ? 'text-zinc-400 border-l-zinc-600' : 'border-l-zinc-900',
           i.level - startDepth === 0 ? 'ml-[0.25rem]' :
             i.level - startDepth === 1 ? 'ml-[1.25rem]' :
               i.level - startDepth === 2 ? 'ml-[2.25rem]' :
