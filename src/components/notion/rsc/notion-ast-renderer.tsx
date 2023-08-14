@@ -19,11 +19,12 @@ type NotionASTComponentMap = {
 
 export async function RenderNotionPage(p: {
   data: ListBlockChildrenResponse
+  components?: Partial<NotionASTComponentMap>
 }) {
   const { ast, unknowns } = await convertChildrenToAST(p.data)
 
   return (
-    <NotionASTRenderer node={ ast } />
+    <NotionASTRenderer node={ ast } components={p.components} />
   )
 }
 
