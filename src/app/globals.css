@@ -60,7 +60,7 @@ article > * {
   @apply text-zinc-300
 }
 
-article p {
+article {
   margin-bottom: 1.5rem;
   @apply leading-7 text-zinc-300
 }
