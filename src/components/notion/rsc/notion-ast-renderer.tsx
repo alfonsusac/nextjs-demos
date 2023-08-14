@@ -1,5 +1,5 @@
 import { NodeTypes, NotionASTNode, convertChildrenToAST } from "../response-to-ast"
-import { NotionIcon, NotionFigureCaption, NotionRichText, flattenRichText } from "./rich-text"
+import { NotionIcon, NotionFigureCaption, NotionRichText, flattenRichText, NotionImage } from "./rich-text"
 import clsx from "clsx"
 import { CheckboxSVG, FileDownloadIcon } from "@/components/svg"
 import { Toggle } from "../client"
@@ -361,10 +361,9 @@ async function DefaultComponent({ children, className, node, ...props }:
 
       return (
         <div className={ cn("my-2 relative w-full p-2") } { ...props }>
-          {/* eslint-disable-next-line @next/next/no-img-element */ }
-          <img
-            src={ url }
-            alt="a Picture"
+          <NotionImage
+            alt="A Picture"
+            nprop={ node.props as any }
             className="h-auto w-auto mx-auto rounded-md"
           />
           <Caption center />

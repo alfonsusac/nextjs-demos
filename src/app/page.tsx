@@ -34,14 +34,15 @@ export default async function Home() {
       <ul className="p-0">
         {
           articles.map(r => (
-            <li key={ r.id } className="list-none m-0 -mx-8">
+            <li key={ r.id } className="list-none m-0 -mx-8 transition-all group -my-2">
 
               <Link
                 href={ `/articles/${r.slug}` }
                 className={ clsx(
                   // "border border-zinc-600 mb-2",
                   "block p-4 m-0 rounded-md hover:bg-zinc-900/50 no-underline cursor-pointer",
-                  "leading-tight"
+                  "leading-tight",
+                  "transition-all"
                 ) }
               >
 
@@ -50,7 +51,7 @@ export default async function Home() {
                     <NotionIcon icon={r.icon} />
                   </div>
                   <div>
-                    <div className="font-semibold mt-1">
+                    <div className="font-semibold mt-1 group-hover:text-white transition-all">
                       {r.flattenedTitle}
                     </div>
                     <div className="text-xs text-zinc-500">

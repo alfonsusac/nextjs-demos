@@ -1,11 +1,10 @@
-import { CalloutBlockObjectResponse, EquationRichTextItemResponse, MentionRichTextItemResponse, RichTextItemResponse, RichTextPropertyItemObjectResponse, TextRichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
-import { JSONStringify } from "../../tool"
+import { CalloutBlockObjectResponse, EquationRichTextItemResponse, MentionRichTextItemResponse, RichTextItemResponse, TextRichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
 import clsx from "clsx"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { KaTeXRSC } from "../../katex/rsc"
 import { getMetaInfo } from "../../metadata/util"
-import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, GithubInlineIcon, MaterialSymbolsPerson, PhGlobe, PhNotionLogoFill } from "../../svg"
+import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, MaterialSymbolsPerson, PhGlobe, PhNotionLogoFill } from "../../svg"
 import { formatRelative } from "date-fns"
 import { InlineMentionTooltip } from "../client"
 
@@ -36,7 +35,8 @@ export function NotionIcon({
     />
 
   if (icon.type === 'file')
-    return <Image
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img
       alt='Callout Icon'
       width={ 24 }
       height={ 24 }
@@ -46,6 +46,48 @@ export function NotionIcon({
   // https://www.notion.so/alfonsusardani/Text-Notion-at-Next-js-Article-Part-V-9c3d8892ae384cd782585c041cba9c7b?pvs=4#89bbb406c1614043950a01f005da8afc
 }
 
+type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+type ImageObject = {
+  type: "file"
+  file: {
+    url: string
+    expiry_time: string
+  }
+} | {
+  type: "external"
+  external: {
+    url: string
+  }
+}
+
+export function NotionImage({
+  nprop,
+  alt,
+  ...props
+}: {
+    nprop: ImageObject
+    alt: string
+} & Omit<
+  React.DetailedHTMLProps<
+    React.ImgHTMLAttributes<
+      HTMLImageElement
+    >, HTMLImageElement
+  >, 'src' | 'alt'
+>) {
+  const url =
+    'external' in nprop ? nprop.external.url :
+      'file' in nprop ? nprop.file.url : ''
+
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img
+    src={ url }
+    alt={ alt }
+    { ...props }
+  />
+}
 
 export function NotionRichText(p: {
   rich_text: RichTextItemResponse[]
@@ -58,7 +100,7 @@ export function NotionRichText(p: {
 
     switch (t.type) {
       case 'text':
-        return <InlineText key={ i } />         
+        return <InlineText key={ i } />
       case 'equation':
         return <InlineEquation key={ i } />
       case 'mention':
@@ -67,7 +109,7 @@ export function NotionRichText(p: {
         return <></>
     }
 
-    
+
 
     function InlineText() {
       const href = t.href
