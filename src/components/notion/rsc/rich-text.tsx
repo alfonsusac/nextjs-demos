@@ -80,6 +80,8 @@ export function NotionImage({
   const url =
     'external' in nprop ? nprop.external.url :
       'file' in nprop ? nprop.file.url : ''
+  
+  if(!url) return
 
   // eslint-disable-next-line @next/next/no-img-element
   return <img
