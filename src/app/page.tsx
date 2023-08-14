@@ -2,7 +2,7 @@ import { dirs } from './layout'
 import Link from 'next/link'
 import { titleCase } from 'title-case'
 import { slug } from 'github-slugger'
-import { getArticles, notion } from '@/components/notion/data'
+import { getArticles } from '@/components/notion/data'
 import clsx from 'clsx'
 import { NotionIcon } from '@/components/notion/rsc/rich-text'
 
@@ -58,7 +58,6 @@ export default async function Home() {
                       { new Date(r.last_edited_time).toDateString() }
                     </div>
                   </div>
-
                 </div>
               </Link>
 
