@@ -1,5 +1,5 @@
 export function getFileSpans(text: string) {
-  console.info(text)
+  // console.info(text)
   return text
     .split('/')
     .reduce((acc, val, i) => {
