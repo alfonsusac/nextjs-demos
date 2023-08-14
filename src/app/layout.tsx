@@ -2,7 +2,7 @@ import Image from 'next/image'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { readFileSync, readdirSync } from 'fs'
-import { Category, Article, Page } from './client'
+import { Category, Page } from './client'
 import clsx from 'clsx'
 import Link from "next/link"
 import "prism-themes/themes/prism-one-dark.min.css"
@@ -57,9 +57,7 @@ export default function RootLayout(p: {
             </Sidebar>
 
             <main className="w-full">
-              <Article>
-                { p.children }
-              </Article>
+              { p.children }
             </main>
           </TOCProvider>
         </Content>
