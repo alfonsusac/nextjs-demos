@@ -45,6 +45,10 @@ export default function RootLayout(p: {
               "pl-4 sm:pl-8"
             ) }>
               <Page label="▼ Home" path='/' />
+              <Page label="◩ Articles" category={ `/articles` } path='/articles' >
+                <ToCSidebar startDepth={ 2 } />
+              </Page>
+              
               { dirs.map(category =>
 
                 <li key={ category.name } className="my-8">
@@ -53,8 +57,8 @@ export default function RootLayout(p: {
                     <Category label={ category.name } />
 
                     { category.topics.map(page =>
-                      <Page key={ page.title } label={ page.title } category={ `/${category.name}/` } >
-                        <ToCSidebar items={ getHeadings(page.content) } startDepth={2} />
+                      <Page key={ page.title } label={ page.title } category={ `/${category.name}/` } match={ 2 } >
+                        <ToCSidebar items={ getHeadings(page.content) } startDepth={ 2 }  />
                       </Page>
                     ) }
 
@@ -66,7 +70,7 @@ export default function RootLayout(p: {
               <Page label="Go to default 404" path='/404' />
             </Sidebar>
 
-            <main className="w-full mt-8 max-w-screen-2xl mx-4 sm:mx-0">
+            <main className="w-full mt-8 mb-[40vh] max-w-screen-2xl mx-4 sm:mx-0">
               { p.children }
             </main>
 
