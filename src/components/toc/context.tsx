@@ -27,7 +27,7 @@ export function TOCProvider(p: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (pathname?.includes(toc.location) === false) {
-      console.info(`Pathname differs from toc location,\n toc-location: ${toc.location} \n pathname: ${pathname}`)
+      // console.info(`Pathname differs from toc location,\n toc-location: ${toc.location} \n pathname: ${pathname}`)
       setToc({ toc: [], location: ''})
     }
   }, [pathname, toc.location])
@@ -47,7 +47,7 @@ export function UseAsTOCContentClient(p: {
   const pathname = usePathname()
 
   useEffect(() => {
-    console.info("UseAsTOCContentClient")
+    // console.info("UseAsTOCContentClient")
     setHeadings(p.headings, pathname ?? '')
   }, [p.headings, pathname])
 
