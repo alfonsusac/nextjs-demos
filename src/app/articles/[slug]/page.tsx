@@ -36,21 +36,24 @@ export default async function Page({ params }: any) {
 
         <header className="my-8 mt-8 space-y-2 relative">
           <NotionIcon icon={ article.icon }
-            className="text-5xl m-2 absolute"
+            className="text-5xl m-2 absolute -mt-16"
           />
-          <div className="text-sm text-zinc-600">
-            Last updated: { formatRelative(new Date(article.last_edited_time), new Date()) }
-          </div>
           
 
           <h1 className="">
             <NotionRichText rich_text={ article.title } />
           </h1>
 
+          <div className="text-sm text-zinc-500">
+            Last updated: { formatRelative(new Date(article.last_edited_time), new Date()) }
+          </div>
 
         </header>
 
         <RenderNotionPage data={ content } />
+
+
+
       </article>
     </>
   )
