@@ -1,4 +1,4 @@
-import { NodeTypes, NotionASTNode } from "../response-to-ast"
+import { NodeTypes, NotionASTNode, convertChildrenToAST } from "../response-to-ast"
 import { NotionCalloutIcon, NotionFigureCaption, NotionRichText, flattenRichText } from "./rich-text"
 import clsx from "clsx"
 import { CheckboxSVG, FileDownloadIcon } from "@/components/svg"
@@ -7,6 +7,7 @@ import { CodeRSC } from "@/components/code-snippet/rsc"
 import { KaTeXRSC } from "@/components/katex/rsc"
 import { getFileName, getMetaInfo } from "@/components/metadata/util"
 import Image from "next/image"
+import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:
@@ -16,19 +17,21 @@ type NotionASTComponentMap = {
   ) => React.ReactNode
 }
 
-export default function NotionASTRenderer(p: {
+export async function RenderNotionPage(p: {
+  data: ListBlockChildrenResponse
+}) {
+  const { ast, unknowns } = await convertChildrenToAST(p.data)
+
+  return (
+    <NotionASTRenderer node={ ast } />
+  )
+}
+
+
+export function NotionASTRenderer(p: {
   node: NotionASTNode,
   components?: Partial<NotionASTComponentMap>
 }) {
-
-  // let component: Partial<NotionASTComponentMap> = p.components ?? {}
-
-  // for (const i in NotionASTDefaultComponentMap) {
-  //   if (i in component === false) {
-  //     component[i as types] = NotionASTDefaultComponentMap[i as types] as any
-  //   }
-  // }
-
 
   return p.node.children.map((e, i) => {
     const Component = p.components
@@ -80,21 +83,21 @@ async function DefaultComponent({ children, className, node, ...props }:
     // ----------------------  --------------------------
 
     case 'heading_1': return (
-      <h1 className={ cn("") } { ...props }>
-        <RichText />
-      </h1>
-    )
-
-    case 'heading_2': return (
-      <h2 className={ cn("") } { ...props }>
+      <h2 className={ cn("text-3xl") } { ...props }>
         <RichText />
       </h2>
     )
 
-    case 'heading_3': return (
-      <h3 className={ cn("") } { ...props }>
+    case 'heading_2': return (
+      <h3 className={ cn("text-xl") } { ...props }>
         <RichText />
       </h3>
+    )
+
+    case 'heading_3': return (
+      <h4 className={ cn("text-lg") } { ...props }>
+        <RichText />
+      </h4>
     )
 
     case 'paragraph': return (
