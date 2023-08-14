@@ -1,18 +1,9 @@
-import { MdiCodeJson } from "@/components/code-snippet"
-import { getFileSpans } from "@/components/code-snippet/util"
-import { Toggle } from "@/components/notion/client"
 import { getArticles, notion } from "@/components/notion/data"
-import { NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
-import { NotionCalloutIcon, NotionFigureCaption, NotionRichText, flattenRichText } from "@/components/notion/rsc/rich-text"
-import { CheckboxSVG, FileDownload } from "@/components/svg"
-import { Code } from "bright"
+import { NodeTypes, NotionASTNode, convertChildrenToAST } from "@/components/notion/response-to-ast"
 import clsx from "clsx"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
-import Image from "next/image"
-import { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
-import { KaTeXRSC } from "@/components/katex/rsx"
-import { getFileName, getMetaInfo } from "@/components/metadata/util"
+import NotionASTRenderer from "@/components/notion/rsc/notion-ast-renderer"
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -45,547 +36,543 @@ export default async function Page({ params }: any) {
 
 export const dynamicParams = false
 
-function NotionASTRenderer(p: { node: NotionASTNode }) {
-  return <>
-    {
-      p.node.children.map((e, i) => {
-        const Component = NotionASTJSXMap[e.type] ?? 'div'
+// function NotionASTRenderer(p: { node: NotionASTNode }) {
+//   return <>
+//     {
+//       p.node.children.map((e, i) => {
+//         const Component = NotionASTJSXMap[e.type] ?? 'div'
 
-        return (
-          <Component key={ i } node={ e }>
-            {
-              e.children ? <NotionASTRenderer node={ e } /> : null
-            }
-          </Component>
-        )
-      })
-    }
-  </>
-}
+//         return (
+//           <Component key={ i } node={ e as never }>
+//             {
+//               e.children ? <NotionASTRenderer node={ e } /> : null
+//             }
+//           </Component>
+//         )
+//       })
+//     }
+//   </>
+// }
+
 
 
 const NotionASTJSXMap: {
   [key in NotionASTNode['type']]:
-  (param: React.DetailedHTMLProps<React.HTMLAttributes<any>, any>
-    &
-  {
-    node: NotionASTNode
-  }) => React.ReactNode
+  (
+    param: React.DetailedHTMLProps<React.HTMLAttributes<any>, any>
+      &
+    {
+      node: NodeTypes[key]
+    }
+  ) => React.ReactNode
 } = {
 
-  bulleted_list_item: ({ children, className, node, ...props }) => {
-    return (
-      <ul className={ clsx("", className) } { ...props }>
-        <NotionASTRenderer node={ node } />
-      </ul>
-    )
-  },
-  numbered_list_item: ({ children, className, node, ...props }) => {
-    return (
-      <ol className={ clsx("", className) } { ...props }>
-        <NotionASTRenderer node={ node } />
-      </ol>
-    )
-  },
-  to_do: ({ children, className, node, ...props }) => {
-    return (
-      <ul className={ clsx("", className) } { ...props }>
-        { children }
-      </ul>
-    )
-  },
-  list_item: ({ children, className, node, ...props }) => {
-    if (
-      'checked' in node.props
-    ) {
-      return (
-        <li className={ clsx("list-none ml-0", className) } { ...props }>
-          <CheckboxSVG
-            checked={ node.props.checked }
-            className="inline w-8 h-6 my-auto mb-1" />
-          <NotionRichText rich_text={ node.content! } />
-          {
-            node.children ? (
-              <div className="">
-                { children }
-              </div>
-            ) : null
-          }
-        </li>
-      )
-    } else {
-      return (
-        <li className={ clsx("", className) } { ...props }>
+  // bulleted_list_item: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <ul className={ clsx("", className) } { ...props }>
+  //       <NotionASTRenderer node={ node } />
+  //     </ul>
+  //   )
+  // },
+  // numbered_list_item: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <ol className={ clsx("", className) } { ...props }>
+  //       <NotionASTRenderer node={ node } />
+  //     </ol>
+  //   )
+  // },
+  // to_do: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <ul className={ clsx("", className) } { ...props }>
+  //       { children }
+  //     </ul>
+  //   )
+  // },
+  // list_item: ({ children, className, node, ...props }) => {
+  //   if (
+  //     'checked' in node.props
+  //   ) {
+  //     return (
+  //       <li className={ clsx("list-none ml-0", className) } { ...props }>
+  //         <CheckboxSVG
+  //           checked={ node.props.checked }
+  //           className="inline w-8 h-6 my-auto mb-1" />
+  //         <NotionRichText rich_text={ node.content! } />
+  //         {
+  //           node.children ? (
+  //             <div className="">
+  //               { children }
+  //             </div>
+  //           ) : null
+  //         }
+  //       </li>
+  //     )
+  //   } else {
+  //     return (
+  //       <li className={ clsx("", className) } { ...props }>
 
-          <NotionRichText rich_text={ node.content! } />
-          {
-            node.children ? (
-              <div className="">
-                { children }
-              </div>
-            ) : null
-          }
-        </li>
-      )
-    }
-  },
-
-
-
-
-  heading_1: ({ children, className, node, ...props }) => {
-    return (
-      <h1 className={ clsx("", className) } { ...props } >
-        <NotionRichText rich_text={ node.content! } />
-      </h1>
-    )
-  },
-  heading_2: ({ children, className, node, ...props }) => {
-    return (
-      <h2 className={ clsx("", className) } { ...props }>
-        <NotionRichText rich_text={ node.content! } />
-      </h2>
-    )
-  },
-  heading_3: ({ className, node, ...props }) => {
-    return (
-      <h3 className={ clsx("", className) } { ...props } >
-        <NotionRichText rich_text={ node.content! } />
-      </h3>
-    )
-  },
+  //         <NotionRichText rich_text={ node.content! } />
+  //         {
+  //           node.children ? (
+  //             <div className="">
+  //               { children }
+  //             </div>
+  //           ) : null
+  //         }
+  //       </li>
+  //     )
+  //   }
+  // },
 
 
 
 
-
-  paragraph: ({ children, className, node, ...props }) => {
-    return (
-      <>
-        <p className={ clsx("m-0", className) } { ...props }>
-          <NotionRichText rich_text={ node.content! } />
-        </p>
-        {
-          node.children ? (
-            <div className="pl-4">
-              { children }
-            </div>
-          ) : null
-        }
-      </>
-    )
-  },
-
-  code: ({ className, node, ...props }) => {
-    return (
-      <Code
-        lang={ node.props.language }
-        theme="one-dark-pro"
-        title={ flattenRichText(node.props.caption) }
-        className='border border-zinc-800 rounded-lg my-4 relative w-full bg-black'
-        codeClassName='p-0 -mt-1'
-        extensions={ [
-          {
-            name: 'titleBar',
-            TitleBarContent(props) {
-              const { title, colors, theme } = props
-              const { editor, background } = colors
-              const textspans = getFileSpans(title ?? '')
-              return (
-                <label
-                  className="p-3 text-xs text-zinc-400 px-4 flex justify-between bg-black w-full"
-                  htmlFor={ title }
-                >
-                  <div className="flex gap-1">
-                    <MdiCodeJson className="h-full mr-2" />
-                    {
-                      textspans.map((t, i) =>
-                        t === '/' ?
-                          <span key={ i }>/</span> :
-                          <span key={ i }>{ t }</span>
-                      )
-                    }
-                  </div>
-                </label>
-              )
-            }
-          },
-        ] }
-
-      >
-        { node.content?.map(c => c.plain_text).join('') as any }
-      </Code>
-    )
-  },
-
-
-  toggle: ({ children, className, node, ...props }) => {
-    return (
-      <Toggle headerSlot={
-        <NotionRichText rich_text={ node.content! } />
-      }>
-        <div className="pl-4">
-          { children }
-        </div>
-      </Toggle>
-    )
-  },
-
-
-  quote: ({ children, className, node, ...props }) => {
-    return (
-      <blockquote className={ clsx("", className) } { ...props }>
-        <NotionRichText rich_text={ node.content! } />
-        {
-          node.children ? (
-            <div className="">
-              { children }
-            </div>
-          ) : null
-        }
-      </blockquote>
-    )
-  },
-  divider: ({ children, className, node, ...props }) => {
-    return (<hr className={ clsx("", className) } { ...props } />)
-  },
-
-
-  equation: ({ children, className, node, ...props }) => {
-    return (
-      <KaTeXRSC
-        settings={ {
-          
-        } }
-        className="py-2 hover:bg-zinc-900"
-        math={ node.props.expression }
-        block
-      />
-    )
-  },
-
-
-
-  callout: ({ children, className, node, ...props }) => {
-    return (
-      <div className={ clsx("flex gap-4 p-4 bg-zinc-900 rounded-md border-zinc-800 my-2", className) } { ...props } >
-        <NotionCalloutIcon icon={ node.props.icon } />
-        <div>
-          <NotionRichText rich_text={ node.content! } />
-          { children }
-        </div>
-      </div>
-    )
-  },
-
-  column_list: ({ className, node, ...props }) => {
-    return (
-      <div className={ clsx("grid grid-flow-col auto-cols-fr gap-x-4", className) } { ...props } />
-    )
-  },
-
-  column: ({ className, node, ...props }) => {
-    return (
-      <div className={ clsx("w-full my-2", className) } { ...props } />
-    )
-  },
+  // heading_1: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <h1 className={ clsx("", className) } { ...props } >
+  //       <NotionRichText rich_text={ node.content! } />
+  //     </h1>
+  //   )
+  // },
+  // heading_2: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <h2 className={ clsx("", className) } { ...props }>
+  //       <NotionRichText rich_text={ node.content! } />
+  //     </h2>
+  //   )
+  // },
+  // heading_3: ({ className, node, ...props }) => {
+  //   return (
+  //     <h3 className={ clsx("", className) } { ...props } >
+  //       <NotionRichText rich_text={ node.content! } />
+  //     </h3>
+  //   )
+  // },
 
 
 
 
 
-  table: ({ children, className, node, ...props }) => {
-    const { has_row_header, has_column_header } = node.props
+  // paragraph: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <>
+  //       <p className={ clsx("m-0", className) } { ...props }>
+  //         <NotionRichText rich_text={ node.content! } />
+  //       </p>
+  //       {
+  //         node.children ? (
+  //           <div className="pl-4">
+  //             { children }
+  //           </div>
+  //         ) : null
+  //       }
+  //     </>
+  //   )
+  // },
 
-    const [headRow, ...rest] = node.children
+  // code: ({ className, node, ...props }) => {
+  //   return (
+  //     <Code
+  //       lang={ node.props.language }
+  //       theme="one-dark-pro"
+  //       title={ flattenRichText(node.props.caption) }
+  //       className='border border-zinc-800 rounded-lg my-4 relative w-full bg-black'
+  //       codeClassName='p-0 -mt-1'
+  //       extensions={ [
+  //         {
+  //           name: 'titleBar',
+  //           TitleBarContent(props) {
+  //             const { title, colors, theme } = props
+  //             const { editor, background } = colors
+  //             const textspans = getFileSpans(title ?? '')
+  //             return (
+  //               <label
+  //                 className="p-3 text-xs text-zinc-400 px-4 flex justify-between bg-black w-full"
+  //                 htmlFor={ title }
+  //               >
+  //                 <div className="flex gap-1">
+  //                   <MdiCodeJson className="h-full mr-2" />
+  //                   {
+  //                     textspans.map((t, i) =>
+  //                       t === '/' ?
+  //                         <span key={ i }>/</span> :
+  //                         <span key={ i }>{ t }</span>
+  //                     )
+  //                   }
+  //                 </div>
+  //               </label>
+  //             )
+  //           }
+  //         },
+  //       ] }
 
-    return (
-      <table className={ clsx("my-3 bg-zinc-900/70", className) } { ...props }>
-        {
-          has_row_header === true ? (
-            <thead>
-              <tr>
-                {
-                  node.children[0].props.cells.map((c: RichTextItemResponse[], i: number) => {
-                    return (
-                      <th scope="row" key={ i } className="border border-zinc-800 p-2 px-2.5 bg-black">
-                        <NotionRichText rich_text={ c! } />
-                      </th>
-                    )
-                  })
-                }
-              </tr>
-            </thead>
-          ) : null
-        }
-        <tbody>
-          {
-            (has_row_header ? rest : node.children).map((c, i) => {
-              return (
-                <tr key={ i }>
-                  {
-                    c.props.cells.map((c: RichTextItemResponse[], i: number) => {
-                      if (has_column_header && i === 0) {
-                        return (
-                          <th scope="col" key={ i } className="border border-zinc-800 p-2 px-2.5 bg-black">
-                            <NotionRichText rich_text={ c! } />
-                          </th>
-                        )
-                      } else
-                        return (
-                          <td key={ i } className="border border-zinc-800 p-2 px-2.5">
-                            <NotionRichText rich_text={ c! } />
-                          </td>
-                        )
-                    })
-                  }
-                </tr>
-              )
-            })
-          }
-        </tbody>
-      </table>
-    )
-  },
-  table_row: ({ className, node, ...props }) => {
-    return (
-      <tr className={ clsx("", className) } { ...props }>
-        {
-          node.props.cells.map((cell: RichTextItemResponse[], i: number) => {
-            return (
-              <td key={ i } className="border border-zinc-800 p-1.5 px-2.5">
-                <NotionRichText rich_text={ cell! } />
-              </td>
-            )
-          })
-        }
-      </tr>
-    )
-  },
+  //     >
+  //       { node.content?.map(c => c.plain_text).join('') as any }
+  //     </Code>
+  //   )
+  // },
 
 
+  // toggle: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <Toggle headerSlot={
+  //       <NotionRichText rich_text={ node.content! } />
+  //     }>
+  //       <div className="pl-4">
+  //         { children }
+  //       </div>
+  //     </Toggle>
+  //   )
+  // },
 
 
-  bookmark: async ({ children, className, node, ...props }) => {
-    const metadata = await getMetaInfo(node.props.url)
-    return (
-      <div className="my-2">
-        <a
-          target="_blank"
-          href={ node.props.url }
-          className={ clsx(
-            "w-full flex flex-row rounded-md border border-zinc-800 no-underline"
-            , "hover:bg-zinc-900/70"
-            , className) } { ...props } >
-          {/* {
-            metadata.image ? (
-              <div className="w-24">
-                <img
-                  src={ metadata.image }
-                  alt="Metadata Image"
-                />
-              </div>
-            ) : null
-          } */}
-          <div className="p-3 w-full flex flex-col">
-            <div className="text-zinc-200 truncate w-full">
-              { metadata.title }
-            </div>
-            {
-              metadata.description ? (
-                <div className="text-sm text-zinc-400 mt-1 mb-2 h-10 w-full line-clamp-2">
-                  { metadata.description }
-                </div>
-              ) : null
-            }
-            <div className="text-sm text-zinc-500 flex flex-row gap-2">
-              {
-                metadata.faviconpath ? (
-                  <div className="flex items-center">
-                    <Image
-                      unoptimized
-                      width="16"
-                      height="16"
-                      src={ metadata.faviconpath }
-                      alt="Link Icon URL"
-                      className="w-4 h-4"
-                    />
-                  </div>
-                ) : null
-              }
-              <div>
-                { metadata.url ? metadata.url.host : node.props.url }
-              </div>
-            </div>
-          </div>
-          {/* <JSONStringify data={metadata.faviconpath} /> */ }
-        </a>
-        <NotionFigureCaption caption={ node.props.caption } />
-      </div>
-    )
-  },
-  image: ({ children, className, node, ...props }) => {
-    const src = Object.hasOwn(node.props, 'external') ? node.props.external.url :
-      Object.hasOwn(node.props, 'file') ? node.props.file.url : ''
+  // quote: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <blockquote className={ clsx("", className) } { ...props }>
+  //       <NotionRichText rich_text={ node.content! } />
+  //       {
+  //         node.children ? (
+  //           <div className="">
+  //             { children }
+  //           </div>
+  //         ) : null
+  //       }
+  //     </blockquote>
+  //   )
+  // },
+  // divider: ({ children, className, node, ...props }) => {
+  //   return (<hr className={ clsx("", className) } { ...props } />)
+  // },
 
 
-    return (
-      <div className={ clsx("my-2 relative w-full p-2", className) } { ...props }>
-
-        {// eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={ src }
-            alt="a Picture"
-            className="h-auto w-auto mx-auto rounded-md"
-          />
-        }
-
-        <NotionFigureCaption caption={ node.props.caption } center />
-      </div>
-    )
-  },
+  // equation: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <KaTeXRSC
+  //       settings={ { } }
+  //       className="py-2 hover:bg-zinc-900"
+  //       math={ node.props.expression }
+  //       block
+  //     />
+  //   )
+  // },
 
 
 
-  video: ({ children, className, node, ...props }) => {
-    const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
-    const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
+  // callout: ({ children, className, node, ...props }) => {
+  //   return (
+  //     <div className={ clsx("flex gap-4 p-4 bg-zinc-900 rounded-md border-zinc-800 my-2", className) } { ...props } >
+  //       <NotionCalloutIcon icon={ node.props.icon } />
+  //       <div>
+  //         <NotionRichText rich_text={ node.content! } />
+  //         { children }
+  //       </div>
+  //     </div>
+  //   )
+  // },
 
-    return (
-      <div className={ clsx("my-2", className) } { ...props }>
-        {/* <JSONStringify data={ node.props } /> */ }
-        {
-          external ? (
-            <iframe
-              className="rounded-md mx-auto"
-              width="560"
-              height="315"
-              src={ external.url.replace('watch?v=', 'embed/') }
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen>
-            </iframe>
-          ) : null
-        }
-        {
-          file ? (
-            <video
-              controls
-              src={ file.url }
-              className="rounded-md mx-auto"
-            >
-            </video>
-          ) : null
-        }
-        <NotionFigureCaption caption={ node.props.caption } center />
-      </div>
-    )
-  },
+  // column_list: ({ className, node, ...props }) => {
+  //   return (
+  //     <div className={ clsx("grid grid-flow-col auto-cols-fr gap-x-4", className) } { ...props } />
+  //   )
+  // },
+
+  // column: ({ className, node, ...props }) => {
+  //   return (
+  //     <div className={ clsx("w-full my-2", className) } { ...props } />
+  //   )
+  // },
 
 
 
-  pdf: ({ className, node, ...props }) => {
-    const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
-    const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
-    const url = external ? external.url : file ? file.url : undefined
-
-    return (
-      <div className="my-4 p-2">
-        <embed
-          className="max-h-[60vh] aspect-[6/7] w-full rounded-md"
-          src={ url }
-        />
-        <NotionFigureCaption caption={ node.props.caption } />
-      </div>
-    )
-  },
 
 
-  audio: ({ children, className, node, ...props }) => {
-    const file = Object.hasOwn(node.props, 'file') ? node.props.file : undefined
+  // table: ({ children, className, node, ...props }) => {
+  //   const { has_row_header, has_column_header } = node.props
 
-    return (
-      <div className={ clsx("my-4 p-2", className) } { ...props }>
-        {
-          file ? (
-            <audio src={ file.url } controls className="w-full" />
-          ) : null
-        }
-        <NotionFigureCaption caption={ node.props.caption } />
-      </div>
-    )
-  },
+  //   const [headRow, ...rest] = node.children
+
+  //   return (
+  //     <table className={ clsx("my-3 bg-zinc-900/70", className) } { ...props }>
+  //       {
+  //         has_row_header === true ? (
+  //           <thead>
+  //             <tr>
+  //               {
+  //                 node.children[0].props.cells.map((c: RichTextItemResponse[], i: number) => {
+  //                   return (
+  //                     <th scope="row" key={ i } className="border border-zinc-800 p-2 px-2.5 bg-black">
+  //                       <NotionRichText rich_text={ c! } />
+  //                     </th>
+  //                   )
+  //                 })
+  //               }
+  //             </tr>
+  //           </thead>
+  //         ) : null
+  //       }
+  //       <tbody>
+  //         {
+  //           (has_row_header ? rest : node.children).map((c, i) => {
+  //             return (
+  //               <tr key={ i }>
+  //                 {
+  //                   c.props.cells.map((c: RichTextItemResponse[], i: number) => {
+  //                     if (has_column_header && i === 0) {
+  //                       return (
+  //                         <th scope="col" key={ i } className="border border-zinc-800 p-2 px-2.5 bg-black">
+  //                           <NotionRichText rich_text={ c! } />
+  //                         </th>
+  //                       )
+  //                     } else
+  //                       return (
+  //                         <td key={ i } className="border border-zinc-800 p-2 px-2.5">
+  //                           <NotionRichText rich_text={ c! } />
+  //                         </td>
+  //                       )
+  //                   })
+  //                 }
+  //               </tr>
+  //             )
+  //           })
+  //         }
+  //       </tbody>
+  //     </table>
+  //   )
+  // },
+  // table_row: ({ className, node, ...props }) => {
+  //   return (
+  //     <tr className={ clsx("", className) } { ...props }>
+  //       {
+  //         node.props.cells.map((cell: RichTextItemResponse[], i: number) => {
+  //           return (
+  //             <td key={ i } className="border border-zinc-800 p-1.5 px-2.5">
+  //               <NotionRichText rich_text={ cell! } />
+  //             </td>
+  //           )
+  //         })
+  //       }
+  //     </tr>
+  //   )
+  // },
 
 
-  file: async ({ children, className, node, ...props }) => {
-    const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
-    const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
-    const url = external ? external.url : file ? file.url : undefined
-    const filename = url ? await getFileName(url) : undefined
-    const source = url?.includes('notion-static.com') ? 'notion-static.com' : filename?.url?.hostname
-
-    return (
-      <div className={ clsx("my-4 no-underline ", className) } { ...props }>
-        <a
-          href={ url }
-          target="_blank"
-          download={ filename }
-          className="p-4 no-underline bg-zinc-900/50 rounded-md hover:bg-zinc-900 w-full flex flex-col cursor-pointer">
-          <FileDownload className="inline text-2xl mb-1" />
-          <div className="flex flex-row items-end">
-            <span className="text-zinc-200">
-              { filename ? filename.title : "Unknown File Source" }
-            </span>
-            <span className="text-sm mx-2 text-zinc-500">
-              ({ source })
-            </span>
-          </div>
-          <NotionFigureCaption caption={ node.props.caption } className="mt-0" />
-        </a>
-        {/* <JSONStringify data={ node } /> */ }
-      </div>
-    )
-  },
 
 
-  embed: ({ children, className, node, ...props }) => {
-    const url = node.props.url as string
-    const spotify = url?.includes('open.spotify.com') ? url.replaceAll('/track/', '/embed/track/') : undefined
-    const soundcloud = url?.includes('soundcloud.com') ? url : undefined
+  // bookmark: async ({ children, className, node, ...props }) => {
+  //   const metadata = await getMetaInfo(node.props.url)
+  //   return (
+  //     <div className="my-2">
+  //       <a
+  //         target="_blank"
+  //         href={ node.props.url }
+  //         className={ clsx(
+  //           "w-full flex flex-row rounded-md border border-zinc-800 no-underline"
+  //           , "hover:bg-zinc-900/70"
+  //           , className) } { ...props } >
+  //         <div className="p-3 w-full flex flex-col">
+  //           <div className="text-zinc-200 truncate w-full">
+  //             { metadata.title }
+  //           </div>
+  //           {
+  //             metadata.description ? (
+  //               <div className="text-sm text-zinc-400 mt-1 mb-2 h-10 w-full line-clamp-2">
+  //                 { metadata.description }
+  //               </div>
+  //             ) : null
+  //           }
+  //           <div className="text-sm text-zinc-500 flex flex-row gap-2">
+  //             {
+  //               metadata.faviconpath ? (
+  //                 <div className="flex items-center">
+  //                   <Image
+  //                     unoptimized
+  //                     width="16"
+  //                     height="16"
+  //                     src={ metadata.faviconpath }
+  //                     alt="Link Icon URL"
+  //                     className="w-4 h-4"
+  //                   />
+  //                 </div>
+  //               ) : null
+  //             }
+  //             <div>
+  //               { metadata.url ? metadata.url.host : node.props.url }
+  //             </div>
+  //           </div>
+  //         </div>
+  //         {/* <JSONStringify data={metadata.faviconpath} /> */ }
+  //       </a>
+  //       <NotionFigureCaption caption={ node.props.caption } />
+  //     </div>
+  //   )
+  // },
 
-    return (
-      <div className={ clsx("my-4 p-2 bg-black", className) } { ...props } >
-        {
-          spotify ? (
-            <iframe
-              className="bg-black rounded-xl"
-              src={ spotify }
-              width="100%"
-              height="152"
-              allowFullScreen
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-            >
-            </iframe>
-          ) : null
-        }
-        {
-          soundcloud ? (
-            <>
-              <iframe
-                width="100%"
-                height="166"
-                allow="autoplay"
-                src={ "https://w.soundcloud.com/player/?url=" + encodeURIComponent(soundcloud) }>
-              </iframe>
-            </>
-          ) : null
-        }
-        <NotionFigureCaption caption={ node.props.caption } center />
-      </div>
-    )
-  },
+
+
+
+  // image: ({ children, className, node, ...props }) => {
+  //   const src = Object.hasOwn(node.props, 'external') ? node.props.external.url :
+  //     Object.hasOwn(node.props, 'file') ? node.props.file.url : ''
+
+
+  //   return (
+  //     <div className={ clsx("my-2 relative w-full p-2", className) } { ...props }>
+
+  //       {// eslint-disable-next-line @next/next/no-img-element
+  //         <img
+  //           src={ src }
+  //           alt="a Picture"
+  //           className="h-auto w-auto mx-auto rounded-md"
+  //         />
+  //       }
+
+  //       <NotionFigureCaption caption={ node.props.caption } center />
+  //     </div>
+  //   )
+  // },
+
+
+
+  // video: ({ children, className, node, ...props }) => {
+  //   const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
+  //   const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
+
+  //   return (
+  //     <div className={ clsx("my-2", className) } { ...props }>
+  //       {/* <JSONStringify data={ node.props } /> */ }
+  //       {
+  //         external ? (
+  //           <iframe
+  //             className="rounded-md mx-auto"
+  //             width="560"
+  //             height="315"
+  //             src={ external.url.replace('watch?v=', 'embed/') }
+  //             title="YouTube video player"
+  //             frameBorder="0"
+  //             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  //             allowFullScreen>
+  //           </iframe>
+  //         ) : null
+  //       }
+  //       {
+  //         file ? (
+  //           <video
+  //             controls
+  //             src={ file.url }
+  //             className="rounded-md mx-auto"
+  //           >
+  //           </video>
+  //         ) : null
+  //       }
+  //       <NotionFigureCaption caption={ node.props.caption } center />
+  //     </div>
+  //   )
+  // },
+
+
+
+  // pdf: ({ className, node, ...props }) => {
+  //   const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
+  //   const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
+  //   const url = external ? external.url : file ? file.url : undefined
+
+  //   return (
+  //     <div className="my-4 p-2">
+  //       <embed
+  //         className="max-h-[60vh] aspect-[6/7] w-full rounded-md"
+  //         src={ url }
+  //       />
+  //       <NotionFigureCaption caption={ node.props.caption } />
+  //     </div>
+  //   )
+  // },
+
+
+  // audio: ({ children, className, node, ...props }) => {
+  //   const file = Object.hasOwn(node.props, 'file') ? node.props.file : undefined
+
+  //   return (
+  //     <div className={ clsx("my-4 p-2", className) } { ...props }>
+  //       {
+  //         file ? (
+  //           <audio src={ file.url } controls className="w-full" />
+  //         ) : null
+  //       }
+  //       <NotionFigureCaption caption={ node.props.caption } />
+  //     </div>
+  //   )
+  // },
+
+
+  // file: async ({ children, className, node, ...props }) => {
+  //   const external = node.props.type === 'external' ? node.props.external as { url: string } : undefined
+  //   const file = node.props.type === 'file' ? node.props.file as { url: string, expiry_time: string } : undefined
+  //   const url = external ? external.url : file ? file.url : undefined
+  //   const filename = url ? await getFileName(url) : undefined
+  //   const source = url?.includes('notion-static.com') ? 'notion-static.com' : filename?.url?.hostname
+
+  //   return (
+  //     <div className={ clsx("my-4 no-underline ", className) } { ...props }>
+  //       <a
+  //         href={ url }
+  //         target="_blank"
+  //         download={ filename }
+  //         className="p-4 no-underline bg-zinc-900/50 rounded-md hover:bg-zinc-900 w-full flex flex-col cursor-pointer">
+  //         <FileDownloadIcon className="inline text-2xl mb-1" />
+  //         <div className="flex flex-row items-end">
+  //           <span className="text-zinc-200">
+  //             { filename ? filename.title : "Unknown File Source" }
+  //           </span>
+  //           <span className="text-sm mx-2 text-zinc-500">
+  //             ({ source })
+  //           </span>
+  //         </div>
+  //         <NotionFigureCaption caption={ node.props.caption } className="mt-0" />
+  //       </a>
+  //       {/* <JSONStringify data={ node } /> */ }
+  //     </div>
+  //   )
+  // },
+
+
+  // embed: ({ children, className, node, ...props }) => {
+  //   const url = node.props.url as string
+  //   const spotify = url?.includes('open.spotify.com') ? url.replaceAll('/track/', '/embed/track/') : undefined
+  //   const soundcloud = url?.includes('soundcloud.com') ? url : undefined
+
+  //   return (
+  //     <div className={ clsx("my-4 p-2 bg-black", className) } { ...props } >
+  //       {
+  //         spotify ? (
+  //           <iframe
+  //             className="bg-black rounded-xl"
+  //             src={ spotify }
+  //             width="100%"
+  //             height="152"
+  //             allowFullScreen
+  //             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+  //             loading="lazy"
+  //           >
+  //           </iframe>
+  //         ) : null
+  //       }
+  //       {
+  //         soundcloud ? (
+  //           <>
+  //             <iframe
+  //               width="100%"
+  //               height="166"
+  //               allow="autoplay"
+  //               src={ "https://w.soundcloud.com/player/?url=" + encodeURIComponent(soundcloud) }>
+  //             </iframe>
+  //           </>
+  //         ) : null
+  //       }
+  //       <NotionFigureCaption caption={ node.props.caption } center />
+  //     </div>
+  //   )
+  // },
+
   link_preview: ({ className, node, ...props }) => {
     return (<a className={ clsx("", className) } { ...props } />)
   },

@@ -5,7 +5,7 @@ import { MdiCodeJson } from "./client"
 export function CodeRSC(p: {
   language: string,
   title?: string,
-  children: React.ReactNode
+  code: string
 }) {
   return (
     <Code
@@ -41,10 +41,7 @@ export function CodeRSC(p: {
           }
         },
       ] }
-
-    >
-      {/* { node.content?.map(c => c.plain_text).join('') as any } */ }
-      { p.children }
-    </Code>
+      code={p.code}
+    />
   )
 }
