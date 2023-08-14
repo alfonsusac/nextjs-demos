@@ -11,7 +11,7 @@ export default async function Home() {
   const articles = await getArticles()
 
   return (
-    <>
+    <article>
       <h1>
         Welcome to Alfon&apos;s Next.js Notes
       </h1>
@@ -66,7 +66,7 @@ export default async function Home() {
         }
       </ul>
       
-    </>
+    </article>
   )
 }
 
