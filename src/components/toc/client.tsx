@@ -63,8 +63,8 @@ function useActiveHeadings(headingIds: string[]) {
           // Ignore intersection from the top edge
           if (e.boundingClientRect.top < 0) return
 
-          console.info(e.boundingClientRect)
-          console.info(e.rootBounds)
+          // console.info(e.boundingClientRect)
+          // console.info(e.rootBounds)
 
           // It can be deduced from observation that
           //  isIntersecting: true = going down
