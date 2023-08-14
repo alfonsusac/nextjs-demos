@@ -4,7 +4,8 @@ import clsx from "clsx"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
 import { NotionASTRenderer, RenderNotionPage } from "@/components/notion/rsc/notion-ast-renderer"
-import { NotionImage, NotionRichText } from "@/components/notion/rsc/rich-text"
+import { NotionIcon, NotionImage, NotionRichText } from "@/components/notion/rsc/rich-text"
+import { formatRelative } from "date-fns"
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -26,22 +27,35 @@ export default async function Page({ params }: any) {
 
   console.info("Done generating page!")
 
-  return (<>
-    <NotionImage
-      alt="Page Cover"
-      nprop={ article.cover as any }
-      className="-mt-12 w-full -mx-28"
-    />
-    <header>
-      <h1 className="">
-        <NotionRichText rich_text={article.title} />
-      </h1>
-      <div>
-        Last updated: { article.last_edited_time} 
-      </div>
-    </header>
-    <RenderNotionPage data={ content } />
-  </>)
+  return (
+    <>
+      <NotionImage
+        alt="Page Cover"
+        nprop={ article.cover as any }
+        className="w-full h-40 object-cover after:bg-gradient-to-t after:from-zinc-800 after:to-transparent"
+      />
+      <article>
+
+        <header className="my-8 mt-8 space-y-2 relative">
+          <NotionIcon icon={ article.icon }
+            className="text-5xl m-2 absolute"
+          />
+          <div className="text-sm text-zinc-600">
+            Last updated: { formatRelative(new Date(article.last_edited_time), new Date()) }
+          </div>
+          
+
+          <h1 className="">
+            <NotionRichText rich_text={ article.title } />
+          </h1>
+
+
+        </header>
+
+        <RenderNotionPage data={ content } />
+      </article>
+    </>
+  )
 }
 
 
