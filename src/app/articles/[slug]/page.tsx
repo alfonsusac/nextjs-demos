@@ -3,7 +3,7 @@ import { NodeTypes, NotionASTNode, convertChildrenToAST } from "@/components/not
 import clsx from "clsx"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
-import NotionASTRenderer from "@/components/notion/rsc/notion-ast-renderer"
+import { NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -21,10 +21,11 @@ export default async function Page({ params }: any) {
   const article = articles.find(r => r.slug === params.slug)
   if (!article) notFound()
 
-  const { ast, unknowns } = await convertChildrenToAST(await notion.blocks.children.list({
-    block_id: article.id,
-    page_size: 1000,
-  }))
+  const { ast, unknowns } = await convertChildrenToAST(
+    await notion.blocks.children.list({
+      block_id: article.id,
+      page_size: 1000,
+    }))
 
   console.info("Done generating page!")
 
