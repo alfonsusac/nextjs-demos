@@ -12,6 +12,7 @@ import { TOCProvider } from '@/components/toc/context'
 import { getHeadings } from '@/components/toc/rsc'
 import { ToCSidebar } from '@/components/toc/client'
 import MDX_RoutingComputation from "./(demos)/routing/static-vs-dynamic-computation/content.mdx"
+import { cn } from '@/components/typography'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,7 +28,7 @@ export default function RootLayout(p: {
 }) {
 
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth scroll-p-32">
       <body className={ inter.className + " flex flex-col min-h-screen scroll-smooth" }>
 
         <Header className="px-4 sticky top-0 sm:pt-4 sm:px-8 bg-black z-50 shadow-xl shadow-black max-w-screen-xl w-full mx-auto" />
@@ -70,7 +71,11 @@ export default function RootLayout(p: {
               <Page label="Go to default 404" path='/404' />
             </Sidebar>
 
-            <main className="w-full mt-8 mb-[40vh] max-w-screen-2xl mx-4 sm:mx-0">
+            <main className={
+              cn(
+                "w-full mt-8 mb-[40vh] max-w-screen-2xl mx-4 sm:mx-0"
+              )
+            }>
               { p.children }
             </main>
 
