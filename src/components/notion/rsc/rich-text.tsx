@@ -31,8 +31,10 @@ export function NotionIcon({
         // height: '1em',
         // width: '1em',
         // margin: '0 .05em 0 .1em',
+        marginBottom: '0.1em',
         verticalAlign: '-0.1em',
-        minWidth: '1em'
+        minWidth: '1em',
+        lineHeight: '1.5'
       } }
     >
       { icon.emoji }
@@ -48,6 +50,7 @@ export function NotionIcon({
         // height: '1em',
         // width: '1em',
         // margin: '0 .05em 0 .1em',
+        marginTop: '0.1em',
         verticalAlign: '-0.1em',
         minWidth: '1em'
       } }
@@ -62,7 +65,7 @@ export function NotionIcon({
       style={ {
         // height: '1em',
         // width: '1em',
-        // margin: '0 .05em 0 .1em',
+        marginTop: '0.1em',
         verticalAlign: '-0.1em',
         minWidth: '1em'
       } }
