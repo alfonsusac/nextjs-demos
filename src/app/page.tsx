@@ -11,7 +11,7 @@ export default async function Home() {
   const articles = await getArticles()
 
   return (
-    <article>
+    <article className="mx-auto">
       <h1>
         Welcome to Alfon&apos;s Next.js Notes
       </h1>
@@ -27,6 +27,8 @@ export default async function Home() {
           ) }
         </>
       ) }
+
+
       <h2 className="mb-4">
         Articles
       </h2>

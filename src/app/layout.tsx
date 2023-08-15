@@ -2,12 +2,9 @@ import Image from 'next/image'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Category, Page } from './client'
-import clsx from 'clsx'
 import Link from "next/link"
 import "prism-themes/themes/prism-one-dark.min.css"
 import { TOCProvider } from '@/components/toc/context'
-import { getHeadings } from '@/components/toc/rsc'
-import { ToCSidebar } from '@/components/toc/client'
 import MDX_RoutingComputation from "./demos/routing/static-vs-dynamic-computation/content.mdx"
 import { cn } from '@/components/typography'
 
@@ -29,78 +26,46 @@ export default function RootLayout(p: {
 
   return (
     <html lang="en" className="scroll-smooth scroll-p-32">
-      <body className={ inter.className + " flex flex-col min-h-screen scroll-smooth" }>
+      <body className={ cn(
+        inter.className,
+        "flex flex-col min-h-screen scroll-smooth",
 
-        <Header className="px-4 sticky top-0 sm:pt-4 sm:px-8 bg-black z-50 shadow-xl shadow-black max-w-screen-xl w-full mx-auto" />
+        "prose-h1:text-3xl",
+        "prose-h1:font-semibold",
+        "prose-h1:text-zinc-200",
 
-        <Content className="flex-auto flex flex-row gap-4 max-w-screen-lg w-full mx-auto px-4">
-          <TOCProvider>
+        "prose-h2:text-2xl",
+        "prose-h2:font-semibold",
+        "prose-h2:mt-12",
+        "prose-h2:text-zinc-200",
 
-            <Sidebar className={ clsx(
-              "hidden md:block",
-              "flex-shrink-0 bg-black",
-              // "sm:border-r border-r-zinc-800",
-              "absolute sm:static",
-              "w-full sm:w-60",
-              "h-full sm:h-auto",
-              "pl-4 sm:pl-8"
-            ) }>
-              <Page label="▼ Home" path='/' />
-              <Page label="◩ Articles" category={ `/articles` } path='/articles' >
-                <ToCSidebar startDepth={ 2 } />
-              </Page>
-              
-              { dirs.map(category =>
+        "prose-h3:text-xl",
+        "prose-h3:font-semibold",
+        "prose-h3:mt-8",
+        "prose-h3:text-zinc-200",
 
-                <li key={ category.name } className="my-8">
-                  <ul>
+        "prose-h4:text-lg",
+        "prose-h4:font-semibold",
+        "prose-h4:mt-4",
+        "prose-h4:text-zinc-200",
 
-                    <Category label={ category.name } />
+      ) }>
 
-                    { category.topics.map(page =>
-                      <Page key={ page.title } label={ page.title } category={ `/${category.name}/` } match={ 2 } >
-                        <ToCSidebar items={ getHeadings(page.content) } startDepth={ 2 }  />
-                      </Page>
-                    ) }
+        <Header className="px-4 sticky top-0 sm:pt-4 sm:px-8 bg-black z-50 shadow-xl shadow-black max-w-screen-lg w-full mx-auto" />
 
-                  </ul>
-                </li>
-
-              ) }
-              <Page label="Trigger 404 by notFound()" path='/self-404' />
-              <Page label="Go to default 404" path='/404' />
-            </Sidebar>
-
-            <main className={
-              cn(
-                "w-full mt-8 mb-[40vh] max-w-screen-2xl mx-4 sm:mx-0",
-
-                "prose-h1:text-3xl",
-                "prose-h1:text-zinc-200",
-                "prose-h1:font-semibold",
-
-                "prose-h2:text-2xl",
-                "prose-h2:font-semibold",
-                "prose-h2:text-zinc-200",
-                "prose-h2:mt-12",
-
-                "prose-h3:text-xl",
-                "prose-h3:font-semibold",
-                "prose-h3:text-zinc-200",
-                "prose-h3:mt-8",
-
-                "prose-h4:text-lg",
-                "prose-h4:font-semibold",
-                "prose-h4:text-zinc-200",
-                "prose-h4:mt-4",
-
-              )
+        <TOCProvider>
+          <Content className="max-w-screen-lg w-full mx-auto px-4">
+            <main className={ cn(
+              "w-full",
+              "max-w-screen-2xl mx-4 sm:mx-auto",
+              "mt-8 mb-[40vh]",
+              "flex flex-row gap-4",
+            )
             }>
               { p.children }
             </main>
-
-          </TOCProvider>
-        </Content>
+          </Content>
+        </TOCProvider>
 
       </body>
     </html>
@@ -129,8 +94,9 @@ export default function RootLayout(p: {
           </Link>
         </div>
 
-        <Page as="div" label="▼ Home" path='/'/>
-        <Page as="div" label="◩ Articles" category={ `/articles` } path='/articles'/>
+        <Page as="div" label="▼ Home" path='/' />
+        <Page as="div" label="▧ Demos" category={ `/demos` } path='/demos' />
+        <Page as="div" label="◩ Articles" category={ `/articles` } path='/articles' />
 
       </header>
     )
@@ -142,27 +108,7 @@ export default function RootLayout(p: {
       </main>
     )
   }
-  function Sidebar(p: {
-    children: React.ReactNode
-    className: string
-  }) {
-    return (
-      <nav className={ p.className }>
-        <div className="absolute right-8 sm:hidden">
-          <CloseIcon className="w-6 h-6" />
-        </div>
-        <ul className="sticky top-28">
-          { p.children }
-        </ul>
-      </nav>
-    )
 
-    function CloseIcon(props: React.SVGProps<SVGSVGElement>) {
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" { ...props }><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6L6.4 19Z"></path></svg>
-      )
-    }
-  }
 }
 
 const dirs: {
@@ -172,27 +118,27 @@ const dirs: {
     content?: JSX.Element
   }[]
 }[] = [
-  {
-    name: "Routing",
-    topics: [
-      { title: "Static vs Dynamic Computation", content: <MDX_RoutingComputation /> },
-      { title: "Dynamic Routes" },
-      { title: "Search Params" }
-    ]
-  },
-  {
-    name: "Rendering",
-    topics: [
-      { title: "Prerendering with use client" },
-      { title: "React Components" }
-    ]
-  },
-  {
-    name: "Fetching",
-    topics: [
-      { title: "fetch()" }
-    ]
-  }
-]
+    {
+      name: "Routing",
+      topics: [
+        { title: "Static vs Dynamic Computation", content: <MDX_RoutingComputation /> },
+        { title: "Dynamic Routes" },
+        { title: "Search Params" }
+      ]
+    },
+    {
+      name: "Rendering",
+      topics: [
+        { title: "Prerendering with use client" },
+        { title: "React Components" }
+      ]
+    },
+    {
+      name: "Fetching",
+      topics: [
+        { title: "fetch()" }
+      ]
+    }
+  ]
 
 export { dirs, Category, layoutGenerationTime }

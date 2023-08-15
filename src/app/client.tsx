@@ -27,7 +27,7 @@ export function Page(p:{
 
   return (
     <As className={ cn(
-      "text-sm font-normal mt-2 leading-5",
+      "text-sm font-normal leading-5",
       selected ? "text-blue-500" : "text-zinc-400",
       p.className
     ) }>
