@@ -86,7 +86,7 @@ function useActiveHeadings(headingIds: string[]) {
       },
       {
         // Occupy intersection zones with 10% height of the screen from the top.
-        rootMargin: "0% 0% -90% 0%",
+        rootMargin: "0% 0% -80% 0%",
       }
     )
 
