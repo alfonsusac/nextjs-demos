@@ -38,7 +38,7 @@ export default async function Page({ params }: any) {
           <NotionIcon icon={ article.icon }
             className="text-5xl m-2 absolute -mt-16"
           />
-          
+
 
           <h1 className="">
             <NotionRichText rich_text={ article.title } />
@@ -51,9 +51,6 @@ export default async function Page({ params }: any) {
         </header>
 
         <RenderNotionPage data={ content } />
-
-
-
       </article>
     </>
   )
