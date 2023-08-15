@@ -11,28 +11,35 @@ export default async function Home() {
   const articles = await getArticles()
 
   return (
-    <article className="mx-auto">
-      <h1>
+    <article className="mx-auto mt-12">
+      <h1 className="text-center">
         Welcome to Alfon&apos;s Next.js Notes
       </h1>
-      <h2>
+
+      <h2 className="text-center">
         Demos
       </h2>
       <hr className="mt-4" />
-      { dirs.map(category =>
-        <>
-          <Category key={ category.name } label={ category.name } />
-          { category.topics.map(page =>
-            <Page key={ page.title } label={ page.title } category={ `/${category.name}/` } />
-          ) }
-        </>
-      ) }
+
+      {
+        dirs.map(category =>
+          <div key={ category.name } className="p-4 border border-zinc-600 rounded-md mb-2">
+            <div className="font-semibold ">
+              { category.name }
+            </div>
+            {/* <Category key={ category.name } label={ category.name } /> */ }
+            { category.topics.map(page =>
+              <Page key={ page.title } label={ page.title } category={ `/${category.name}/` } />
+            ) }
+          </div>
+        )
+      }
 
 
-      <h2 className="mb-4">
+      <h2 className="mb-4 text-center">
         Articles
       </h2>
-      <hr className="my-4"/>
+      <hr className="my-4" />
       <ul className="p-0">
         {
           articles.map(r => (
@@ -51,18 +58,18 @@ export default async function Home() {
                 <div className="flex gap-3">
 
                   <div className="w-5 h-5 text-lg">
-                    <NotionIcon icon={r.icon} />
+                    <NotionIcon icon={ r.icon } />
                   </div>
 
                   <div>
                     <div className="font-semibold mt-1 group-hover:text-white transition-all">
-                      {r.flattenedTitle}
+                      { r.flattenedTitle }
                     </div>
                     <div className="text-xs text-zinc-500">
                       { new Date(r.last_edited_time).toDateString() }
                     </div>
                   </div>
-                  
+
                 </div>
               </Link>
 
@@ -70,7 +77,7 @@ export default async function Home() {
           ))
         }
       </ul>
-      
+
     </article>
   )
 }
@@ -95,7 +102,7 @@ function Page(p: {
   const path = p.path ?? (p.category !== undefined ? `/${slug(p.category!)}/${slug(p.label)}` : `/${slug(p.label)}`)
 
   return (
-    <li className={ "font-normal mt-2 leading-5"}>
+    <li className={ "font-normal mt-2 leading-5" }>
       <Link href={ path as any }>
         { titleCase(p.label.replaceAll('-', ' ')) }
       </Link>
