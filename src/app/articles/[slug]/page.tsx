@@ -5,6 +5,7 @@ import { RenderNotionPage } from "@/components/notion/rsc/notion-ast-renderer"
 import { NotionIcon, NotionImage, NotionRichText } from "@/components/notion/rsc/rich-text"
 import { formatRelative } from "date-fns"
 import { cn } from "@/components/typography"
+import Link from "next/link"
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -28,6 +29,9 @@ export default async function Page({ params }: any) {
 
   return (
     <>
+      {
+
+      }
       <NotionImage
         alt="Page Cover"
         nprop={ article.cover as any }
@@ -39,16 +43,22 @@ export default async function Page({ params }: any) {
         ) }
       />
       <>
-        
-        <div className="h-40">
-
-        </div>
+        {
+          article.cover ? <div className="h-40"></div> : null
+        }
 
         <header className="my-8 mt-8 space-y-2 relative">
 
           <NotionIcon icon={ article.icon }
             className="text-6xl m-2 absolute -mt-20"
           />
+
+          <Link
+            className="text-sm p-2 rounded-md text-zinc-500 hover:bg-zinc-900 decoration-zinc-600 underline-offset-4 -mx-2"
+            href="/articles"
+          >
+            /articles
+          </Link>
 
           <h1 className="">
             <NotionRichText rich_text={ article.title } />
