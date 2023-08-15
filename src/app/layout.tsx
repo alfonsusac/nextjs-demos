@@ -77,10 +77,10 @@ export default function RootLayout(p: {
     return (
       <header className={ cn(
         p.className,
-        "flex flex-row gap-6 items-center"
+        "flex flex-row gap-6 items-center",
       ) }>
 
-        <div className="text-2xl font-semibold flex gap-2 items-center py-4 pt-4">
+        <div className="text-2xl font-semibold gap-2 items-center py-4 pt-4 hidden sm:flex">
           <Image
             src="https://avatars.githubusercontent.com/u/20208219?v=4"
             width="24"
@@ -94,9 +94,12 @@ export default function RootLayout(p: {
           </Link>
         </div>
 
-        <Page as="div" label="▼ Home" path='/' />
-        <Page as="div" label="▧ Demos" category={ `/demos` } path='/demos' />
-        <Page as="div" label="◩ Articles" category={ `/articles` } path='/articles' />
+        <Page className="my-4"
+          as="div" label="▼ Home" path='/' />
+        <Page className="my-4"
+          as="div" label="▧ Demos" category={ `/demos` } path='/demos' />
+        <Page className="my-4"
+          as="div" label="◩ Articles" category={ `/articles` } path='/articles' />
 
       </header>
     )
