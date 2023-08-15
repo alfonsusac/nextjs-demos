@@ -67,15 +67,15 @@ article {
 article strong{
   @apply text-zinc-100 font-bold
 }
-article h1{
+/* article h1{
   @apply text-4xl font-semibold text-white
-}
-article h2{
+} */
+/* article h2{
   @apply text-2xl font-semibold my-6 mt-14 text-white
-}
-article h3{
+} */
+/* article h3{
   @apply text-lg font-semibold my-4 px-2 
-}
+} */
 article h1+p, article h2+p, article h3+p {
   @apply py-0
 }
