@@ -55,15 +55,15 @@ export default function RootLayout(p: {
 
         <TOCProvider>
           <Content className="max-w-screen-lg w-full mx-auto px-4">
-            <main className={ cn(
+            <div className={ cn(
               "w-full",
-              "max-w-screen-2xl mx-4 sm:mx-auto",
+              "max-w-screen-2xl sm:mx-auto",
               "mt-8 mb-[40vh]",
               "flex flex-row gap-4",
             )
             }>
               { p.children }
-            </main>
+            </div>
           </Content>
         </TOCProvider>
 
