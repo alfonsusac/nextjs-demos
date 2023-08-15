@@ -30,7 +30,8 @@ export function NotionIcon({
         height: '1em',
         width: '1em',
         // margin: '0 .05em 0 .1em',
-        verticalAlign: '-0.1em'
+        verticalAlign: '-0.1em',
+        minWidth: '1em'
       } }
     >
       { icon.emoji }
@@ -46,7 +47,8 @@ export function NotionIcon({
         height: '1em',
         width: '1em',
         // margin: '0 .05em 0 .1em',
-        verticalAlign: '-0.1em'
+        verticalAlign: '-0.1em',
+        minWidth: '1em'
       } }
     />
 
@@ -60,7 +62,8 @@ export function NotionIcon({
         height: '1em',
         width: '1em',
         // margin: '0 .05em 0 .1em',
-        verticalAlign: '-0.1em'
+        verticalAlign: '-0.1em',
+        minWidth: '1em'
       } }
     />
   // https://www.notion.so/alfonsusardani/Text-Notion-at-Next-js-Article-Part-V-9c3d8892ae384cd782585c041cba9c7b?pvs=4#89bbb406c1614043950a01f005da8afc
