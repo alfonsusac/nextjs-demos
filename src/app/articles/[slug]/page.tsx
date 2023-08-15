@@ -4,6 +4,7 @@ import 'katex/dist/katex.min.css'
 import { RenderNotionPage } from "@/components/notion/rsc/notion-ast-renderer"
 import { NotionIcon, NotionImage, NotionRichText } from "@/components/notion/rsc/rich-text"
 import { formatRelative } from "date-fns"
+import { cn } from "@/components/typography"
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -30,13 +31,22 @@ export default async function Page({ params }: any) {
       <NotionImage
         alt="Page Cover"
         nprop={ article.cover as any }
-        className="w-full h-40 object-cover after:bg-gradient-to-t after:from-zinc-800 after:to-transparent"
+        className={ cn(
+          "w-full h-60 object-cover after:bg-gradient-to-t after:from-zinc-800 after:to-transparent",
+          "absolute",
+          "top-0 left-0 right-0 m-0",
+          "max-w-none"
+        ) }
       />
-      <article>
+      <>
+        
+        <div className="h-36">
+
+        </div>
 
         <header className="my-8 mt-8 space-y-2 relative">
           <NotionIcon icon={ article.icon }
-            className="text-5xl m-2 absolute -mt-16"
+            className="text-6xl m-2 absolute -mt-20"
           />
 
 
@@ -51,7 +61,8 @@ export default async function Page({ params }: any) {
         </header>
 
         <RenderNotionPage data={ content } />
-      </article>
+
+      </>
     </>
   )
 }

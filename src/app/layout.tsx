@@ -51,7 +51,7 @@ export default function RootLayout(p: {
 
       ) }>
 
-        <Header className="px-4 sticky top-0 sm:pt-4 sm:px-8 bg-black z-50 shadow-xl shadow-black max-w-screen-lg w-full mx-auto" />
+        <Header className="sticky top-0 sm:pt-4 sm:px-8 bg-black z-50 shadow-xl shadow-black w-full" />
 
         <TOCProvider>
           <Content className="max-w-screen-lg w-full mx-auto px-4">
@@ -77,29 +77,37 @@ export default function RootLayout(p: {
     return (
       <header className={ cn(
         p.className,
-        "flex flex-row gap-6 items-center",
+        "flex flex-row gap-6 items-center h-14",
       ) }>
 
-        <div className="text-2xl font-semibold gap-2 items-center py-4 pt-4 hidden sm:flex">
-          <Image
-            src="https://avatars.githubusercontent.com/u/20208219?v=4"
-            width="24"
-            height="24"
-            alt="Profile Picture"
-            className="rounded-2xl w-6 h-6"
-          />
-          <span className="font-light text-zinc-600">/</span>
-          <Link href='/'>
-            Next.js Notes
-          </Link>
+        <div className={ cn(
+          "max-w-screen-lg mx-auto w-full gap-6 items-center px-4",
+          "flex flex-row",
+        ) }>
+
+          <div className="text-2xl font-semibold gap-2 items-center py-4 pt-4 hidden sm:flex">
+            <Image
+              src="https://avatars.githubusercontent.com/u/20208219?v=4"
+              width="24"
+              height="24"
+              alt="Profile Picture"
+              className="rounded-2xl w-6 h-6"
+            />
+            <span className="font-light text-zinc-600">/</span>
+            <Link href='/'>
+              Next.js Notes
+            </Link>
+          </div>
+
+          <Page className="my-4"
+            as="div" label="▼ Home" path='/' />
+          <Page className="my-4"
+            as="div" label="▧ Demos" category={ `/demos` } path='/demos' />
+          <Page className="my-4"
+            as="div" label="◩ Articles" category={ `/articles` } path='/articles' />
+          
         </div>
 
-        <Page className="my-4"
-          as="div" label="▼ Home" path='/' />
-        <Page className="my-4"
-          as="div" label="▧ Demos" category={ `/demos` } path='/demos' />
-        <Page className="my-4"
-          as="div" label="◩ Articles" category={ `/articles` } path='/articles' />
 
       </header>
     )

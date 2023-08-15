@@ -47,9 +47,7 @@ export default async function Home() {
             <Link className={ cn(
               "p-1.5 px-4 rounded-md",
               "cursor-pointer",              
-              // "outline outline-1 outline-zinc-800",
               "underline decoration-zinc-700",
-              // "shadow-[0px_0px_200px_80px_#ffffff22]",
 
               "hover:bg-zinc-900 hover:text-white"
             ) }

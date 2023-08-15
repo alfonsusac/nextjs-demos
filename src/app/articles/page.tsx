@@ -9,11 +9,19 @@ export default async function Articles() {
 
 
   return (
-    <div className="mx-auto mt-4">
+    <div className={ cn(
+      "mx-auto mt-4",
+
+      "prose-h1:text-4xl",
+
+      "prose-hr:my-8"
+    ) }>
 
       <h1 className="mb-4">
-        Articles
+        All Articles
       </h1>
+
+      <hr />
       
       <ul className="p-0">
         {
