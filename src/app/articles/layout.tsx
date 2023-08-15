@@ -5,7 +5,12 @@ export default function Layout(p: {
 }) {
   return (
     <>
-      <article className={ cn('w-full') }>
+      <article className={
+        cn(
+          'w-full mx-auto mt-4',
+          'mx-4'
+        ) }
+      >
 
         { p.children }
 

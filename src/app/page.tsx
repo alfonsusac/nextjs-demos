@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { titleCase } from 'title-case'
 import { slug } from 'github-slugger'
 import { getArticles } from '@/components/notion/data'
-import clsx from 'clsx'
 import { NotionIcon } from '@/components/notion/rsc/rich-text'
 import { cn } from '@/components/typography'
 
@@ -20,14 +19,10 @@ export default async function Home() {
 
   return (
     <article className={ cn(
-      "mx-auto mt-12 prose-hr:my-4",
+      "mx-auto mt-12",
       "prose-hr:my-4",
-      // "prose-hr:border-t-zinc-800",
-
       "prose-h2:mb-4",
       "prose-h2:text-center",
-
-
     ) }>
       <h1 className="text-center">
         Welcome to Alfon&apos;s Next.js Notes
@@ -50,7 +45,6 @@ export default async function Home() {
               "cursor-pointer",              
               // "outline outline-1 outline-zinc-800",
               "underline decoration-zinc-700",
-              "mx-0 sm:-mx-8",
               // "shadow-[0px_0px_200px_80px_#ffffff22]",
 
               "hover:bg-zinc-900 hover:text-white"
@@ -89,7 +83,7 @@ export default async function Home() {
       <ul className="p-0">
         {
           articles.map(r => (
-            <li key={ r.id } className="list-none m-0 transition-all group -my-2 sm:-mx-8">
+            <li key={ r.id } className="list-none transition-all group m-0 -my-2">
 
               <Link
                 href={ `/articles/${r.slug}` }
@@ -101,13 +95,13 @@ export default async function Home() {
                 ) }
               >
 
-                <div className="flex gap-3">
+                <div className="flex gap-3 w-full">
 
                   <div className="w-5 h-5 text-lg">
                     <NotionIcon icon={ r.icon } />
                   </div>
 
-                  <div>
+                  <div className="w-full">
                     <div className="font-semibold mt-1 group-hover:text-white transition-all">
                       { r.flattenedTitle }
                     </div>
