@@ -40,15 +40,15 @@ export default async function Page({ params }: any) {
       />
       <>
         
-        <div className="h-36">
+        <div className="h-40">
 
         </div>
 
         <header className="my-8 mt-8 space-y-2 relative">
+
           <NotionIcon icon={ article.icon }
             className="text-6xl m-2 absolute -mt-20"
           />
-
 
           <h1 className="">
             <NotionRichText rich_text={ article.title } />
