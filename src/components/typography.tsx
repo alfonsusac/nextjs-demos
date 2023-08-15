@@ -49,6 +49,7 @@ export function H2({
           "mt-14 mb-6 relative"
         )
       }
+      aria-labelledby={ anchor.id }
     >
       {/* Anchor */ }
       <div className={
@@ -62,10 +63,9 @@ export function H2({
         )
       }>
       </div>
-      <span id={ anchor.id } className="absolute -mt-32"></span>
-      <h2 { ...params } className={
+      {/* <span id={ anchor.id } className="absolute -mt-32">ee</span> */}
+      <h2 id={ anchor.id } { ...params } className={
         cn(
-          // "text-2xl font-semibold text-white",
           "ml-4",
           "group-hover:cursor-pointer",
           className
