@@ -6,19 +6,7 @@ export default function Layout(p: {
 }) {
   return (
     <>
-      <article className={cn(
-        "p-4 w-full min-w-0",
-        "prose-h1:text-3xl",
-        "prose-h1:text-zinc-200",
-        "prose-h1:font-semibold",
-
-        "prose-h2:text-2xl",
-        "prose-h2:font-semibold",
-        "prose-h2:text-zinc-200",
-
-        "prose-h3:text-3xl",
-
-      ) }>
+      <article className={ cn() }>
 
         <Header />
 

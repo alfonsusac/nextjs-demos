@@ -46,7 +46,8 @@ export function H2({
         cn(
           "group flex",
           "cursor-pointer no-underline",
-          "mt-14 mb-6 relative"
+          "mt-14 mb-6 relative",
+          "prose-h2:mt-0"
         )
       }
       aria-labelledby={ anchor.id }
@@ -68,7 +69,7 @@ export function H2({
         cn(
           "ml-4",
           "group-hover:cursor-pointer",
-          className
+          className,
         )
       }>
         { children }
