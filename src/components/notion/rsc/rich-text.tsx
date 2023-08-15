@@ -7,6 +7,7 @@ import { getMetaInfo } from "../../metadata/util"
 import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, MaterialSymbolsPerson, PhGlobe, PhNotionLogoFill } from "../../svg"
 import { formatRelative } from "date-fns"
 import { InlineMentionTooltip } from "../client"
+import { cn } from "@/components/typography"
 
 type Annotation = RichTextItemResponse['annotations']
 
@@ -25,10 +26,10 @@ export function NotionIcon({
 
   if (icon.type === 'emoji')
     return <span
-      className={ className }
+      className={ cn('inline w-6 h-6 rounded-sm', className) }
       style={ {
-        height: '1em',
-        width: '1em',
+        // height: '1em',
+        // width: '1em',
         // margin: '0 .05em 0 .1em',
         verticalAlign: '-0.1em',
         minWidth: '1em'
@@ -41,11 +42,11 @@ export function NotionIcon({
     // eslint-disable-next-line @next/next/no-img-element
     return <img
       alt='Callout Icon'
-      className={ clsx("inline", className)}
+      className={ cn("inline w-6 h-6 rounded-sm", className)}
       src={ icon.external.url }
       style={ {
-        height: '1em',
-        width: '1em',
+        // height: '1em',
+        // width: '1em',
         // margin: '0 .05em 0 .1em',
         verticalAlign: '-0.1em',
         minWidth: '1em'
@@ -56,11 +57,11 @@ export function NotionIcon({
     // eslint-disable-next-line @next/next/no-img-element
     return <img
       alt='Callout Icon'
-      className={ clsx("inline", className) }
+      className={ cn("inline w-6 h-6 rounded-sm", className) }
       src={ icon.file.url }
       style={ {
-        height: '1em',
-        width: '1em',
+        // height: '1em',
+        // width: '1em',
         // margin: '0 .05em 0 .1em',
         verticalAlign: '-0.1em',
         minWidth: '1em'

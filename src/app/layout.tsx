@@ -49,6 +49,8 @@ export default function RootLayout(p: {
         "prose-h4:mt-4",
         "prose-h4:text-zinc-200",
 
+        "prose-li:marker:text-zinc-500"
+
       ) }>
 
         <Header className="sticky top-0 sm:pt-4 sm:px-8 bg-black z-50 shadow-xl shadow-black w-full" />
