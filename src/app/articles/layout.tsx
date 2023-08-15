@@ -7,7 +7,7 @@ export default function Layout(p: {
     <>
       <article className={
         cn(
-          'w-full mx-auto mt-4',
+          'w-full',
           'mx-4'
         ) }
       >

@@ -23,9 +23,13 @@ export default async function Home() {
       "prose-hr:my-4",
       "prose-h2:mb-4",
       "prose-h2:text-center",
+
+      "prose-h1:text-4xl",
+      "prose-h1:font-bold",
+
     ) }>
-      <h1 className="text-center">
-        Welcome to Alfon&apos;s Next.js Notes
+      <h1 className="text-center text-4xl font-bold">
+       👋 Welcome!
       </h1>
 
       <h2>

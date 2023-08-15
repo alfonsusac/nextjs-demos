@@ -1,6 +1,4 @@
 import { getArticles } from "@/components/notion/data"
-import { Page } from "../client"
-import { Category, dirs } from "../layout"
 import Link from 'next/link'
 import { cn } from "@/components/typography"
 import { NotionIcon } from "@/components/notion/rsc/rich-text"
@@ -11,7 +9,7 @@ export default async function Articles() {
 
 
   return (
-    <article className="mx-auto">
+    <div className="mx-auto mt-4">
 
       <h1 className="mb-4">
         Articles
@@ -55,6 +53,6 @@ export default async function Articles() {
         }
       </ul>
 
-    </article>
+    </div>
   )
 }

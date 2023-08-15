@@ -46,7 +46,7 @@ export default function Layout(p: {
         <Page label="Go to default 404" path='/404' />
       </Sidebar>
       
-      <article className={ cn('w-full') }>
+      <article className={ cn('w-full mx-4') }>
 
         <Header />
 
