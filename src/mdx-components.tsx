@@ -36,15 +36,16 @@ function H2(p: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeading
       href={ anchor.link }
       className="group cursor-pointer no-underline mt-14 flex gap-4"
     >
-      <div className="text-2xl transition-all group-hover:rotate-[30deg] w-min h-min inline-block text-zinc-600 group-hover:text-yellow-400 before:content-['§']"> 
+      <div className="text-2xl transition-all group-hover:rotate-[30deg] w-min h-min inline-block text-zinc-600 group-hover:text-yellow-400 before:content-['§']  pointer-events-none"> 
       </div>
+
       <h2
         { ...p }
         id={ anchor.id }
         className={
           clsx(p.className,
             "group-hover:cursor-pointer h-full block pt-44 -mt-44",
-            "group-hover:border-b-zinc-500 transition-all border-b-2 border-b-zinc-500/0"
+            "group-hover:border-b-zinc-500 transition-all border-b-2 border-b-zinc-500/0 pointer-events-none"
           )
         }
       >
