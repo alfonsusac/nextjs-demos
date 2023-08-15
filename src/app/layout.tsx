@@ -14,7 +14,10 @@ import { ToCSidebar } from '@/components/toc/client'
 import MDX_RoutingComputation from "./(demos)/routing/static-vs-dynamic-computation/content.mdx"
 import { cn } from '@/components/typography'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'block'
+})
 
 export const metadata = {
   title: 'Next.js Notes',
@@ -73,7 +76,16 @@ export default function RootLayout(p: {
 
             <main className={
               cn(
-                "w-full mt-8 mb-[40vh] max-w-screen-2xl mx-4 sm:mx-0"
+                "w-full mt-8 mb-[40vh] max-w-screen-2xl mx-4 sm:mx-0",
+                "prose-h1:text-3xl",
+                "prose-h1:text-zinc-200",
+                "prose-h1:font-semibold",
+
+                "prose-h2:text-2xl",
+                "prose-h2:font-semibold",
+                "prose-h2:text-zinc-200",
+
+                "prose-h3:text-3xl",
               )
             }>
               { p.children }
