@@ -50,8 +50,11 @@ function getFilteredItems(items: TOCItemType[], start = 1, depth = 1) {
 
 function useActiveHeadings(headingIds: string[]) {
   const [activeAnchor, setActiveAnchor] = useState<string>(headingIds[0])
+  console.log(headingIds)
 
   useEffect(() => {
+
+    setActiveAnchor(prev => prev ? prev : headingIds[0])
 
     const observer = new IntersectionObserver(
       entries => {
@@ -79,7 +82,11 @@ function useActiveHeadings(headingIds: string[]) {
             // Going Up
             if (e.isIntersecting === false) {
               // Retrieve the header id from the previous index
-              setActiveAnchor(prev => headingIds.at(Math.max(headingIds.findIndex(id => id === e.target.id) - 1, 0)) ?? headingIds[0])
+              setActiveAnchor(prev =>
+                headingIds.at(
+                  Math.max(headingIds.findIndex(id => id === e.target.id) - 1, 0)
+                ) ?? headingIds[0]
+              )
             }
           }
         })
@@ -101,6 +108,11 @@ function useActiveHeadings(headingIds: string[]) {
       observer.disconnect()
     }
   }, [headingIds])
+
+  useEffect(() => {
+    console.log("Active Anchor")
+    console.log(activeAnchor)
+  }, [activeAnchor])
 
   return activeAnchor
 }
