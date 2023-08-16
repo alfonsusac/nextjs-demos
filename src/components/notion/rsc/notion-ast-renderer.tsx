@@ -246,7 +246,7 @@ function ProcessComponent({ node, params }: {
         const { has_row_header, has_column_header } = node.props
         const rows = node.children as NodeTypes['table_row'][]
         const [headRow, ...rest] = rows
-        const cellCn = 'border border-zinc-800 p-2 px-2.5'
+        const cellCn = 'border border-zinc-800 p-2 px-3 text-sm'
         return (
           <table className={ cn("my-3 bg-zinc-900/70") } { ...props }>
             {
@@ -257,7 +257,7 @@ function ProcessComponent({ node, params }: {
                       headRow.props.cells.map((c, i) =>
                         <th scope="row" key={ i }
                           className={ clsx(cellCn, "bg-black") }>
-                          <RichText />
+                          <NotionRichText rich_text={ c } />
                         </th>
                       ) }
                   </tr>
@@ -273,12 +273,12 @@ function ProcessComponent({ node, params }: {
                         has_column_header && i === 0 ?
                           <th scope="col" key={ i }
                             className={ clsx(cellCn, "bg-black") }>
-                            <RichText />
+                            <NotionRichText rich_text={ c } />
                           </th>
                           :
                           <td key={ i }
                             className={ clsx(cellCn) }>
-                            <RichText />
+                            <NotionRichText rich_text={ c } />
                           </td>
 
                       ) }
