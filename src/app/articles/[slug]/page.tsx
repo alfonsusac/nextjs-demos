@@ -50,7 +50,7 @@ export default async function Page({ params }: any) {
         <header className="my-8 mt-8 space-y-2 relative">
 
           <NotionIcon icon={ article.icon }
-            className="text-6xl m-0 block w-12 h-12 mb-4"
+            className="text-5xl m-0 block w-12 h-12 mb-4"
           />
 
           <Link

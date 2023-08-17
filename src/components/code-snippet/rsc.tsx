@@ -13,7 +13,7 @@ export function CodeRSC(p: {
       theme="one-dark-pro"
       title={ p.title }
       className='border border-zinc-800 rounded-lg my-4 relative w-full bg-black'
-      codeClassName='p-0 -mt-1'
+      codeClassName='p-0 -my-1'
       extensions={ [
         {
           name: 'titleBar',

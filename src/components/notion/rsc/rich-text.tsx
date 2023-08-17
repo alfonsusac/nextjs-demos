@@ -25,20 +25,22 @@ export function NotionIcon({
   if (!icon) return <></>
 
   if (icon.type === 'emoji')
-    return <span
-      className={ cn('inline w-6 h-6 rounded-sm', className) }
-      style={ {
-        // height: '1em',
-        // width: '1em',
-        // margin: '0 .05em 0 .1em',
-        marginBottom: '0.1em',
-        verticalAlign: '-0.1em',
-        minWidth: '1em',
-        lineHeight: '1.5'
-      } }
-    >
-      { icon.emoji }
-    </span>
+    return <div className={ cn(className) }>
+      <span
+        className={ cn('inline w-6 h-6 rounded-sm') }
+        style={ {
+          // height: '1em',
+          // width: '1em',
+          // margin: '0 .05em 0 .1em',
+          marginBottom: '0.1em',
+          verticalAlign: '-0.1em',
+          minWidth: '1em',
+          lineHeight: '0.8',
+        } }
+      >
+        { icon.emoji }
+      </span>
+    </div>
 
   if (icon.type === 'external')
     // eslint-disable-next-line @next/next/no-img-element
