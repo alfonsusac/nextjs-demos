@@ -2,135 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
-
 :root {
   color-scheme: dark;
-}s
-
-body{
-  background: #000;
-  color: #fff;
 }
 
-article header{
-  margin-bottom: 1.5rem;
+body{ @apply
+  bg-black
+  text-zinc-300
 }
 
-article ul, article ol {
-  margin-bottom: 1rem;
-}
+/* LISTS */
 
-article ul > li {
-  list-style-type: disc;
-  margin-left: 2rem
+article ul, article ol { @apply 
+  mb-4 
 }
-
-article ol > li {
-  list-style-type: decimal;
-  margin-left: 2rem
+article ul > li { @apply 
+  list-disc
 }
-
-article > * {
-  max-width: 36rem;
-  margin-inline: auto !important;
-  @apply text-zinc-300
+article ol > li { @apply 
+  list-decimal
 }
-
-article {
-  margin-bottom: 1.5rem;
-  @apply leading-7 text-zinc-300
-}
-article strong{
-  @apply text-zinc-100 font-bold
-}
-/* article h1{
-  @apply text-4xl font-semibold text-white
-} */
-/* article h2{
-  @apply text-2xl font-semibold my-6 mt-14 text-white
-} */
-/* article h3{
-  @apply text-lg font-semibold my-4 px-2 
-} */
-article h1+p, article h2+p, article h3+p {
-  @apply py-0
-}
-article li{
-  @apply my-2
-}
-
-article blockquote{
-  @apply border-l-2 border-l-zinc-400 pl-4 text-lg italic text-zinc-400 my-4
-}
-article p span{
-  /* padding-inline: 0.25rem; */
-  /* border-radius: 2px; */
-  /* padding-block: 0.15rem; */
-}
-article pre {
-  /* margin: 0 !important; */
-  border-radius: 0 !important;
-  /* background-color: #0c0c0c !important; */
-}
-article pre > code {
-  @apply px-0
-}
-article div > pre {
-  border: 0
-}
-article pre + pre {
-  margin-top: 0 !important;
-}
-article pre > code, pre {
-  background-color:unset !important;
-  /* line-height: 1 !important; */
-}
-article pre span {
-  padding-inline: unset;
-  border-radius: unset;
-  padding-block: unset;
-  background-color: unset !important;
-  letter-spacing: -0.5px;
-}
-article hr{
-  margin-top: 2rem;
-  @apply border-t-zinc-700
-}
-
-article a {
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
-  @apply text-zinc-400
-}
-
-article h3{
-  @apply text-zinc-400
+article li { @apply 
+  ml-8 
+  my-2
+  marker:text-zinc-500
 }
 
 
+/* LAYOUTS */
+
+article { @apply
+  max-w-xl
+  mx-auto mb-6
+  leading-7
+}
+
+/* TYPOGRAPHY */
+
+article strong { @apply
+  text-zinc-100 font-bold
+}
+h1, h2, h3, h4, h5, h6 { @apply
+  font-semibold
+  text-zinc-200
+}
+article h1 { @apply 
+  text-3xl 
+}
+article h2 { @apply 
+  text-2xl 
+  mt-12 
+}
+article h3 { @apply 
+  text-xl 
+  mt-8
+}
+article h4 { @apply
+  text-lg
+  mt-4
+}
+article a { @apply
+  underline
+  underline-offset-[0.2rem]
+  text-zinc-200
+}
+
+article hr{ @apply
+  my-8
+  border-t-zinc-700
+}
+
+
+
+
+/* Bare Code Snippets */
+
+div article pre { @apply
+  /* Bare Pre */
+  border
+  rounded-lg
+  border-zinc-800
+  bg-zinc-950
+}
+div article code { @apply
+  /* Bare Code */
+  border-none
+  text-sm
+  px-1
+  rounded-sm
+  py-[0.15rem]
+  bg-zinc-800
+
+}
+div article pre > code { @apply
+  /* Block Code  */
+  leading-[1.2]
+  px-0
+  py-0
+  rounded-none
+}
+
+
+/* MDX Code Snippet  */
+
+div code[class*=language-], 
+div pre[class*=language-] { 
+  background-color: unset;
+  @apply 
+  !m-0
+  leading-[1.2]
+}
+
+div article pre,
+div article pre[class*=language-] { @apply
+  /* MDX Pre */
+  border-none
+  rounded-none
+  bg-zinc-950
+}
+
+
+
+/* BROWSER DEMO */
 
 div.browser, div.browser p{
   @apply text-sm leading-normal
@@ -149,9 +142,4 @@ div.browser article {
 }
 div.browser article h2{
   @apply text-xl pt-2 pb-1 my-0
-}
-
-
-article pre[class*=language-]{
-  margin:0
 }

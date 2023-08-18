@@ -29,43 +29,15 @@ export default function RootLayout(p: {
       <body className={ cn(
         inter.className,
         "flex flex-col min-h-screen scroll-smooth",
-        "bg-black",
-
-        "prose-h1:text-3xl",
-        "prose-h1:font-semibold",
-        "prose-h1:text-zinc-200",
-
-        "prose-h2:text-2xl",
-        "prose-h2:font-semibold",
-        "prose-h2:mt-12",
-        "prose-h2:text-zinc-200",
-
-        "prose-h3:text-xl",
-        "prose-h3:font-semibold",
-        "prose-h3:mt-8",
-        "prose-h3:text-zinc-200",
-
-        "prose-h4:text-lg",
-        "prose-h4:font-semibold",
-        "prose-h4:mt-4",
-        "prose-h4:text-zinc-200",
-
-        "prose-code:bg-zinc-400/20",
-        "prose-code:text-sm",
-        // "prose-code:font-semibold",
-        "prose-code:font-px-1",
-        "prose-code:rounded-sm",
-        "prose-code:py-[0.15rem]",
-        "prose-code:!leading-[1.2]",
-        "prose-code:inline-block",
-
-        "prose-pre:border",
-        "prose-pre:rounded-lg",
-        "prose-pre:border-zinc-800",
-        "prose-pre:bg-zinc-950",
-        "prose-pre:font-normal",
         
-        "prose-li:marker:text-zinc-500"
+        "prose-blockquote:border-l-4",
+        "prose-blockquote:pl-4",
+        "prose-blockquote:italic",
+        "prose-blockquote:my-4",
+        "prose-blockquote:border-l-zinc-500",
+        "prose-blockquote:text-zinc-400",
+
+
 
       ) }>
 

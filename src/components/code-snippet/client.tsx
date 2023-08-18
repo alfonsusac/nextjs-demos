@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { getFileSpans } from "./util"
+import { cn } from "../typography"
 
 export default function CodeSnippet(p: {
   title: string,
@@ -12,12 +13,12 @@ export default function CodeSnippet(p: {
   const [opened, setOpened] = useState(!p.defaultClosed)
 
   if(p.title === undefined) return <></>
-  // console.info(JSON.stringify(p.title))
-  // console.info("Title: "+p.title)
   const textspans = getFileSpans(p.title)
   
   return (
-    <div className="border border-zinc-800 rounded-lg my-4 relative w-full">
+    <div className={ cn(
+      "border border-zinc-800 rounded-lg my-4 relative w-full"
+    ) }>
       <input 
         type="checkbox"
         className="peer group absolute block w-full h-10 opacity-0"
@@ -40,7 +41,7 @@ export default function CodeSnippet(p: {
           }
         </div>
       </label>
-      <div className="overflow-hidden h-0 peer-checked:h-full">
+      <div className="overflow-hidden h-0 peer-checked:h-full border-t border-t-zinc-800">
         { p.code }
         { p.children }
       </div>
