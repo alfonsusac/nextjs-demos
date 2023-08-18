@@ -5,6 +5,7 @@ import { titleCase } from "title-case"
 import { usePathname } from 'next/navigation'
 import { slug } from "github-slugger"
 import { cn } from "@/components/typography"
+import { TOCProvider } from "@/components/toc/context"
 
 function useSelected(path: string, match?:number) {
   const pathname = usePathname()
@@ -52,5 +53,18 @@ export function Category(p: {
     <li className={ "text-xs font-semibold" + (selected ? " text-blue-500" : "") }>
       { titleCase(p.label) }
     </li>
+  )
+}
+
+export function Content(p: {
+  children: React.ReactNode,
+  className: string
+}) {
+  return (
+    <TOCProvider>
+      <main className={ p.className }>
+        { p.children }
+      </main>
+    </TOCProvider>
   )
 }

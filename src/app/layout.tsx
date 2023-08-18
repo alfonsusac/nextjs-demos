@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { Category, Page } from './client'
+import { Category, Content, Page } from './client'
 import Link from "next/link"
 import "prism-themes/themes/prism-one-dark.min.css"
-import { TOCProvider } from '@/components/toc/context'
 import MDX_RoutingComputation from "./demos/routing/static-vs-dynamic-computation/content.mdx"
 import { cn } from '@/components/typography'
 
@@ -27,7 +26,11 @@ export default function RootLayout(p: {
   return (
     <html lang="en">
 
-      <body className={ cn(`${inter.className} flex flex-col min-h-screen`) }>
+      <body className={ cn(`${inter.className} 
+        flex 
+        flex-col 
+        min-h-screen
+      `) }>
 
         <Header className={ cn(`
           sticky 
@@ -41,24 +44,21 @@ export default function RootLayout(p: {
           sm:px-8`
         ) } />
 
-        <TOCProvider>
+        <Content className={ cn(`
+            max-w-screen-lg
+            w-full
+            mx-auto
+            px-4
+            mt-8 mb-[40vh]
+            flex flex-row gap-4
+          `) }>
 
-          <Content className="max-w-screen-lg w-full mx-auto px-4">
-            <div className={ cn(
-              "w-full",
-              "max-w-screen-2xl sm:mx-auto",
-              "mt-8 mb-[40vh]",
-              "flex flex-row gap-4",
-            )
-            }>
-              { p.children }
-            </div>
-          </Content>
-          
-        </TOCProvider>
+            { p.children }
+
+        </Content>
 
       </body>
-      
+
     </html>
   )
 
@@ -103,14 +103,6 @@ export default function RootLayout(p: {
       </header>
     )
   }
-  function Content(p: { children: React.ReactNode, className: string }) {
-    return (
-      <main className={ p.className }>
-        { p.children }
-      </main>
-    )
-  }
-
 }
 
 const dirs: {
