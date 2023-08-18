@@ -61,13 +61,14 @@ export function H2({
           "group-hover:rotate-[30deg]",
           "group-hover:text-yellow-400",
           "w-min h-min inline-block",
+          "leading-[1.2]"
         )
       }>
       </div>
       {/* <span id={ anchor.id } className="absolute -mt-32">ee</span> */}
       <h2 id={ anchor.id } { ...params } className={
         cn(
-          "ml-4",
+          "ml-4 mt-0",
           "group-hover:cursor-pointer",
           className,
         )
