@@ -4,13 +4,8 @@ export default function Layout(p: {
   children: React.ReactNode
 }) {
   return (
-    <>
-      <article className={
-        cn(
-          'w-full',
-          'mx-4'
-        ) }
-      >
+    <div className="w-full mx-4">
+      <article>
 
         { p.children }
 
@@ -27,6 +22,6 @@ export default function Layout(p: {
         </footer>
 
       </article>
-    </>
+    </div>
   )
 }
