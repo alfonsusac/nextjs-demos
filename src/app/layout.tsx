@@ -25,23 +25,22 @@ export default function RootLayout(p: {
 }) {
 
   return (
-    <html lang="en" className="scroll-smooth scroll-p-32">
-      <body className={ cn(
-        inter.className,
-        "flex flex-col min-h-screen scroll-smooth",
-        
-        "prose-blockquote:border-l-4",
-        "prose-blockquote:pl-4",
-        "prose-blockquote:italic",
-        "prose-blockquote:my-4",
-        "prose-blockquote:border-l-zinc-500",
-        "prose-blockquote:text-zinc-400",
+    <html lang="en">
 
+      <body className={ cn(`${inter.className} flex flex-col min-h-screen`) }>
 
-
-      ) }>
-
-        <Header className="sticky top-0 sm:pt-4 sm:px-8 bg-black z-50 shadow-xl shadow-black w-full" />
+        <Header className={ cn(
+          `
+          sticky 
+          top-0 
+          sm:pt-4 
+          sm:px-8 
+          bg-black 
+          z-50 
+          shadow-xl 
+          shadow-black 
+          `
+        ) } />
 
         <TOCProvider>
           <Content className="max-w-screen-lg w-full mx-auto px-4">
@@ -58,6 +57,7 @@ export default function RootLayout(p: {
         </TOCProvider>
 
       </body>
+      
     </html>
   )
 
@@ -95,7 +95,7 @@ export default function RootLayout(p: {
             as="div" label="▧ Demos" category={ `/demos` } path='/demos' />
           <Page className="my-4"
             as="div" label="◩ Articles" category={ `/articles` } path='/articles' />
-          
+
         </div>
 
 
