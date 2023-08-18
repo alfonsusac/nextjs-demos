@@ -90,16 +90,10 @@ article p span{
   /* border-radius: 2px; */
   /* padding-block: 0.15rem; */
 }
-article code {
-  border-radius: 2px;
-  padding-block: 0.15rem;
-  @apply bg-zinc-400/20 text-sm font-extrabold px-1
-}
 article pre {
   /* margin: 0 !important; */
   border-radius: 0 !important;
-  background-color: #0c0c0c !important;
-  @apply border border-zinc-800 rounded-lg
+  /* background-color: #0c0c0c !important; */
 }
 article pre > code {
   @apply px-0
@@ -112,7 +106,7 @@ article pre + pre {
 }
 article pre > code, pre {
   background-color:unset !important;
-  line-height: 1.2 !important;
+  /* line-height: 1 !important; */
 }
 article pre span {
   padding-inline: unset;
