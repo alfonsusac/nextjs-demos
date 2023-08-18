@@ -29,20 +29,20 @@ export default function RootLayout(p: {
 
       <body className={ cn(`${inter.className} flex flex-col min-h-screen`) }>
 
-        <Header className={ cn(
-          `
+        <Header className={ cn(`
           sticky 
           top-0 
-          sm:pt-4 
-          sm:px-8 
           bg-black 
           z-50 
           shadow-xl 
           shadow-black 
-          `
+
+          sm:pt-4 
+          sm:px-8`
         ) } />
 
         <TOCProvider>
+
           <Content className="max-w-screen-lg w-full mx-auto px-4">
             <div className={ cn(
               "w-full",
@@ -54,6 +54,7 @@ export default function RootLayout(p: {
               { p.children }
             </div>
           </Content>
+          
         </TOCProvider>
 
       </body>
