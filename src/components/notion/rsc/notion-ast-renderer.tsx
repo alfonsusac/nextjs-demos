@@ -102,7 +102,7 @@ function ProcessComponent({ node, params }: {
     }
   ) {
 
-    const NestedChildren = (p: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => node.children ? (
+    const NestedChildren = (p: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => node.children?.length > 0 ? (
       <div { ...p }>
         { children }
       </div>
