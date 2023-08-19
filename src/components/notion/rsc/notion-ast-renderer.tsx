@@ -248,7 +248,22 @@ function ProcessComponent({ node, params }: {
         const [headRow, ...rest] = rows
         const cellCn = 'border border-zinc-800 p-2 px-3 text-sm'
         return (
-          <table className={ cn("my-3 bg-zinc-900/70") } { ...props }>
+          <table className={ cn(
+            "my-3 rounded-md",
+
+            // "prose-th:bg-zinc-900/70",
+
+            // "border-separate",
+            // "border-zinc-800 border",
+
+            "prose-th:first-of-type:rounded-tl-md",
+            "prose-th:last-of-type:rounded-tr-md",
+            "prose-tr:last-of-type:prose-td:first-of-type::rounded-bl-md",
+            "prose-tr:last-of-type:prose-td:last-of-type:rounded-br-md",
+
+
+
+          ) } { ...props }>
             {
               has_row_header === true ? (
                 <thead>
@@ -256,7 +271,9 @@ function ProcessComponent({ node, params }: {
                     {
                       headRow.props.cells.map((c, i) =>
                         <th scope="row" key={ i }
-                          className={ clsx(cellCn, "bg-black") }>
+                          className={ clsx(
+                            cellCn,
+                          ) }>
                           <NotionRichText rich_text={ c } />
                         </th>
                       ) }
@@ -272,7 +289,7 @@ function ProcessComponent({ node, params }: {
                       c.props.cells.map((c, i) =>
                         has_column_header && i === 0 ?
                           <th scope="col" key={ i }
-                            className={ clsx(cellCn, "bg-black") }>
+                            className={ clsx(cellCn) }>
                             <NotionRichText rich_text={ c } />
                           </th>
                           :

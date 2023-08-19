@@ -146,6 +146,8 @@ export function NotionRichText(p: {
     function InlineText() {
       const href = t.href
       const { text } = (t as TextRichTextItemResponse)
+      console.log(text.content)
+      const content = text.content.split('\n').map((c, i) => i ? [<br key={ i } />, c] : c)
       return (
         href
           ? (
@@ -156,12 +158,12 @@ export function NotionRichText(p: {
               </>
             }>
               <a className={ annotationCN } href={ href }>
-                { text.content }
+                { content }
               </a>
             </InlineMentionTooltip>
           ) : isUnformatted
-            ? (<>{ text.content }</>)
-            : (<span className={ annotationCN }>{ text.content }</span>)
+            ? (<>{ content }</>)
+            : (<span className={ annotationCN }>{ content }</span>)
       )
     }
 
