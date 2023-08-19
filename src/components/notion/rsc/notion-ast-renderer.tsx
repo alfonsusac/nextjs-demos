@@ -191,7 +191,7 @@ function ProcessComponent({ node, params }: {
       case 'quote': return (
         <blockquote className={ cn("") } { ...props }>
           <RichText />
-          <NestedChildren className="pl-4" />
+          <NestedChildren />
         </blockquote>
       )
 
