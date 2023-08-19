@@ -6,136 +6,115 @@
   color-scheme: dark;
 }
 
-html{ @apply
-  scroll-smooth
+html{ 
+  @apply scroll-smooth
   scroll-p-32
 }
-
-body{ @apply
-  bg-black
+body{ 
+  @apply bg-black
   text-zinc-300
 }
-
-/* LISTS */
-
-article ul, article ol { @apply 
-  mb-4 
+h1, h2, h3, h4, h5, h6 { 
+  @apply font-semibold
+  text-zinc-200
 }
-article ul > li { @apply 
-  list-disc
-}
-article ol > li { @apply 
-  list-decimal
-}
-article li { @apply 
-  ml-8 
-  my-2
-  marker:text-zinc-500
-}
-
-
-/* LAYOUTS */
-
-article { @apply
-  max-w-xl
+article {
+  @apply max-w-xl
   mx-auto mb-6
-  leading-7
+  leading-7;
+
+  /* LISTS */
+
+  ul, ol { 
+    @apply mb-4
+  }
+  ul > li { 
+    @apply list-disc
+  }
+  ol > li { 
+    @apply list-decimal
+  }
+  li { 
+    @apply ml-8 my-2
+    marker:text-zinc-500
+  }
+
+  /* TYPOGRAPHY */
+
+  strong { 
+    @apply text-zinc-100 font-bold
+  }
+  h1 { 
+    @apply text-3xl 
+  }
+  h2 {
+    @apply text-2xl 
+    mt-12 
+  }
+  h3 { 
+    @apply text-xl 
+    mt-8
+  }
+  h4 { 
+    @apply text-lg
+    mt-4
+  }
+  a { 
+    @apply underline
+    underline-offset-[0.2rem]
+    text-zinc-200
+  }
+  hr{ 
+    @apply my-8
+    border-t-zinc-700
+  }
+  blockquote { 
+    @apply border-l-4
+    pl-4
+    italic
+    my-4
+    border-l-zinc-600
+    text-zinc-400
+  }
 }
 
-/* TYPOGRAPHY */
+/* Raw code blocks, higher specifity */
 
-article strong { @apply
-  text-zinc-100 font-bold
-}
-h1, h2, h3, h4, h5, h6 { @apply
-  font-semibold
-  text-zinc-200
-}
-article h1 { @apply 
-  text-3xl 
-}
-article h2 { @apply 
-  text-2xl 
-  mt-12 
-}
-article h3 { @apply 
-  text-xl 
-  mt-8
-}
-article h4 { @apply
-  text-lg
-  mt-4
-}
-article a { @apply
-  underline
-  underline-offset-[0.2rem]
-  text-zinc-200
-}
+div article {
+  pre {
+    @apply border
+    rounded-lg
+    border-zinc-800
+    bg-zinc-950
+  }
+  code {
+    @apply border-none
+    text-sm
+    px-1
+    rounded-sm
+    py-[0.15rem]
+    bg-zinc-800
+  }
+  pre > code {
+    @apply leading-[1.2]
+    px-0
+    py-0
+    rounded-none
+  }
 
-article hr{ @apply
-  my-8
-  border-t-zinc-700
-}
-article blockquote { @apply
-  border-l-4
-  pl-4
-  italic
-  my-4
-  border-l-zinc-600
-  text-zinc-400
-}
-
-
-
-
-/* Bare Code Snippets */
-
-div article pre { @apply
-  /* Bare Pre */
-  border
-  rounded-lg
-  border-zinc-800
-  bg-zinc-950
-}
-div article code { @apply
-  /* Bare Code */
-  border-none
-  text-sm
-  px-1
-  rounded-sm
-  py-[0.15rem]
-  bg-zinc-800
+  code[class*=language-],
+  pre[class*=language-] {
+    background-color: unset;
+    @apply !m-0 
+    leading-[1.2]
+  }
+  pre[class*=language-]{
+    @apply border-none
+    rounded-none
+    bg-zinc-950
+  }
 
 }
-div article pre > code { @apply
-  /* Block Code  */
-  leading-[1.2]
-  px-0
-  py-0
-  rounded-none
-}
-
-
-/* MDX Code Snippet  */
-
-div code[class*=language-], 
-div pre[class*=language-] { 
-  background-color: unset;
-  @apply 
-  !m-0
-  leading-[1.2]
-}
-
-div article pre,
-div article pre[class*=language-] { @apply
-  /* MDX Pre */
-  border-none
-  rounded-none
-  bg-zinc-950
-}
-
-
-
 
 /* BROWSER DEMO */
 

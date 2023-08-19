@@ -66,10 +66,13 @@ export default function RootLayout(p: {
     className: string
   }) {
     return (
-      <header className={ cn(
-        p.className,
-        "flex flex-row gap-6 items-center h-14",
-      ) }>
+      <header className={ cn(p.className, `
+        h-14
+        flex
+        flex-row
+        gap-6
+        items-center
+      `) }>
 
         <div className={ cn(
           "max-w-screen-lg mx-auto w-full gap-6 items-center px-4",
