@@ -1,6 +1,8 @@
 import { Code } from "bright"
 import { getFileSpans } from "./util"
 import { MdiCodeJson } from "./client"
+import { cn } from "../typography"
+
 
 export function CodeRSC(p: {
   language: string,
@@ -10,9 +12,16 @@ export function CodeRSC(p: {
   return (
     <Code
       lang={ p.language }
-      theme="one-dark-pro"
+      // theme="one-dark-pro"
+      theme='one-dark-pro'
       title={ p.title }
-      className='border border-zinc-800 rounded-lg my-4 relative w-full bg-black'
+      className={ cn(
+        'border border-zinc-800 rounded-lg my-4 relative w-full bg-black',
+        'prose-pre:!m-0',
+        'prose-pre:!bg-inherit',
+        'prose-pre:rounded-none',
+        'prose-pre:border-none'
+      ) }
       codeClassName='p-0 -my-1'
       extensions={ [
         {
@@ -38,7 +47,7 @@ export function CodeRSC(p: {
                 </div>
               </label>
             )
-          }
+          },
         },
       ] }
       code={p.code}
