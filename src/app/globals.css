@@ -76,6 +76,40 @@ article {
     border-l-zinc-600
     text-zinc-400
   }
+  table {
+    @apply mx-auto;
+    
+    th, td {
+      @apply border-x-0 
+      border-zinc-800 
+      p-2 px-3 
+      text-sm
+      border-y
+      text-left
+    }
+
+    thead, tbody{
+      tr:first-of-type{
+        th, td {
+          @apply border-t-0
+        }
+      }
+    }
+    
+    tbody{
+      tr:last-of-type{
+        th, td{
+          @apply border-b-0
+        }
+      }
+    }
+
+    thead{
+      @apply align-bottom
+    }
+
+    
+  }
 }
 
 /* Raw code blocks, higher specifity */

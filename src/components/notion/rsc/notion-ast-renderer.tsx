@@ -246,33 +246,17 @@ function ProcessComponent({ node, params }: {
         const { has_row_header, has_column_header } = node.props
         const rows = node.children as NodeTypes['table_row'][]
         const [headRow, ...rest] = rows
-        const cellCn = 'border border-zinc-800 p-2 px-3 text-sm'
         return (
           <table className={ cn(
-            "my-3 rounded-md",
-
-            // "prose-th:bg-zinc-900/70",
-
-            // "border-separate",
-            // "border-zinc-800 border",
-
-            "prose-th:first-of-type:rounded-tl-md",
-            "prose-th:last-of-type:rounded-tr-md",
-            "prose-tr:last-of-type:prose-td:first-of-type::rounded-bl-md",
-            "prose-tr:last-of-type:prose-td:last-of-type:rounded-br-md",
-
-
-
           ) } { ...props }>
             {
-              has_row_header === true ? (
+              has_column_header === true ? (
                 <thead>
                   <tr>
                     {
                       headRow.props.cells.map((c, i) =>
                         <th scope="row" key={ i }
                           className={ clsx(
-                            cellCn,
                           ) }>
                           <NotionRichText rich_text={ c } />
                         </th>
@@ -283,18 +267,18 @@ function ProcessComponent({ node, params }: {
             }
             <tbody>
               {
-                (has_row_header ? rest : rows).map((c, i) =>
+                (has_column_header ? rest : rows).map((c, i) =>
                   <tr key={ i }>
                     {
                       c.props.cells.map((c, i) =>
-                        has_column_header && i === 0 ?
+                        has_row_header && i === 0 ?
                           <th scope="col" key={ i }
-                            className={ clsx(cellCn) }>
+                            className={ clsx() }>
                             <NotionRichText rich_text={ c } />
                           </th>
                           :
                           <td key={ i }
-                            className={ clsx(cellCn) }>
+                            className={ clsx() }>
                             <NotionRichText rich_text={ c } />
                           </td>
 
