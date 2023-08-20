@@ -142,12 +142,12 @@ function ProcessComponent({ node, params }: {
       )
 
       case 'paragraph': return (
-        <>
-          <p className={ clsx("m-0 my-2", className) } { ...props }>
+        <div className={ c("m-0 my-2") } { ...props }>
+          <p>
             <RichText />
           </p>
           <NestedChildren className="pl-4" />
-        </>
+        </div>
       )
 
       case 'to_do': return (
@@ -172,10 +172,10 @@ function ProcessComponent({ node, params }: {
 
       case 'list_item': return (
         'checked' in node.props ? (
-          <li className={ c("list-none ml-0") }>
+          <li className={ c("list-none relative", node.props.checked ? 'checked' : '') }>
             <CheckboxSVG
               checked={ node.props.checked }
-              className="inline w-8 h-6 my-auto mb-1" />
+              className="absolute -left-8 w-8 h-6 my-auto mb-1" />
             <RichText />
             <NestedChildren />
           </li>
@@ -262,8 +262,7 @@ function ProcessComponent({ node, params }: {
                     {
                       headRow.props.cells.map((c, i) =>
                         <th scope="row" key={ i }
-                          className={ clsx(
-                          ) }>
+                          className={ clsx() }>
                           <NotionRichText rich_text={ c } />
                         </th>
                       ) }
