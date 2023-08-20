@@ -1,5 +1,5 @@
 import { NodeTypes, NotionASTNode, convertChildrenToAST } from "../response-to-ast"
-import { NotionIcon, NotionFigureCaption, NotionRichText, flattenRichText, NotionImage } from "./rich-text"
+import { NotionIcon, NotionFigureCaption, NotionRichText, flattenRichText, NotionImage, ApiColor, convertColorToClassname } from "./rich-text"
 import clsx from "clsx"
 import { CheckboxSVG, FileDownloadIcon } from "@/components/svg"
 import { Toggle } from "../client"
@@ -7,7 +7,8 @@ import { CodeRSC } from "@/components/code-snippet/rsc"
 import { KaTeXRSC } from "@/components/katex/rsc"
 import { getFileName, getMetaInfo } from "@/components/metadata/util"
 import Image from "next/image"
-import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
+import { Heading1BlockObjectResponse, ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
+import { cn } from "@/components/typography"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:
@@ -108,7 +109,13 @@ function ProcessComponent({ node, params }: {
       </div>
     ) : null
 
-    const cn = (...c: string[]) => clsx(...c, className)
+    const blockColor = node.props.color as ApiColor
+
+    const c = (...c: string[]) => cn(
+      ...c,
+      convertColorToClassname(blockColor),
+      className
+    )
 
 
 
@@ -117,19 +124,19 @@ function ProcessComponent({ node, params }: {
       // ----------------------  --------------------------
 
       case 'heading_1': return (
-        <h2 className={ cn("text-3xl") } { ...props }>
+        <h2 className={ c("text-3xl") } { ...props }>
           <RichText />
         </h2>
       )
 
       case 'heading_2': return (
-        <h3 className={ cn("text-2xl") } { ...props }>
+        <h3 className={ c("text-2xl") } { ...props }>
           <RichText />
         </h3>
       )
 
       case 'heading_3': return (
-        <h4 className={ cn("text-xl") } { ...props }>
+        <h4 className={ c("text-xl") } { ...props }>
           <RichText />
         </h4>
       )
@@ -144,7 +151,7 @@ function ProcessComponent({ node, params }: {
       )
 
       case 'to_do': return (
-        <ul className={ cn("") } { ...props }>
+        <ul className={ c("") } { ...props }>
           { children }
         </ul>
       )
@@ -152,20 +159,20 @@ function ProcessComponent({ node, params }: {
       // ----------------------  --------------------------
 
       case 'bulleted_list_item': return (
-        <ul className={ cn("") } { ...props }>
+        <ul className={ c("") } { ...props }>
           { children }
         </ul>
       )
 
       case 'numbered_list_item': return (
-        <ol className={ cn("") } { ...props }>
+        <ol className={ c("") } { ...props }>
           { children }
         </ol>
       )
 
       case 'list_item': return (
         'checked' in node.props ? (
-          <li className={ cn("list-none ml-0") }>
+          <li className={ c("list-none ml-0") }>
             <CheckboxSVG
               checked={ node.props.checked }
               className="inline w-8 h-6 my-auto mb-1" />
@@ -173,7 +180,7 @@ function ProcessComponent({ node, params }: {
             <NestedChildren />
           </li>
         ) : (
-          <li className={ cn("") }>
+          <li className={ c("") }>
             <RichText />
             <NestedChildren />
           </li>
@@ -181,7 +188,7 @@ function ProcessComponent({ node, params }: {
       )
 
       case 'toggle': return (
-        <Toggle className={ cn("") } { ...props }
+        <Toggle className={ c("") } { ...props }
           headerSlot={ <RichText /> }
         >
           <NestedChildren className="pl-4" />
@@ -189,14 +196,14 @@ function ProcessComponent({ node, params }: {
       )
 
       case 'quote': return (
-        <blockquote className={ cn("") } { ...props }>
+        <blockquote className={ c("") } { ...props }>
           <RichText />
           <NestedChildren />
         </blockquote>
       )
 
       case 'callout': return (
-        <div className={ cn(
+        <div className={ c(
           "flex gap-3 p-4 bg-zinc-900 rounded-md border-zinc-800 my-2"
         ) } { ...props } >
           <NotionIcon icon={ node.props.icon } />
@@ -208,7 +215,7 @@ function ProcessComponent({ node, params }: {
       )
 
       case 'divider': return (
-        <hr className={ cn("") } { ...props } />
+        <hr className={ c("") } { ...props } />
       )
 
       // ----------------------  --------------------------
@@ -225,7 +232,7 @@ function ProcessComponent({ node, params }: {
 
       case 'equation': return (
         <KaTeXRSC
-          className={ cn("py-2 hover:bg-zinc-900") }
+          className={ c("py-2 hover:bg-zinc-900") }
           math={ node.props.expression }
           block
           { ...props }
@@ -247,8 +254,7 @@ function ProcessComponent({ node, params }: {
         const rows = node.children as NodeTypes['table_row'][]
         const [headRow, ...rest] = rows
         return (
-          <table className={ cn(
-          ) } { ...props }>
+          <table className={ c('my-2') } { ...props }>
             {
               has_column_header === true ? (
                 <thead>
@@ -302,7 +308,7 @@ function ProcessComponent({ node, params }: {
             <a
               target="_blank"
               href={ node.props.url }
-              className={ cn(
+              className={ c(
                 "w-full flex flex-row rounded-md border border-zinc-800 no-underline"
                 , "hover:bg-zinc-900/70") } { ...props } >
               <div className="p-3 w-full flex flex-col">
@@ -362,7 +368,7 @@ function ProcessComponent({ node, params }: {
         const file =
           'file' in node.props ? node.props.file : undefined
         return (
-          <div className={ cn("my-2") } { ...props }>
+          <div className={ c("my-2") } { ...props }>
             {
               external ?
                 <iframe
@@ -394,7 +400,7 @@ function ProcessComponent({ node, params }: {
             'file' in node.props ? node.props.file.url : ''
 
         return (
-          <div className={ cn("my-2 relative w-full p-2") } { ...props }>
+          <div className={ c("my-2 relative w-full p-2") } { ...props }>
             <NotionImage
               alt="A Picture"
               nprop={ node.props as any }
@@ -410,7 +416,7 @@ function ProcessComponent({ node, params }: {
           'external' in node.props ? node.props.external.url :
             'file' in node.props ? node.props.file.url : ''
         return (
-          <div className={ cn("my-4 p-2") } { ...props }>
+          <div className={ c("my-4 p-2") } { ...props }>
             <embed
               className="max-h-[60vh] aspect-[6/7] w-full rounded-md"
               src={ url }
@@ -426,7 +432,7 @@ function ProcessComponent({ node, params }: {
             'file' in node.props ? node.props.file.url : ''
 
         return (
-          <div className={ cn("my-4 p-2") } { ...props }>
+          <div className={ c("my-4 p-2") } { ...props }>
             {
               url ?
                 <audio src={ url } controls className="w-full" />
@@ -449,7 +455,7 @@ function ProcessComponent({ node, params }: {
             ? 'notion-static.com'
             : filename?.url?.hostname
         return (
-          <div className={ cn("my-4 no-underline ") } { ...props }>
+          <div className={ c("my-4 no-underline ") } { ...props }>
             <a
               href={ url }
               target="_blank"
@@ -457,7 +463,7 @@ function ProcessComponent({ node, params }: {
               className="p-4 no-underline bg-zinc-900/50 rounded-md hover:bg-zinc-900 w-full flex flex-col cursor-pointer"
             >
               <FileDownloadIcon className="inline text-2xl mb-1" />
-              <div className="flex flex-row items-end">
+              <div className="">
                 <span className="text-zinc-200">
                   { filename ? filename.title : "Unknown File Source" }
                 </span>
@@ -483,7 +489,7 @@ function ProcessComponent({ node, params }: {
           : undefined
 
         return (
-          <div className={ cn("my-4 p-2 bg-black") } { ...props } >
+          <div className={ c("my-4 p-2 bg-black") } { ...props } >
             {
               spotify ? (
                 <iframe

@@ -46,7 +46,7 @@ export function NotionIcon({
     // eslint-disable-next-line @next/next/no-img-element
     return <img
       alt='Callout Icon'
-      className={ cn("inline w-6 h-6 rounded-sm", className)}
+      className={ cn("inline w-6 h-6 rounded-sm", className) }
       src={ icon.external.url }
       style={ {
         // height: '1em',
@@ -319,35 +319,62 @@ function annotationToClassName(className: string, annotation: Annotation) {
         'underline' : '',
       annotation.code ?
         'font-mono text-sm p-1 bg-zinc-800 rounded-md ' : '',
-      colorToTw[annotation.color],
+      convertColorToClassname(annotation.color),
       className,
     )
   )
 }
 
-const colorToTw: {
-  [key in Annotation['color']]: string
-} = {
-  default: "",
-  gray: "text-zinc-500",
-  brown: "text-yellow-800",
-  orange: "text-orange-500",
-  yellow: "text-yellow-400",
-  green: "text-green-500",
-  blue: "text-blue-500",
-  purple: "text-purple-500",
-  pink: "text-pink-500",
-  red: "text-red-500",
-  gray_background: "bg-zinc-800/50",
-  brown_background: "bg-yellow-900/50",
-  orange_background: "bg-orange-800/50",
-  yellow_background: "bg-yellow-800/50",
-  green_background: "bg-green-800/50",
-  blue_background: "bg-blue-800/50",
-  purple_background: "bg-purple-800/50",
-  pink_background: "bg-pink-800/50",
-  red_background: "bg-red-800/50"
+export type ApiColor = Annotation['color']
+
+export function convertColorToClassname(color?: ApiColor) {
+  switch (color) {
+    case 'default': return ''
+    case 'gray': return "text-zinc-500"
+    case 'brown': return "text-yellow-800"
+    case 'orange': return "text-orange-500"
+    case 'yellow': return "text-yellow-400"
+    case 'green': return "text-green-500"
+    case 'blue': return "text-blue-500"
+    case 'purple': return "text-purple-500"
+    case 'pink': return "text-pink-500"
+    case 'red': return "text-red-500"
+    case 'gray_background': return "bg-zinc-800/50"
+    case 'brown_background': return "bg-yellow-900/50"
+    case 'orange_background': return "bg-orange-800/50"
+    case 'yellow_background': return "bg-yellow-800/50"
+    case 'green_background': return "bg-green-800/50"
+    case 'blue_background': return "bg-blue-800/50"
+    case 'purple_background': return "bg-purple-800/50"
+    case 'pink_background': return "bg-pink-800/50"
+    case 'red_background': return "bg-red-800/50"
+    default: return 
+  }
 }
+
+// export const colorToTw: {
+//   [key in ApiColor]: string
+// } = {
+//   default: "",
+//   gray: "text-zinc-500",
+//   brown: "text-yellow-800",
+//   orange: "text-orange-500",
+//   yellow: "text-yellow-400",
+//   green: "text-green-500",
+//   blue: "text-blue-500",
+//   purple: "text-purple-500",
+//   pink: "text-pink-500",
+//   red: "text-red-500",
+//   gray_background: "bg-zinc-800/50",
+//   brown_background: "bg-yellow-900/50",
+//   orange_background: "bg-orange-800/50",
+//   yellow_background: "bg-yellow-800/50",
+//   green_background: "bg-green-800/50",
+//   blue_background: "bg-blue-800/50",
+//   purple_background: "bg-purple-800/50",
+//   pink_background: "bg-pink-800/50",
+//   red_background: "bg-red-800/50"
+// }
 
 export function NotionFigureCaption(p: {
   caption: RichTextItemResponse[]
