@@ -1,7 +1,7 @@
 import { getArticles } from "@/components/notion/data"
 import Link from 'next/link'
 import { cn } from "@/components/typography"
-import { NotionIcon } from "@/components/notion/rsc/rich-text"
+import { NotionIcon } from "@/components/notion/rsc/images"
 
 export default async function Articles() {
 

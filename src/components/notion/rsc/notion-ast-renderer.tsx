@@ -1,5 +1,5 @@
 import { NodeTypes, NotionASTNode, convertChildrenToAST } from "../response-to-ast"
-import { NotionIcon, NotionFigureCaption, NotionRichText, flattenRichText, NotionImage, ApiColor, convertColorToClassname } from "./rich-text"
+import { NotionFigureCaption, NotionRichText, flattenRichText, ApiColor, convertColorToClassname } from "./rich-text"
 import clsx from "clsx"
 import { CheckboxSVG, FileDownloadIcon } from "@/components/svg"
 import { Toggle } from "../client"
@@ -7,8 +7,9 @@ import { CodeRSC } from "@/components/code-snippet/rsc"
 import { KaTeXRSC } from "@/components/katex/rsc"
 import { getFileName, getMetaInfo } from "@/components/metadata/util"
 import Image from "next/image"
-import { Heading1BlockObjectResponse, ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
+import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
 import { cn } from "@/components/typography"
+import { NotionIcon, NotionImage } from "./images"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:

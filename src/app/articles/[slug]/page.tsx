@@ -2,10 +2,11 @@ import { getArticles, getPageContent } from "@/components/notion/data"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
 import { RenderNotionPage } from "@/components/notion/rsc/notion-ast-renderer"
-import { NotionIcon, NotionImage, NotionRichText } from "@/components/notion/rsc/rich-text"
 import { formatRelative } from "date-fns"
 import { cn } from "@/components/typography"
 import Link from "next/link"
+import { NotionIcon, NotionImage } from "@/components/notion/rsc/images"
+import { NotionRichText } from "@/components/notion/rsc/rich-text"
 
 export async function generateStaticParams() {
   const articles = await getArticles()
