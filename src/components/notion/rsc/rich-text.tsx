@@ -9,6 +9,8 @@ import { InlineMentionTooltip } from "../client"
 import { cn } from "@/components/typography"
 import remotePatterns from "../../../../remotePattern.mjs"
 import probe from 'probe-image-size'
+import { notion } from "../data"
+import { slug } from "github-slugger"
 
 type Annotation = RichTextItemResponse['annotations']
 
@@ -40,7 +42,7 @@ export function NotionRichText(p: {
 
 
 
-    function InlineText() {
+    async function InlineText() {
       const href = t.href
       const { text } = (t as TextRichTextItemResponse)
       const content = text.content.split('\n').map((c, i) => i ? [<br key={ i } />, c] : c)
@@ -53,7 +55,7 @@ export function NotionRichText(p: {
                 { href }
               </>
             }>
-              <a className={ annotationCN } href={ href }>
+              <a className={ annotationCN } href={ await parseNotionHref(href) }>
                 { content }
               </a>
             </InlineMentionTooltip>
@@ -200,6 +202,27 @@ export function NotionRichText(p: {
   })
 
 }
+
+async function parseNotionHref(c: string) {
+  if (c.startsWith('/')) {
+    const blockid = c.split('#')[1]
+    try {
+      const blockdata = await notion.blocks.retrieve({
+        block_id: blockid
+      }) as any
+      const rich_text = blockdata[blockdata.type!].rich_text as RichTextItemResponse[]
+      const text = flattenRichText(rich_text)!
+      const anchorlink = `#${slug(text)}`
+      return anchorlink
+    } catch (error) {
+      console.log(error)
+      return c      
+    }
+  } else {
+    return c
+  }
+}
+
 
 function annotationToClassName(className: string, annotation: Annotation) {
   return twMerge(
