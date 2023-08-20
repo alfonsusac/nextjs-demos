@@ -1,4 +1,4 @@
-import { CalloutBlockObjectResponse, EquationRichTextItemResponse, MentionRichTextItemResponse, RichTextItemResponse, TextRichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
+import { EquationRichTextItemResponse, MentionRichTextItemResponse, RichTextItemResponse, TextRichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
 import clsx from "clsx"
 import { twMerge } from "tailwind-merge"
 import { KaTeXRSC } from "../../katex/rsc"
@@ -6,9 +6,6 @@ import { getMetaInfo } from "../../metadata/util"
 import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, MaterialSymbolsPerson, PhGlobe, PhNotionLogoFill } from "../../svg"
 import { formatRelative } from "date-fns"
 import { InlineMentionTooltip } from "../client"
-import { cn } from "@/components/typography"
-import remotePatterns from "../../../../remotePattern.mjs"
-import probe from 'probe-image-size'
 import { notion } from "../data"
 import { slug } from "github-slugger"
 
