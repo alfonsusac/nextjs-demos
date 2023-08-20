@@ -5,6 +5,8 @@ import * as Collapsible from '@radix-ui/react-collapsible'
 import * as Tooltip from '@radix-ui/react-tooltip'
 import { useState } from "react"
 import { cn } from "../typography"
+import Image from "next/image"
+import { ErrorBoundary } from "react-error-boundary"
 
 
 export function Toggle(p:
@@ -27,7 +29,7 @@ export function Toggle(p:
           "toggle flex cursor-pointer hover:bg-zinc-900/70 py-1 rounded-sm",
           p.className
         ) }>
-          <div className={cn("h-[1lh] w-8 text-center flex-shrink-0")}>
+          <div className={ cn("h-[1lh] w-8 text-center flex-shrink-0") }>
 
             <AkarIconsTriangleRightFill className={
               clsx(
@@ -46,34 +48,17 @@ export function Toggle(p:
   )
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export function AkarIconsTriangleRightFill(props: React.SVGProps<SVGSVGElement>) {
+function AkarIconsTriangleRightFill(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" { ...props }><path fill="currentColor" d="M8 6a1 1 0 0 1 1.6-.8l8 6a1 1 0 0 1 0 1.6l-8 6A1 1 0 0 1 8 18V6Z"></path></svg>
   )
 }
 
 
-export function InlineMentionTooltip (p: {
+
+
+
+export function InlineMentionTooltip(p: {
   children: React.ReactNode,
   content: React.ReactNode,
 }) {
@@ -81,11 +66,11 @@ export function InlineMentionTooltip (p: {
     <Tooltip.Provider>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
-          {p.children}
+          { p.children }
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content
-            forceMount={true}
+            forceMount={ true }
             side="bottom"
             className={ clsx(
               "data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade",
@@ -102,12 +87,14 @@ export function InlineMentionTooltip (p: {
             ) }
             sideOffset={ 3 }
           >
-            {p.content}
-            {/* Add to library */}
-            {/* <Tooltip.Arrow className="fill-zinc-800" /> */}
+            { p.content }
+            {/* Add to library */ }
+            {/* <Tooltip.Arrow className="fill-zinc-800" /> */ }
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>
     </Tooltip.Provider>
   )
 }
+
+type ImageProps = React.ComponentProps<typeof Image>

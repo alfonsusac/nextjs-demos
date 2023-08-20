@@ -29,17 +29,15 @@ export default async function Page({ params }: any) {
 
   return (
     <>
-      {
-
-      }
       <NotionImage
         alt="Page Cover"
         nprop={ article.cover as any }
         className={ cn(
-          "w-full h-60 object-cover after:bg-gradient-to-t after:from-zinc-800 after:to-transparent",
+          "w-full h-60 object-cover", 
+          "after:bg-gradient-to-t after:from-zinc-800 after:to-transparent",
           "absolute",
           "top-0 left-0 right-0 m-0",
-          "max-w-none"
+          "max-w-none flex"
         ) }
       />
       <>

@@ -124,7 +124,7 @@ function ProcessComponent({ node, params }: {
 
       case 'heading_1': return node.props.is_toggleable === true ? (
         <Toggle className="toggle-heading1" headerSlot={
-          <h2 className={ c("my-0") } { ...props }>
+          <h2 className={ c("my-0") } { ...props } id={node.id}>
             <RichText />
           </h2 >
         }>
@@ -140,7 +140,7 @@ function ProcessComponent({ node, params }: {
 
       case 'heading_2': return node.props.is_toggleable === true ? (
         <Toggle className="toggle-heading2" headerSlot={
-          <h3 className={ c("my-0") } { ...props }>
+          <h3 className={ c("my-0") } { ...props } id={ node.id }>
             <RichText />
           </h3 >
         }>
@@ -154,7 +154,7 @@ function ProcessComponent({ node, params }: {
 
       case 'heading_3': return node.props.is_toggleable === true ? (
         <Toggle className="toggle-heading3" headerSlot={
-          <h4 className={ c("my-0") } { ...props }>
+          <h4 className={ c("my-0") } { ...props } id={ node.id }>
             <RichText />
           </h4 >
         }>

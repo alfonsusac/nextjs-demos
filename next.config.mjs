@@ -1,18 +1,24 @@
 import rehypePrism from '@mapbox/rehype-prism'
 import createMDX from '@next/mdx'
+import remotePatterns from './remotePattern.mjs'
 
+console.log()
+console.log(remotePatterns)
+
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
-      }, {
-        protocol: 'https',
-        hostname: '**.amazonaws.com',
-        pathname: '/secure.notion-static.com/**'
-      }
-    ]
+    remotePatterns: remotePatterns
+//     remotePatterns: [
+//       {
+//         protocol: 'https',
+//         hostname: 'avatars.githubusercontent.com',
+//       }, {
+//         protocol: 'https',
+//         hostname: '**.amazonaws.com',
+//         pathname: '/secure.notion-static.com/**'
+//       }
+// ]
   },
   // compiler: {
   //   removeConsole: {
