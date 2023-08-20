@@ -31,9 +31,6 @@ export function NotionIcon({
       <span
         className={ cn('inline w-6 h-6 rounded-sm') }
         style={ {
-          // height: '1em',
-          // width: '1em',
-          // margin: '0 .05em 0 .1em',
           marginBottom: '0.1em',
           verticalAlign: '-0.1em',
           minWidth: '1em',
@@ -51,9 +48,6 @@ export function NotionIcon({
       className={ cn("inline w-6 h-6 rounded-sm", className) }
       src={ icon.external.url }
       style={ {
-        // height: '1em',
-        // width: '1em',
-        // margin: '0 .05em 0 .1em',
         marginTop: '0.1em',
         verticalAlign: '-0.1em',
         minWidth: '1em'
@@ -67,18 +61,12 @@ export function NotionIcon({
       className={ cn("inline w-6 h-6 rounded-sm", className) }
       src={ icon.file.url }
       style={ {
-        // height: '1em',
-        // width: '1em',
         marginTop: '0.1em',
         verticalAlign: '-0.1em',
         minWidth: '1em'
       } }
     />
 }
-
-type Prettify<T> = {
-  [K in keyof T]: T[K]
-} & {}
 
 type ImageObject = {
   type: "file"
