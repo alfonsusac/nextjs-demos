@@ -118,27 +118,52 @@ function ProcessComponent({ node, params }: {
     )
 
 
-
     switch (node.type) {
 
       // ----------------------  --------------------------
 
-      case 'heading_1': return (
-        <h2 className={ c("text-3xl") } { ...props }>
+      case 'heading_1': return node.props.is_toggleable === true ? (
+        <Toggle className="toggle-heading1" headerSlot={
+          <h2 className={ c("my-0") } { ...props }>
+            <RichText />
+          </h2 >
+        }>
+          <NestedChildren className="pl-4" />
+        </Toggle>
+      ) : (
+        <h2 className={ c("") } { ...props }>
           <RichText />
-        </h2>
+        </h2 >
       )
 
-      case 'heading_2': return (
-        <h3 className={ c("text-2xl") } { ...props }>
+
+
+      case 'heading_2': return node.props.is_toggleable === true ? (
+        <Toggle className="toggle-heading2" headerSlot={
+          <h3 className={ c("my-0") } { ...props }>
+            <RichText />
+          </h3 >
+        }>
+          <NestedChildren className="pl-4" />
+        </Toggle>
+      ) : (
+        <h3 className={ c("") } { ...props }>
           <RichText />
-        </h3>
+        </h3 >
       )
 
-      case 'heading_3': return (
-        <h4 className={ c("text-xl") } { ...props }>
+      case 'heading_3': return node.props.is_toggleable === true ? (
+        <Toggle className="toggle-heading3" headerSlot={
+          <h4 className={ c("my-0") } { ...props }>
+            <RichText />
+          </h4 >
+        }>
+          <NestedChildren className="pl-4" />
+        </Toggle>
+      ) : (
+        <h4 className={ c("") } { ...props }>
           <RichText />
-        </h4>
+        </h4 >
       )
 
       case 'paragraph': return (

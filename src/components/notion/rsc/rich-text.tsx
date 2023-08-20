@@ -146,7 +146,6 @@ export function NotionRichText(p: {
     function InlineText() {
       const href = t.href
       const { text } = (t as TextRichTextItemResponse)
-      console.log(text.content)
       const content = text.content.split('\n').map((c, i) => i ? [<br key={ i } />, c] : c)
       return (
         href

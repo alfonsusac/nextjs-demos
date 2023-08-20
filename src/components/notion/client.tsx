@@ -4,6 +4,7 @@ import clsx from "clsx"
 import * as Collapsible from '@radix-ui/react-collapsible'
 import * as Tooltip from '@radix-ui/react-tooltip'
 import { useState } from "react"
+import { cn } from "../typography"
 
 
 export function Toggle(p:
@@ -19,16 +20,14 @@ export function Toggle(p:
   const [open, setOpen] = useState(false)
 
   return (
-    <Collapsible.Root
-      open={ open }
-      onOpenChange={ setOpen }
-    >
-
+    <Collapsible.Root open={ open } onOpenChange={ setOpen }>
       <Collapsible.Trigger asChild>
 
-        <div className="flex cursor-pointer hover:bg-zinc-900/70 py-1 rounded-sm">
-          
-          <div className="h-[1lh] w-8 text-center flex-shrink-0">
+        <div className={ cn(
+          "toggle flex cursor-pointer hover:bg-zinc-900/70 py-1 rounded-sm",
+          p.className
+        ) }>
+          <div className={cn("h-[1lh] w-8 text-center flex-shrink-0")}>
 
             <AkarIconsTriangleRightFill className={
               clsx(
@@ -36,21 +35,36 @@ export function Toggle(p:
                 open ? "rotate-90" : ''
               )
             } />
-
           </div>
-
           { p.headerSlot }
         </div>
 
       </Collapsible.Trigger>
 
-      <Collapsible.Content>
-        { p.children }
-      </Collapsible.Content>
-
+      <Collapsible.Content> { p.children } </Collapsible.Content>
     </Collapsible.Root>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export function AkarIconsTriangleRightFill(props: React.SVGProps<SVGSVGElement>) {
   return (
