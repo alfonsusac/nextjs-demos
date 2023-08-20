@@ -24,7 +24,7 @@ export async function convertChildrenToAST(
 
 
   async function mapBlockListToAST(list: ListBlockChildrenResponse['results'], currentNode: NotionASTNode) {
-    console.info("Visiting " + currentNode.type)
+    // console.info("Visiting " + currentNode.type)
 
     const fetchChildQueue: { id: string, node: NotionASTNode }[] = []
 

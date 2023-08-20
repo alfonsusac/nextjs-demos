@@ -279,7 +279,7 @@ function ProcessComponent({ node, params }: {
         const rows = node.children as NodeTypes['table_row'][]
         const [headRow, ...rest] = rows
         return (
-          <table className={ c('my-2') } { ...props }>
+          <table className={ c('') } { ...props }>
             {
               has_column_header === true ? (
                 <thead>
@@ -397,8 +397,8 @@ function ProcessComponent({ node, params }: {
               external ?
                 <iframe
                   className="rounded-md mx-auto"
-                  width="560"
-                  height="315"
+                  // width="560"
+                  // height="315"
                   src={ external.url.replace('watch?v=', 'embed/') }
                   title="YouTube video player"
                   frameBorder="0"

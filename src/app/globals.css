@@ -91,7 +91,7 @@ article {
     text-zinc-400
   }
   table {
-    @apply mx-auto;
+    @apply mx-auto my-4;
     
     th, td {
       @apply border-x-0 
