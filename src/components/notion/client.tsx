@@ -23,22 +23,31 @@ export function Toggle(p:
       open={ open }
       onOpenChange={ setOpen }
     >
+
       <Collapsible.Trigger asChild>
+
         <div className="flex cursor-pointer hover:bg-zinc-900/70 py-1 rounded-sm">
-          <div className="w-8 h-4">
+          
+          <div className="h-[1lh] w-8 text-center flex-shrink-0">
+
             <AkarIconsTriangleRightFill className={
               clsx(
-                "transition-all duration-300 ease-in-out mx-auto mt-1",
+                "transition-all duration-300 ease-in-out inline",
                 open ? "rotate-90" : ''
               )
             } />
+
           </div>
+
           { p.headerSlot }
         </div>
+
       </Collapsible.Trigger>
+
       <Collapsible.Content>
         { p.children }
       </Collapsible.Content>
+
     </Collapsible.Root>
   )
 }
