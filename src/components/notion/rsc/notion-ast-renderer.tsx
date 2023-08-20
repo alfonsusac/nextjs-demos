@@ -10,6 +10,7 @@ import Image from "next/image"
 import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
 import { cn } from "@/components/typography"
 import { NotionIcon, NotionImage } from "./images"
+import { slug } from "github-slugger"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:
@@ -82,6 +83,8 @@ function ProcessComponent({ node, params }: {
     <NotionFigureCaption caption={ node.props.caption } { ...rest } /> : null
   const flattenedCaption = flattenRichText(node.props.caption)
 
+  const slugid = flattenedRichText ? slug(flattenedRichText) : undefined
+
   if (params) {
     const customComponent = params({
       RichText: <RichText />,
@@ -125,14 +128,14 @@ function ProcessComponent({ node, params }: {
 
       case 'heading_1': return node.props.is_toggleable === true ? (
         <Toggle className="toggle-heading1" headerSlot={
-          <h2 className={ c("my-0") } { ...props } id={node.id}>
+          <h2 className={ c("my-0") } { ...props } id={ slugid }>
             <RichText />
           </h2 >
         }>
           <NestedChildren className="pl-4" />
         </Toggle>
       ) : (
-        <h2 className={ c("") } { ...props }>
+        <h2 className={ c("") } { ...props } id={ slugid }>
           <RichText />
         </h2 >
       )
@@ -141,28 +144,28 @@ function ProcessComponent({ node, params }: {
 
       case 'heading_2': return node.props.is_toggleable === true ? (
         <Toggle className="toggle-heading2" headerSlot={
-          <h3 className={ c("my-0") } { ...props } id={ node.id }>
+          <h3 className={ c("my-0") } { ...props } id={ slugid }>
             <RichText />
           </h3 >
         }>
           <NestedChildren className="pl-4" />
         </Toggle>
       ) : (
-        <h3 className={ c("") } { ...props }>
+        <h3 className={ c("") } { ...props } id={ slugid }>
           <RichText />
         </h3 >
       )
 
       case 'heading_3': return node.props.is_toggleable === true ? (
         <Toggle className="toggle-heading3" headerSlot={
-          <h4 className={ c("my-0") } { ...props } id={ node.id }>
+          <h4 className={ c("my-0") } { ...props } id={ slugid }>
             <RichText />
           </h4 >
         }>
           <NestedChildren className="pl-4" />
         </Toggle>
       ) : (
-        <h4 className={ c("") } { ...props }>
+        <h4 className={ c("") } { ...props } id={ slugid }>
           <RichText />
         </h4 >
       )
