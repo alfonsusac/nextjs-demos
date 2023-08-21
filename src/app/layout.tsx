@@ -96,9 +96,9 @@ export default function RootLayout(p: {
           <Page className="my-4"
             as="div" label="▼ Home" path='/' />
           <Page className="my-4"
-            as="div" label="▧ Demos" category={ `/demos` } path='/demos' />
+            as="div" label="▧ Demos" path='/demos' />
           <Page className="my-4"
-            as="div" label="◩ Articles" category={ `/articles` } path='/articles' />
+            as="div" label="◩ Articles" path='/articles' />
 
         </div>
 

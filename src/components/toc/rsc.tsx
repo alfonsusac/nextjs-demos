@@ -8,15 +8,16 @@ export type TOCItemType = {
   id: string,
 }
 
-export function getHeadings(mdx?: JSX.Element) {
+export async function getHeadings(mdx?: JSX.Element) {
   
   if (!mdx) return []
+
   
   const headers: TOCItemType[] = []
 
   const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 
-  visitJSX(mdx, (node) => {
+  await visitJSX(mdx, (node) => {
     if (node === '\n') return
     if (typeof node.type === 'string' && headings.includes(node.type)) {
 
@@ -31,21 +32,24 @@ export function getHeadings(mdx?: JSX.Element) {
     }
   })
 
-  console.log(headers)
+  // console.log(headers)
   return headers
 
 }
 
 
 // Recursively visit jsx
-function visitJSX(jsx: JSX.Element, cb: (node: JSX.Element | '\n') => void) {
+async function visitJSX(jsx: JSX.Element, cb: (node: JSX.Element | '\n') => void) {
+
+  // console.log(jsx)
+
   if (jsx as any === '\n') return cb(jsx) 
   
   if (typeof jsx !== 'object'
     || !Object.hasOwn(jsx, 'type')
     || !Object.hasOwn(jsx, 'props')
   ) {
-    console.log(jsx)
+    // console.log(jsx)
     throw new Error('Not a Valid JSX')
   }
 
@@ -55,8 +59,18 @@ function visitJSX(jsx: JSX.Element, cb: (node: JSX.Element | '\n') => void) {
   const props = jsx.props
 
   if (typeof type === 'function') {
-    const children = type(props).props?.children
+    // console.log("A ") 
+
+    // console.log(await type(props))
+
+    const children = (await type(props)).props?.children
+
+    // console.log("B")
+
+    // console.log(children)
+    
     if (children) {
+      // console.log("C")
       if (Array.isArray(children) === true) {
         children.forEach((e: any) => visitJSX(e, cb))
       } else{
@@ -71,7 +85,7 @@ export let headings: TOCItemType[] = []
 export async function TOCContent(p: {
   children: React.ReactNode
 }) {
-  headings = getHeadings(p.children as React.ReactElement)
+  headings = await getHeadings(p.children as React.ReactElement)
   
   return <UseAsTOCContentClient headings={ headings }>
     {p.children}

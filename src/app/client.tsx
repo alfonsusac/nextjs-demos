@@ -9,8 +9,9 @@ import { TOCProvider } from "@/components/toc/context"
 
 function useSelected(path: string, match?:number) {
   const pathname = usePathname()
-  const firstTwoPath = ('/' + pathname?.split('/').slice(1, 1 + (match ?? 1)).join('/'))
-  return pathname === path || firstTwoPath === path
+
+  const firstThreePath = ('/' + pathname?.split('/').slice(1, 2 + (match ?? 1)).join('/'))
+  return pathname === path || firstThreePath === path
 }
 
 export function Page(p:{
@@ -23,6 +24,8 @@ export function Page(p:{
   className?: string
 }) {
   const path = p.path ?? (p.category !== undefined ? `/${slug(p.category!)}/${slug(p.label)}` : `/${slug(p.label)}`)
+  console.log("Hello")
+  console.log(path)
   const selected = useSelected(path, p.match ?? 1)
   const As = p.as ?? 'li'
 
@@ -46,7 +49,7 @@ export function Page(p:{
 
 export function Category(p: {
   label: string,
-}) {
+}) { 
   const selected = useSelected(`/${p.label}`)
 
   return (

@@ -99,12 +99,10 @@ export default async function Page({ params }: any) {
           'hidden sm:block',
           'sticky',
           'top-24',
-          'w-12',
+          'w-56',
         ) }>
           In this article
-          <Sidebar
-
-          >
+          <Sidebar>
             <ToCSidebar startDepth={ 2 } />
           </Sidebar>
         </div>

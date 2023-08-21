@@ -4,8 +4,9 @@ import { Category, dirs } from "../layout"
 import { Page } from "../client"
 import { ToCSidebar } from "@/components/toc/client"
 import { getHeadings } from "@/components/toc/rsc"
+import { slug } from "github-slugger"
 
-export default function Layout(p: {
+export default async function Layout(p: {
   children: React.ReactNode
 }) {
   return (
@@ -28,15 +29,15 @@ export default function Layout(p: {
 
               <Category label={ category.name } />
 
-              { category.topics.map(page =>
+              { category.topics.map(async page =>
                 <Page
                   key={ page.title }
                   label={ page.title }
-                  category={ `/${category.name}/` }
+                  path={`/demos/${slug(category.name)}/${slug(page.title)}`}
                   match={ 2 }
                   className="text-sm"
                 >
-                  <ToCSidebar items={ getHeadings(page.content) } startDepth={ 2 } />
+                  <ToCSidebar items={ await getHeadings(page.content) } startDepth={ 2 } />
                 </Page>
               ) }
 

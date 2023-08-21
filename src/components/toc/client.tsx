@@ -12,6 +12,8 @@ export function ToCSidebar(p: {
   depth?: 1 | 2 | 3 | 4 | 5 | 6
 }) {
   const { toc } = useTOC()
+
+  // console.log(toc)
   const items = getFilteredItems((toc), p.startDepth, p.depth)
 
   const activeAnchor = useActiveHeadings(items.map(i => i.id))
