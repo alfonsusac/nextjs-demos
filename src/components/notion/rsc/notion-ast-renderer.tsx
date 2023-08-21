@@ -13,7 +13,6 @@ import { slug } from "github-slugger"
 import { NodeTypes } from "../types"
 import { convertChildrenToAST } from "../parser/parser"
 import { NotionASTNode } from "../parser/node"
-import { JSONStringify } from "@/components/tool"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:
@@ -37,18 +36,17 @@ export async function RenderNotionPage(p: {
   components?: InputComponents
 }) {
   const ast = await convertChildrenToAST(p.data)
-
-
-  
   return (
     <NotionASTRenderer node={ ast } components={ p.components } />
   )
 }
 
 
+
 export function NotionASTRenderer(p: {
   node: NotionASTNode,
   components?: InputComponents
+  onRender?: (node: NotionASTNode) => void
 }) {
 
   return p.node.children.map((e, i) => {
