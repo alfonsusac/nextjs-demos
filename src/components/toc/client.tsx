@@ -4,12 +4,15 @@ import { useEffect, useState } from "react"
 import { useTOC } from "./context"
 import { TOCItemType } from "./rsc"
 import clsx from "clsx"
+import { cn } from "../typography"
 
 
 export function ToCSidebar(p: {
   items?: TOCItemType[],
   startDepth?: 1 | 2 | 3 | 4 | 5 | 6
   depth?: 1 | 2 | 3 | 4 | 5 | 6
+  className?: string
+  listClassName?: string
 }) {
   const { toc } = useTOC()
 
@@ -21,9 +24,9 @@ export function ToCSidebar(p: {
   const startDepth = p.startDepth ?? 1
 
   return (
-    <ul className="text-gray-500 mt-1 pb-2 pt-1 m-2">
+    <ul className={cn("text-gray-500 mt-1 pb-2 pt-1 m-2", p.className)}>
       { items.map(i => <li
-        className={ clsx(
+        className={ cn(
           "leading-tight py-1 transition-all",
           "ml-1 pl-3",
           "border-l-2",
@@ -32,7 +35,8 @@ export function ToCSidebar(p: {
             i.level - startDepth === 1 ? 'ml-[1.25rem]' :
               i.level - startDepth === 2 ? 'ml-[2.25rem]' :
                 i.level - startDepth === 3 ? 'ml-[3.25rem]' :
-                  i.level - startDepth === 4 ? 'ml-[4.25rem]' : ''
+                  i.level - startDepth === 4 ? 'ml-[4.25rem]' : '',
+          p.listClassName
         ) }
         key={ i.text }>
         <a href={ `#${i.id ?? ''}` }>

@@ -47,11 +47,11 @@ export default async function Page({ params }: any) {
       {
         article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
       }
-      <div className="flex gap-2 mx-auto">
+      <div className="flex gap-4 mx-auto">
 
 
         {/* LEFT */ }
-        <article className="max-w-xl m-0 w-full">
+        <article className="max-w-xl m-0 w-full ml-auto">
           <header className="my-8 mt-8 space-y-2 relative">
 
             <NotionIcon icon={ article.icon }
@@ -98,12 +98,20 @@ export default async function Page({ params }: any) {
         <div className={ cn(
           'hidden sm:block',
           'sticky',
-          'top-24',
+          'top-40',
           'w-56',
+          'h-full',
+          'mt-32',
+
         ) }>
           In this article
           <Sidebar>
-            <ToCSidebar startDepth={ 2 } />
+            <ToCSidebar
+              startDepth={ 3 }
+              depth={ 3 }
+              className=""
+              listClassName="text-sm"
+            />
           </Sidebar>
         </div>
       </div>

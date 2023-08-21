@@ -41,9 +41,7 @@ export async function RenderNotionPage(p: {
 
   
   return (
-    <>
-      <NotionASTRenderer node={ ast } components={ p.components } />
-    </>
+    <NotionASTRenderer node={ ast } components={ p.components } />
   )
 }
 
