@@ -10,6 +10,8 @@ export default function Layout(p: {
 }) {
   return (
     <>
+      {/* LEFT */}
+
       <Sidebar className={ cn(
         "hidden md:block",
         "flex-shrink-0 bg-black",
@@ -45,6 +47,10 @@ export default function Layout(p: {
         <Page label="Trigger 404 by notFound()" path='/self-404' />
         <Page label="Go to default 404" path='/404' />
       </Sidebar>
+ 
+      
+
+      {/* RIGHT */}
 
       <div className="w-full mx-4">
         <article>
@@ -72,9 +78,9 @@ export default function Layout(p: {
   )
 }
 
-function Sidebar(p: {
-  children: React.ReactNode
-  className: string
+export function Sidebar(p: {
+  children?: React.ReactNode
+  className?: string
 }) {
   return (
     <nav className={ p.className }>

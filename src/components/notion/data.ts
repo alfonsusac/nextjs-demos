@@ -9,11 +9,15 @@ const globalForNotion = globalThis as unknown as {
 }
 
 export const notion =
-  globalForNotion.notion ?? new Client({ auth: process.env.NOTION_TOKEN })
+  globalForNotion.notion ?? (() => {
+    console.log("Creating new Notion Client...")
+    return new Client({ auth: process.env.NOTION_TOKEN })
+  })()
 
 if (process.env.NODE_ENV !== 'production') {
   globalForNotion.notion = notion
 }
+
 
 export const getPageContent = cache(async (id: string) => {
   return await notion.blocks.children.list({

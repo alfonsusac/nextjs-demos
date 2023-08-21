@@ -34,7 +34,7 @@ export function ToCSidebar(p: {
         ) }
         key={ i.text }>
         <a href={ `#${i.id ?? ''}` }>
-          { i.jsx }
+          { i.jsx ?? i.text }
         </a>
       </li>) }
     </ul>

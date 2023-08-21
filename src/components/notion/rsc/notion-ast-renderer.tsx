@@ -1,4 +1,3 @@
-import { NodeTypes, NotionASTNode, convertChildrenToAST } from "../response-to-ast"
 import { NotionFigureCaption, NotionRichText, flattenRichText, ApiColor, convertColorToClassname } from "./rich-text"
 import clsx from "clsx"
 import { CheckboxSVG, FileDownloadIcon } from "@/components/svg"
@@ -11,6 +10,10 @@ import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoi
 import { cn } from "@/components/typography"
 import { NotionIcon, NotionImage } from "./images"
 import { slug } from "github-slugger"
+import { NodeTypes } from "../types"
+import { convertChildrenToAST } from "../parser/parser"
+import { NotionASTNode } from "../parser/node"
+import { JSONStringify } from "@/components/tool"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:
@@ -33,10 +36,12 @@ export async function RenderNotionPage(p: {
   data: ListBlockChildrenResponse
   components?: InputComponents
 }) {
-  const { ast, unknowns } = await convertChildrenToAST(p.data)
+  const ast = await convertChildrenToAST(p.data)
 
   return (
-    <NotionASTRenderer node={ ast } components={ p.components } />
+    <>
+      <NotionASTRenderer node={ ast } components={ p.components } />
+    </>
   )
 }
 
@@ -49,7 +54,7 @@ export function NotionASTRenderer(p: {
   return p.node.children.map((e, i) => {
 
 
-    const Component = ProcessComponent({
+    const Component = getComponent({
       node: e,
       params: p.components
     })
@@ -69,7 +74,7 @@ export function NotionASTRenderer(p: {
   })
 }
 
-function ProcessComponent({ node, params }: {
+function getComponent({ node, params }: {
   node: NotionASTNode,
   params?: InputComponents,
 

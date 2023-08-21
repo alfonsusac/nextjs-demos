@@ -103,6 +103,7 @@ export async function NotionImage({
       <Image
         unoptimized={ !optimize }
         // fill
+        className='object-cover'
         width={ res.width }
         height={ res.height }
         src={ url }

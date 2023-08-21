@@ -4,7 +4,7 @@ import { UseAsTOCContentClient } from "./context"
 export type TOCItemType = {
   level: number,
   text: string,
-  jsx: JSX.Element,
+  jsx?: JSX.Element,
   id: string,
 }
 
@@ -31,6 +31,7 @@ export function getHeadings(mdx?: JSX.Element) {
     }
   })
 
+  console.log(headers)
   return headers
 
 }
@@ -44,6 +45,7 @@ function visitJSX(jsx: JSX.Element, cb: (node: JSX.Element | '\n') => void) {
     || !Object.hasOwn(jsx, 'type')
     || !Object.hasOwn(jsx, 'props')
   ) {
+    console.log(jsx)
     throw new Error('Not a Valid JSX')
   }
 
@@ -53,18 +55,20 @@ function visitJSX(jsx: JSX.Element, cb: (node: JSX.Element | '\n') => void) {
   const props = jsx.props
 
   if (typeof type === 'function') {
-    const children = type(props).props.children
-    if (Array.isArray(children)) {
-      children.forEach((e: any) => visitJSX(e, cb))
-    } else {
-      visitJSX(children,cb)
+    const children = type(props).props?.children
+    if (children) {
+      if (Array.isArray(children) === true) {
+        children.forEach((e: any) => visitJSX(e, cb))
+      } else{
+        visitJSX(children,cb)
+      }
     }
   }
 
 }
 export let headings: TOCItemType[] = []
 
-export function TOCContent(p: {
+export async function TOCContent(p: {
   children: React.ReactNode
 }) {
   headings = getHeadings(p.children as React.ReactElement)
