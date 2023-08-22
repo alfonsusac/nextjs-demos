@@ -9,10 +9,14 @@
 html{ 
   @apply scroll-smooth
   scroll-p-32
+  
 }
 body{ 
   @apply bg-black
-  text-zinc-300/80
+  text-zinc-300/80;
+
+  scrollbar-gutter: stable;
+  
 }
 h1, h2, h3, h4, h5, h6 { 
   @apply font-semibold
