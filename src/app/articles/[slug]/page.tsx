@@ -1,7 +1,7 @@
 import { getArticles, getPageContent } from "@/components/notion/data"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
-import { RenderNotionPage } from "@/components/notion/rsc/notion-ast-renderer"
+import { InputComponents, NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
 import { formatRelative } from "date-fns"
 import { cn } from "@/components/typography"
 import Link from "next/link"
@@ -10,6 +10,11 @@ import { NotionRichText } from "@/components/notion/rsc/rich-text"
 import { Sidebar } from "@/app/demos/layout"
 import { ToCSidebar } from "@/components/toc/client"
 import { TOCContent } from "@/components/toc/rsc"
+import { NotionASTNode } from "@/components/notion/parser/node"
+import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
+import { convertChildrenToAST } from "@/components/notion/parser/parser"
+import { UseAsTOCContentClient } from "@/components/toc/context"
+import { extractHeadings } from "@/components/notion/notion-toc/rsc"
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -75,9 +80,9 @@ export default async function Page({ params }: any) {
 
           </header>
 
-          <TOCContent>
+          {/* <TOCContent> */}
             <RenderNotionPage data={ content } />
-          </TOCContent>
+          {/* </TOCContent> */}
 
           <footer className="mt-12 py-12 border-t border-t-zinc-600 text-zinc-500 text-sm space-y-2 leading-normal">
             <p>
@@ -107,7 +112,7 @@ export default async function Page({ params }: any) {
           In this article
           <Sidebar>
             <ToCSidebar
-              startDepth={ 3 }
+              startDepth={ 1 }
               depth={ 3 }
               className=""
               listClassName="text-sm"
@@ -121,3 +126,17 @@ export default async function Page({ params }: any) {
 
 
 export const dynamicParams = false
+
+export async function RenderNotionPage(p: {
+  data: ListBlockChildrenResponse
+  components?: InputComponents
+}) {
+  const ast = await convertChildrenToAST(p.data)
+  const headings = extractHeadings(ast)
+
+  return (
+    <UseAsTOCContentClient headings={ headings }>
+      <NotionASTRenderer node={ ast } components={ p.components } />
+    </UseAsTOCContentClient>
+  )
+}
