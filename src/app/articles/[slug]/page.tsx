@@ -9,12 +9,12 @@ import { NotionIcon, NotionImage } from "@/components/notion/rsc/images"
 import { NotionRichText } from "@/components/notion/rsc/rich-text"
 import { Sidebar } from "@/app/demos/layout"
 import { ToCSidebar } from "@/components/toc/client"
-import { TOCContent } from "@/components/toc/rsc"
-import { NotionASTNode } from "@/components/notion/parser/node"
 import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
 import { convertChildrenToAST } from "@/components/notion/parser/parser"
 import { UseAsTOCContentClient } from "@/components/toc/context"
 import { extractHeadings } from "@/components/notion/notion-toc/rsc"
+import { CommentSection } from "@/components/giscus"
+
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -82,7 +82,11 @@ export default async function Page({ params }: any) {
 
           {/* <TOCContent> */}
             <RenderNotionPage data={ content } />
-          {/* </TOCContent> */}
+          {/* </TOCContent> */ }
+
+          <CommentSection />
+          
+
 
           <footer className="mt-12 py-12 border-t border-t-zinc-600 text-zinc-500 text-sm space-y-2 leading-normal">
             <p>
