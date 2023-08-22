@@ -11,8 +11,8 @@ import { slug } from "github-slugger"
 
 type Annotation = RichTextItemResponse['annotations']
 
-export function flattenRichText(rt?: RichTextItemResponse[]) {
-  return rt?.map(r => r.plain_text).join('')
+export function flattenRichText(rt: RichTextItemResponse[]) {
+  return rt.map(r => r.plain_text).join('')
 }
 
 

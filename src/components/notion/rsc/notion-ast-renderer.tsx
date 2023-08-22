@@ -22,7 +22,7 @@ type NotionASTComponentMap = {
   ) => React.ReactNode
 }
 
-type InputComponents = (
+export type InputComponents = (
   comps: {
     RichText: React.ReactNode
     Caption: React.ReactNode
@@ -80,7 +80,7 @@ function getComponent({ node, params }: {
 
   const RichText = () => node.content ?
     <NotionRichText rich_text={ node.content } /> : null
-  const flattenedRichText = flattenRichText(node.content)
+  const flattenedRichText = node.content && flattenRichText(node.content)
 
   const Caption = ({ ...rest }: Omit<React.ComponentProps<typeof NotionFigureCaption>, 'caption'>) => node.props.caption ?
     <NotionFigureCaption caption={ node.props.caption } { ...rest } /> : null
