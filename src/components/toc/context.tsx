@@ -47,7 +47,8 @@ export function UseAsTOCContentClient(p: {
   const pathname = usePathname()
 
   useEffect(() => {
-    // console.info("UseAsTOCContentClient")
+    console.info("UseAsTOCContentClient")
+    console.info(p.headings)
     setHeadings(p.headings, pathname ?? '')
   }, [p.headings, pathname])
 

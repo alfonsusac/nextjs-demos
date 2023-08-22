@@ -14,16 +14,15 @@ export function ToCSidebar(p: {
   className?: string
   listClassName?: string
 }) {
-  const { toc } = useTOC()
+  const startDepth = p.startDepth ?? 1
 
-  // console.log(toc)
-  const items = getFilteredItems((toc), p.startDepth, p.depth)
+
+  const { toc } = useTOC()
+  let items = getFilteredItems((toc), p.startDepth, p.depth)
+  items = normalizeLevels(items) 
 
   const activeAnchor = useActiveHeadings(items.map(i => i.id))
 
-  const startDepth = p.startDepth ?? 1
-
-  normalizeLevels(items)
 
   return (
     <ul className={cn("text-gray-500 mt-1 pb-2 pt-1 m-2", p.className)}>
@@ -56,14 +55,11 @@ function getFilteredItems(items: TOCItemType[], start = 1, depth = 1) {
 
 function normalizeLevels(items: TOCItemType[]) {
   let cur = 6
-  items.forEach(i => {
+  return items.map(i => {
     if (cur > i.level) {
       cur = i.level
     }
-    console.log(cur, i.level)
-    i.level = (i.level - cur) + 1
-
-    console.log(i)
+    return { ...i, level: (i.level - cur) + 1 }
   })
 }
 
@@ -71,7 +67,7 @@ function normalizeLevels(items: TOCItemType[]) {
 
 function useActiveHeadings(headingIds: string[]) {
   const [activeAnchor, setActiveAnchor] = useState<string>(headingIds[0])
-  console.log(headingIds)
+  // console.log(headingIds)
 
   useEffect(() => {
 
@@ -131,8 +127,8 @@ function useActiveHeadings(headingIds: string[]) {
   }, [headingIds])
 
   useEffect(() => {
-    console.log("Active Anchor")
-    console.log(activeAnchor)
+    // console.log("Active Anchor")
+    // console.log(activeAnchor)
   }, [activeAnchor])
 
   return activeAnchor

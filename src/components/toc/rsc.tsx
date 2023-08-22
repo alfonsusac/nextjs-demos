@@ -143,7 +143,7 @@ export async function TOCContent(p: {
   children: React.ReactNode
 }) {
   headings = await getHeadings(p.children as React.ReactElement)
-  
+
   return <UseAsTOCContentClient headings={ headings }>
     {p.children}
   </UseAsTOCContentClient>

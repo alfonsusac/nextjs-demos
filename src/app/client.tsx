@@ -24,8 +24,8 @@ export function Page(p:{
   className?: string
 }) {
   const path = p.path ?? (p.category !== undefined ? `/${slug(p.category!)}/${slug(p.label)}` : `/${slug(p.label)}`)
-  console.log("Hello")
-  console.log(path)
+  // console.log("Hello")
+  // console.log(path)
   const selected = useSelected(path, p.match ?? 1)
   const As = p.as ?? 'li'
 
