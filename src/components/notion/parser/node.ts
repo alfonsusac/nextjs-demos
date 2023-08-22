@@ -1,5 +1,6 @@
 import { BlockObjectResponse, RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
 import { MapToAST } from "./parser"
+import { flattenRichText } from "../rsc/rich-text"
 
 
 
@@ -15,6 +16,7 @@ export class NotionASTNode {
   is_group?: true
   content?: RichTextItemResponse[]
   props: { [key: string]: any } = {}
+  raw_content?: string
 
   // Tree
   children: NotionASTNode[] = []
@@ -33,8 +35,10 @@ export class NotionASTNode {
 
     const props = (block as any)[block.type]
     for (const prop in props) {
-      if (prop === 'rich_text')
+      if (prop === 'rich_text') {
         this.content = props.rich_text
+        this.raw_content = flattenRichText(props.rich_text)
+      }
       else
         this.props[prop] = props[prop]
     }

@@ -75,12 +75,11 @@ export function NotionASTRenderer(p: {
 function getComponent({ node, params }: {
   node: NotionASTNode,
   params?: InputComponents,
-
 }) {
 
   const RichText = () => node.content ?
     <NotionRichText rich_text={ node.content } /> : null
-  const flattenedRichText = node.content && flattenRichText(node.content)
+  const flattenedRichText = node.raw_content
 
   const Caption = ({ ...rest }: Omit<React.ComponentProps<typeof NotionFigureCaption>, 'caption'>) => node.props.caption ?
     <NotionFigureCaption caption={ node.props.caption } { ...rest } /> : null
