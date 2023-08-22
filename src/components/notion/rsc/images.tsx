@@ -3,6 +3,7 @@ import { CalloutBlockObjectResponse } from "@notionhq/client/build/src/api-endpo
 import Image from "next/image"
 import probe from "probe-image-size"
 import remotePatterns from "../../../../remotePattern.mjs"
+import { getPlaiceholder } from "plaiceholder"
 
 
 export function NotionIcon({
@@ -93,20 +94,24 @@ export async function NotionImage({
       'file' in nprop ? nprop.file.url : ''
 
   const optimize = inRemotePattern(url)
-  // console.log(optimize + ': ')
 
-  const res = await probe(url)
+  // const res = await probe(url)
 
+
+  const {img, base64} = await getImage(url)
 
   return (
     <div className={ cn('relative', className) }>
       <Image
         unoptimized={ !optimize }
+        placeholder="blur"
         // fill
         className='object-cover'
-        width={ res.width }
-        height={ res.height }
+        {...img}
+        // width={ res.width }
+        // height={ res.height }
         src={ url }
+        blurDataURL={ base64 }
         alt={ alt }
         { ...props }
       />
@@ -196,4 +201,21 @@ function inRemotePattern(urlstr: string): boolean {
   }
   console.log("URL doesn't match any pattern: " + url)
   return false
+}
+
+
+const getImage = async (src: string) => {
+  const buffer = await fetch(src).then(async (res) =>
+    Buffer.from(await res.arrayBuffer())
+  )
+
+  const {
+    metadata: { height, width },
+    ...plaiceholder
+  } = await getPlaiceholder(buffer, { size: 10 })
+
+  return {
+    ...plaiceholder,
+    img: { src, height, width },
+  }
 }

@@ -38,6 +38,7 @@
     "nanoid": "^4.0.2",
     "next": "^13.4.14-canary.2",
     "notion-types": "^6.16.0",
+    "plaiceholder": "^3.0.0",
     "postcss": "^8.4.27",
     "prism-themes": "^1.9.0",
     "probe-image-size": "^7.2.3",
