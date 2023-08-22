@@ -7,6 +7,8 @@ const remotePatterns = [
     protocol: 'https',
     hostname: '**.amazonaws.com',
     pathname: '/secure.notion-static.com/**'
+  }, {
+    hostname: 'images.unsplash.com'
   }
 ]
     

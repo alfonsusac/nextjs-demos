@@ -131,7 +131,7 @@ export default async function Page({ params }: any) {
 
 export const dynamicParams = false
 
-export async function RenderNotionPage(p: {
+async function RenderNotionPage(p: {
   data: ListBlockChildrenResponse
   components?: InputComponents
 }) {
