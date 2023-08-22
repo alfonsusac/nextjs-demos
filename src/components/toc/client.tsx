@@ -23,6 +23,8 @@ export function ToCSidebar(p: {
 
   const startDepth = p.startDepth ?? 1
 
+  normalizeLevels(items)
+
   return (
     <ul className={cn("text-gray-500 mt-1 pb-2 pt-1 m-2", p.className)}>
       { items.map(i => <li
@@ -50,6 +52,19 @@ export function ToCSidebar(p: {
 function getFilteredItems(items: TOCItemType[], start = 1, depth = 1) {
   return items
     .filter(i => i.level >= start && i.level < (start + depth))
+}
+
+function normalizeLevels(items: TOCItemType[]) {
+  let cur = 6
+  items.forEach(i => {
+    if (cur > i.level) {
+      cur = i.level
+    }
+    console.log(cur, i.level)
+    i.level = (i.level - cur) + 1
+
+    console.log(i)
+  })
 }
 
 
