@@ -49,8 +49,10 @@ export default function RootLayout(p: {
             w-full
             mx-auto
             px-4
-            mt-8 mb-[40vh]
+            mt-8 
+            mb-[20vh]
             flex flex-row gap-4
+            min-h-screen
           `) }>
 
             { p.children }

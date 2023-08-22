@@ -22,6 +22,12 @@ h1, h2, h3, h4, h5, h6 {
   @apply font-semibold
   text-zinc-200
 }
+
+hr{ 
+  @apply my-8
+  border-t-zinc-700
+}
+
 article {
   @apply 
   mx-auto mb-6
@@ -82,10 +88,7 @@ article {
     underline-offset-[0.2rem]
     text-zinc-200
   }
-  hr{ 
-    @apply my-8
-    border-t-zinc-700
-  }
+
   blockquote { 
     @apply border-l-4
     pl-4

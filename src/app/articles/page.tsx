@@ -14,7 +14,9 @@ export default async function Articles() {
 
       "prose-h1:text-4xl",
 
-      "prose-hr:my-8"
+      "prose-hr:my-8",
+
+      "max-w-article"
     ) }>
 
       <h1 className="mb-4">

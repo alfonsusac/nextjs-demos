@@ -54,7 +54,7 @@ export default async function Layout(p: {
       {/* RIGHT */}
 
       <div className="w-full mx-4">
-        <article>
+        <article className="max-w-article">
 
           <Header />
 
