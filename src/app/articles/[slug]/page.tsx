@@ -56,7 +56,7 @@ export default async function Page({ params }: any) {
 
 
         {/* LEFT */ }
-        <article className="max-w-xl m-0 w-full ml-auto">
+        <article className="max-w-xl m-0 w-full mx-auto md:mr-0">
           <header className="my-8 mt-8 space-y-2 relative">
 
             <NotionIcon icon={ article.icon }
@@ -101,7 +101,7 @@ export default async function Page({ params }: any) {
         
         {/* RIGHT */ }
         <div className={ cn(
-          'hidden sm:block',
+          'hidden md:block',
           'sticky',
           'top-40',
           'w-56',
