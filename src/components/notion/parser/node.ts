@@ -64,3 +64,10 @@ export class NotionASTNode {
 
 
 
+export function visitNotionAST(node: NotionASTNode, cb: (node:NotionASTNode)=>void) {
+  cb(node)
+  
+  if (node.children) {
+    node.children.forEach(child => visitNotionAST(child, cb))
+  }
+}
