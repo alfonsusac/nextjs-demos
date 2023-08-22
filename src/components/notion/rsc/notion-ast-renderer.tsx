@@ -83,7 +83,7 @@ function getComponent({ node, params }: {
 
   const Caption = ({ ...rest }: Omit<React.ComponentProps<typeof NotionFigureCaption>, 'caption'>) => node.props.caption ?
     <NotionFigureCaption caption={ node.props.caption } { ...rest } /> : null
-  const flattenedCaption = flattenRichText(node.props.caption)
+  const flattenedCaption = node.props.caption && flattenRichText(node.props.caption)
 
   const slugid = flattenedRichText ? slug(flattenedRichText) : undefined
 
