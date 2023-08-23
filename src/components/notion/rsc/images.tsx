@@ -1,10 +1,9 @@
 import { cn } from "@/components/typography"
 import { CalloutBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import Image from "next/image"
-import probe from "probe-image-size"
 import remotePatterns from "../../../../remotePattern.mjs"
 import { getPlaiceholder } from "plaiceholder"
-
+import { ImageModal } from "../client"
 
 export function NotionIcon({
   icon,
@@ -74,10 +73,12 @@ export async function NotionImage({
   nprop,
   alt,
   className,
+  enlargable,
   ...props
 }: {
   nprop: ImageObject
   alt: string
+  enlargable?: boolean
 }
   & Pick<
     React.DetailedHTMLProps<
@@ -95,19 +96,21 @@ export async function NotionImage({
 
   const optimize = inRemotePattern(url)
 
-  // const res = await probe(url)
 
+  const { img, base64 } = await getImage(url)
 
-  const {img, base64} = await getImage(url)
-
-  return (
-    <div className={ cn('relative', className) }>
+  const ImageContent = (
+    <div className={ cn(`
+      relative
+      transition-all
+      hover:scale-105
+    `, className) }>
       <Image
         unoptimized={ !optimize }
         placeholder="blur"
         // fill
         className='object-cover'
-        {...img}
+        { ...img }
         // width={ res.width }
         // height={ res.height }
         src={ url }
@@ -117,6 +120,26 @@ export async function NotionImage({
       />
     </div>
   )
+
+  if (!enlargable) return ImageContent
+  else
+    return (
+      <ImageModal
+        content={
+          <Image
+            unoptimized
+            src={ url }
+            blurDataURL={ base64 }
+            width={ img.width }
+            height={ img.height }
+            alt={ alt }
+            { ...props }
+          />
+        }
+      >
+        { ImageContent }
+      </ImageModal>
+    )
 }
 
 
@@ -205,7 +228,7 @@ function inRemotePattern(urlstr: string): boolean {
 
 
 const getImage = async (src: string) => {
-  const buffer = await fetch(src, { cache: 'no-cache' }).then(async (res) =>
+  const buffer = await fetch(src, { cache: 'no-cache' }).then(async (res) =>
     Buffer.from(await res.arrayBuffer())
   )
 
@@ -219,3 +242,4 @@ const getImage = async (src: string) => {
     img: { src, height, width },
   }
 }
+

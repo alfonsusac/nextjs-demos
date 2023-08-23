@@ -435,6 +435,7 @@ function getComponent({ node, params }: {
               alt="A Picture"
               nprop={ node.props as any }
               className="h-auto w-auto mx-auto rounded-md"
+              enlargable
             />
             <Caption center />
           </div>
