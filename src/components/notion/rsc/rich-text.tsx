@@ -8,6 +8,7 @@ import { formatRelative } from "date-fns"
 import { InlineMentionTooltip } from "../client"
 import { notion } from "../data"
 import { slug } from "github-slugger"
+import { cn } from "@/components/typography"
 
 type Annotation = RichTextItemResponse['annotations']
 
@@ -20,9 +21,34 @@ export function flattenRichText(rt: RichTextItemResponse[]) {
 export function NotionRichText(p: {
   rich_text: RichTextItemResponse[]
 }) {
+
   return p.rich_text.map((t, i) => {
 
-    const annotationCN = annotationToClassName('', t.annotations)
+    const prev = i > 0 ? p.rich_text.at(i - 1) : undefined
+    const curr = p.rich_text[i]
+    const next = p.rich_text.at(i + 1)
+
+    const annotationCN = twMerge(
+      clsx(
+        'm-0 p-0',
+        curr.annotations.bold ?
+          'font-semibold text-white' : '',
+        curr.annotations.italic ?
+          'italic' : '',
+        curr.annotations.strikethrough ?
+          'line-through' : '',
+        curr.annotations.underline ?
+          'underline' : '',
+        curr.annotations.code ?
+          cn(
+            'font-mono text-[0.8750em] py-1 bg-zinc-800',
+            prev?.annotations.code ? '' : 'pl-1 rounded-l-md',
+            next?.annotations.code ? '' : 'pr-1 rounded-r-md',
+          ) : '',
+        convertColorToClassname(curr.annotations.color),
+      )
+    )
+
     const { bold, italic, strikethrough, underline, code, color } = t.annotations
     const isUnformatted = !bold && !italic && !strikethrough && !underline && !code && color === 'default'
 
@@ -213,7 +239,7 @@ async function parseNotionHref(c: string) {
       return anchorlink
     } catch (error) {
       console.log(error)
-      return c      
+      return c
     }
   } else {
     return c
@@ -234,7 +260,7 @@ function annotationToClassName(className: string, annotation: Annotation) {
       annotation.underline ?
         'underline' : '',
       annotation.code ?
-        'font-mono text-sm p-1 bg-zinc-800 rounded-md ' : '',
+        'font-mono text-[0.8750em] p-1 -mx-1 bg-zinc-800 rounded-md ' : '',
       convertColorToClassname(annotation.color),
       className,
     )
