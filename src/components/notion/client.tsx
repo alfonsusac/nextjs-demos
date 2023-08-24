@@ -66,7 +66,7 @@ export function InlineMentionTooltip(p: {
   return (
     <Tooltip.Provider>
       <Tooltip.Root>
-        <Tooltip.Trigger asChild className="cursor-pointer">
+        <Tooltip.Trigger asChild>
           { p.children }
         </Tooltip.Trigger>
         <Tooltip.Portal>
@@ -108,7 +108,9 @@ export function ImageModal(p: {
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger asChild>{ p.children }</Dialog.Trigger>
+      <Dialog.Trigger asChild
+        className="cursor-pointer"
+      >{ p.children }</Dialog.Trigger>
       <Dialog.Portal>
 
         <Dialog.Overlay className="bg-black/80 data-[state=open]:animate-overlayShow fixed inset-0" />

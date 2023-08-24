@@ -4,6 +4,7 @@ import Image from "next/image"
 import remotePatterns from "../../../../remotePattern.mjs"
 import { getPlaiceholder } from "plaiceholder"
 import { ImageModal } from "../client"
+import Link from "next/link"
 
 export function NotionIcon({
   icon,
@@ -126,15 +127,25 @@ export async function NotionImage({
     return (
       <ImageModal
         content={
-          <Image
-            unoptimized
-            src={ url }
-            blurDataURL={ base64 }
-            width={ img.width }
-            height={ img.height }
-            alt={ alt }
-            { ...props }
-          />
+          <div>
+            <Image
+              unoptimized
+              src={ url }
+              blurDataURL={ base64 }
+              width={ img.width }
+              height={ img.height }
+              alt={ alt }
+              { ...props }
+            />
+            <Link
+              className="block my-4 hover:brightness-150"
+              href={ url }
+              target="_blank"
+              prefetch={ false }
+            >
+              Open original image
+            </Link>
+          </div>
         }
       >
         { ImageContent }
