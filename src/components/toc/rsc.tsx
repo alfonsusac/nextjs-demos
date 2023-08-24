@@ -21,7 +21,7 @@ export async function getHeadings(mdx?: JSX.Element) {
     if (node === '\n') return
     if (typeof node?.type === 'string' && headings.includes(node.type)) {
       
-      console.log("FOUNDDD!!!!!!!!!!")
+      // console.log("FOUNDDD!!!!!!!!!!")
 
       const { id ,className, ...props} = node.props
 
@@ -34,8 +34,8 @@ export async function getHeadings(mdx?: JSX.Element) {
     }
   })
 
-  console.log("HEADERS")
-  console.log(headers)
+  // console.log("HEADERS")
+  // console.log(headers)
   return headers
 
 }
