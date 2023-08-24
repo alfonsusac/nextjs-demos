@@ -5,6 +5,8 @@ import remotePatterns from "../../../../remotePattern.mjs"
 import { getPlaiceholder } from "plaiceholder"
 import { ImageModal } from "../client"
 import Link from "next/link"
+import { get } from "https"
+import lolfetch from 'node-fetch';
 
 export function NotionIcon({
   icon,
@@ -257,8 +259,7 @@ function inRemotePattern(urlstr: string): boolean {
 
 const getImage = async (src: string) => {
 
-  const buffer = await fetch(src, { cache: 'no-store' })
-    .then(async (res) => Buffer.from(await res.arrayBuffer()))
+  const buffer = await lolfetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()))
 
   const {
     metadata: { height, width },

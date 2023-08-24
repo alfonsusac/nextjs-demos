@@ -83,9 +83,9 @@ export default async function Page({ params }: any) {
 
           </header>
 
-          {/* <RenderNotionPage
+          <RenderNotionPage
             data={ content }
-          /> */}
+          />
 
           <CommentSection />
           

@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio'
 //@ts-ignore
 import parse from 'url-metadata/lib/parse'
+import nodefetch from 'node-fetch'
 
 export async function getMetaInfo(source: string) {
   try {
@@ -90,7 +91,7 @@ function urlMetadata_withFavicon(url: string, options?: any) {
     redirect: 'follow'
   }
 
-  return fetch(url, requestOpts as any)
+  return nodefetch(url, requestOpts as any)
     .then((response) => {
       if (!response.ok) {
         throw new Error(`response code ${response.status}`)
