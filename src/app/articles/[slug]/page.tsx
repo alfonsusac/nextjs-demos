@@ -80,17 +80,6 @@ export default async function Page({ params }: any) {
 
           <RenderNotionPage
             data={ content }
-            components={ () => {
-             
-              return {
-                'heading_1'({children}) {
-
-                  return <H2>
-
-                  </H2>
-                }
-              }
-            }}
           />
 
           <CommentSection />
