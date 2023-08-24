@@ -1,6 +1,7 @@
 import rehypePrism from '@mapbox/rehype-prism'
 import createMDX from '@next/mdx'
 import remotePatterns from './remotePattern.mjs'
+import withPlaiceholder from '@plaiceholder/next';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -43,4 +44,4 @@ const withMDX = createMDX({
   },
 })
 
-export default withMDX(nextConfig)
+export default withPlaiceholder(withMDX(nextConfig))

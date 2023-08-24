@@ -91,14 +91,31 @@ export async function NotionImage({
 ) {
   if (!nprop) return
 
+
   const url =
     'external' in nprop ? nprop.external.url :
       'file' in nprop ? nprop.file.url : ''
 
   const optimize = inRemotePattern(url)
 
-
   const { img, base64 } = await getImage(url)
+
+  // return (
+  //   <Image
+  //     unoptimized
+  //     src={ url }
+  //     // blurDataURL={ base64 }
+  //     // width={ img.width }
+  //     // height={ img.height }
+  //     alt={ alt }
+  //     { ...props }
+  //   />
+  // )
+
+
+
+
+
 
   const ImageContent = (
     <div className={ cn(`
@@ -239,14 +256,17 @@ function inRemotePattern(urlstr: string): boolean {
 
 
 const getImage = async (src: string) => {
-  const buffer = await fetch(src, { cache: 'no-cache' }).then(async (res) =>
-    Buffer.from(await res.arrayBuffer())
-  )
+
+  const buffer = await fetch(src, { cache: 'no-store' })
+    .then(async (res) => Buffer.from(await res.arrayBuffer()))
 
   const {
     metadata: { height, width },
     ...plaiceholder
-  } = await getPlaiceholder(buffer, { size: 10 })
+  } = await getPlaiceholder(buffer, {
+    size: 10
+
+  },)
 
   return {
     ...plaiceholder,

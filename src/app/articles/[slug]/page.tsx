@@ -1,12 +1,7 @@
 import { getArticlePage, getArticles, getPageContent } from "@/components/notion/data"
-import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
 import { InputComponents, NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
-import { formatRelative } from "date-fns"
-import { H2, cn } from "@/components/typography"
-import Link from "next/link"
-import { NotionIcon, NotionImage } from "@/components/notion/rsc/images"
-import { NotionRichText } from "@/components/notion/rsc/rich-text"
+import { cn } from "@/components/typography"
 import { Sidebar } from "@/app/demos/layout"
 import { ToCSidebar } from "@/components/toc/client"
 import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
@@ -14,7 +9,13 @@ import { convertChildrenToAST } from "@/components/notion/parser/parser"
 import { UseAsTOCContentClient } from "@/components/toc/context"
 import { extractHeadings } from "@/components/notion/notion-toc/rsc"
 import { CommentSection } from "@/components/giscus"
+import { NotionIcon, NotionImage } from "@/components/notion/rsc/images"
+import Link from "next/link"
+import { NotionRichText } from "@/components/notion/rsc/rich-text"
+import { formatRelative } from "date-fns"
 
+export const dynamicParams = false
+export const dynamic = 'error'
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -27,12 +28,14 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: any) {
 
-  const article = await getArticlePage(params.slug)
-  if(!article) notFound()
+  const article = (await getArticlePage(params.slug))!
+  // if(!article) notFound()
 
   const content = await getPageContent(article.id)
 
   console.info("Done generating page!")
+
+  // console.info(content)
 
   return (
     <>
@@ -68,6 +71,8 @@ export default async function Page({ params }: any) {
               /articles
             </Link>
 
+            { content.type }
+
             <h1 className="">
               <NotionRichText rich_text={ article.title } />
             </h1>
@@ -78,9 +83,9 @@ export default async function Page({ params }: any) {
 
           </header>
 
-          <RenderNotionPage
+          {/* <RenderNotionPage
             data={ content }
-          />
+          /> */}
 
           <CommentSection />
           
@@ -127,7 +132,6 @@ export default async function Page({ params }: any) {
 }
 
 
-export const dynamicParams = false
 
 async function RenderNotionPage(p: {
   data: ListBlockChildrenResponse

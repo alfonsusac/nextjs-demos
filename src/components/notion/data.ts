@@ -4,14 +4,6 @@ import { cache } from "react"
 import { notion } from "./data/init"
 
 
-
-
-
-export const getVal = cache(async () => {
-  return 2
-})
-
-
 export const getArticlePage = cache(async (slug: string) => {
   
   const res = await notion.databases.query({
@@ -82,10 +74,6 @@ export const getArticlePage = cache(async (slug: string) => {
     }
   }
 
-})
-
-export const getPageViews = cache(async () => {
-  
 })
 
 
