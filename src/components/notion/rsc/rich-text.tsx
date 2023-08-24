@@ -6,9 +6,9 @@ import { getMetaInfo } from "../../metadata/util"
 import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, MaterialSymbolsPerson, PhGlobe, PhNotionLogoFill } from "../../svg"
 import { formatRelative } from "date-fns"
 import { InlineMentionTooltip } from "../client"
-import { notion } from "../data"
 import { slug } from "github-slugger"
 import { cn } from "@/components/typography"
+import { notion } from "../data/init"
 
 type Annotation = RichTextItemResponse['annotations']
 

@@ -2,95 +2,117 @@ import innerText from "react-innertext"
 import { twMerge } from "tailwind-merge"
 import clsx from "clsx"
 import { slug } from "github-slugger"
+import { Children } from 'react'
 
-function getAnchor(jsx: React.ReactNode) {
+function getAnchor(jsx: React.ReactNode, id?: string) {
+  if (id) return id
+
   const text = innerText(jsx)
   const slugged = slug(text)
-  return {
-    id: slugged, link: `#${slugged}`
-  }
+  return slugged
 }
 
 export function cn(...className: (string | undefined)[]) {
   return twMerge(clsx(...className))
 }
 
-export function H1({
-  children, className, ...params
-}: React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLHeadingElement>,
-  HTMLHeadingElement
->) {
-  return (
-    <h1 { ...params } className={ cn(
-      className,
-      // "text-4xl font-semibold text-white"
-    ) }>
-      { children }
-    </h1>
-  )
-}
+function Anchor(p: {
+  slug: string
+  children: React.ReactNode
+}) {
+  const node = Children.only(p.children)
 
-export function H2({
-  children, className, ...params
-}: React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLHeadingElement>,
-  HTMLHeadingElement
->
-) {
-  const anchor = getAnchor(children)
+  if (typeof node === 'function') {
+    const element = node as React.ReactElement
+    const prop = element.props
+  }
+
   return (
     <a
-      href={ anchor.link }
-      className={
-        cn(
-          "group flex",
-          "cursor-pointer no-underline",
-          "mt-14 mb-6 relative",
-          "prose-h2:mt-0"
-        )
-      }
-      aria-labelledby={ anchor.id }
+      href={ `#${p.slug}` }
+      className={ cn(
+        "group flex",
+        "cursor-pointer no-underline",
+        "relative",
+        "inline-flex",
+        "items-baseline"
+      ) }
     >
-      {/* Anchor */ }
       <div className={
         cn(
-          "text-2xl text-zinc-600",
-          "before:content-['§']",
+          "text-2xl", // idk how to automate
+          "text-zinc-600",
+          "before:content-['#']",
           "transition-all",
           "group-hover:rotate-[30deg]",
           "group-hover:text-yellow-400",
           "w-min h-min inline-block",
-          "leading-[1.2]"
+          "leading-[1.2]",
+          "mr-4"
         )
-      }>
-      </div>
-      {/* <span id={ anchor.id } className="absolute -mt-32">ee</span> */}
-      <h2 id={ anchor.id } { ...params } className={
-        cn(
-          "ml-4 mt-0",
-          "group-hover:cursor-pointer",
-          className,
-        )
-      }>
-        { children }
-      </h2>
+      }
+      />
+      { p.children }
     </a>
   )
 }
 
-export function H3({
-  children, className, ...params
-}: React.DetailedHTMLProps<
+export function Heading(
+  {
+    children, className, id, level, ...params
+  }:
+    React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLHeadingElement>,
+      HTMLHeadingElement
+    > & {
+      level: "1" | "2" | "3" | "4" | "5" | "6"
+    }
+) {
+  const anchor = getAnchor(children, id)
+  const H = `h${level}` as keyof JSX.IntrinsicElements
+
+  return (
+    <Anchor slug={ anchor }>
+      <H { ...params as any } className={ cn(className) } id={anchor}>
+        { children }
+      </H>
+    </Anchor>
+  )
+}
+
+export function H1(params: React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLHeadingElement>,
   HTMLHeadingElement
 >) {
-  return (
-    <h3 { ...params } className={ cn(
-      className,
-      "text-4xl font-semibold text-white"
-    ) }>
-      { children }
-    </h3>
-  )
+  return <Heading level="1" {...params} />
+}
+export function H2(params: React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLHeadingElement>,
+  HTMLHeadingElement
+>) {
+  return <Heading level="2" {...params} />
+}
+export function H3(params: React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLHeadingElement>,
+  HTMLHeadingElement
+>) {
+  return <Heading level="3" {...params} />
+}
+export function H4(params: React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLHeadingElement>,
+  HTMLHeadingElement
+>) {
+  return <Heading level="4" {...params} />
+}
+export function H5(params: React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLHeadingElement>,
+  HTMLHeadingElement
+>) {
+  return <Heading level="5" {...params} />
+}
+export function H6(params: React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLHeadingElement>,
+  HTMLHeadingElement
+>) {
+  return <Heading level="6" {...params} />
 }

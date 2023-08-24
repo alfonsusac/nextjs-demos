@@ -1,9 +1,9 @@
-import { getArticles, getPageContent } from "@/components/notion/data"
+import { getArticlePage, getArticles, getPageContent } from "@/components/notion/data"
 import { notFound } from "next/navigation"
 import 'katex/dist/katex.min.css'
 import { InputComponents, NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
 import { formatRelative } from "date-fns"
-import { cn } from "@/components/typography"
+import { H2, cn } from "@/components/typography"
 import Link from "next/link"
 import { NotionIcon, NotionImage } from "@/components/notion/rsc/images"
 import { NotionRichText } from "@/components/notion/rsc/rich-text"
@@ -27,10 +27,8 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: any) {
 
-  const articles = await getArticles()
-
-  const article = articles.find(r => r.slug === params.slug)
-  if (!article) notFound()
+  const article = await getArticlePage(params.slug)
+  if(!article) notFound()
 
   const content = await getPageContent(article.id)
 
@@ -80,9 +78,20 @@ export default async function Page({ params }: any) {
 
           </header>
 
-          {/* <TOCContent> */}
-            <RenderNotionPage data={ content } />
-          {/* </TOCContent> */ }
+          <RenderNotionPage
+            data={ content }
+            components={ () => {
+             
+              return {
+                'heading_1'({children}) {
+
+                  return <H2>
+
+                  </H2>
+                }
+              }
+            }}
+          />
 
           <CommentSection />
           

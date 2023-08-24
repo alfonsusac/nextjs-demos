@@ -1,6 +1,6 @@
 import { BlockObjectResponse, ListBlockChildrenParameters, ListBlockChildrenResponse, PartialBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import { NotionASTNode } from "./node"
-import { notion } from "../data"
+import { notion } from "../data/init"
 
 export type BlockType = BlockObjectResponse['type']
 export type MapToAST = (newNode: NotionASTNode, currentNode: NotionASTNode) => void

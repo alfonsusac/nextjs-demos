@@ -1,10 +1,5 @@
-import clsx from 'clsx'
 import type { MDXComponents } from 'mdx/types'
-import { DetailedHTMLProps, HTMLAttributes } from 'react'
-import { A_preventDefault } from './components/link'
-import { slug } from 'github-slugger'
-import innerText from "react-innertext"
-import { H1, H2, H3 } from './components/typography'
+import { H1, H2, H3, H4, H5, H6, Heading } from './components/typography'
 
 // This file allows you to provide custom React components
 // to be used in MDX files. You can import and use any
@@ -19,6 +14,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h1: H1,
     h2: H2,
     h3: H3,
+    h4: H4,
+    h5: H5,
+    h6: H6,
     ...components,
   }
 }
