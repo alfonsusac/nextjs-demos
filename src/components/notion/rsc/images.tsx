@@ -100,24 +100,11 @@ export async function NotionImage({
 
   const optimize = inRemotePattern(url)
 
+
+  if(!optimize)
+  console.warn(`WARN: Image not found in remotePattern, not optimised: ${url}`)
+
   const { img, base64 } = await getImage(url)
-
-  // return (
-  //   <Image
-  //     unoptimized
-  //     src={ url }
-  //     // blurDataURL={ base64 }
-  //     // width={ img.width }
-  //     // height={ img.height }
-  //     alt={ alt }
-  //     { ...props }
-  //   />
-  // )
-
-
-
-
-
 
   const ImageContent = (
     <div className={ cn(`
@@ -248,7 +235,6 @@ function inRemotePattern(urlstr: string): boolean {
 
     }
 
-    // console.log("MATCH!")
     return true
 
   }
