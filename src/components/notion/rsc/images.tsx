@@ -94,10 +94,12 @@ export async function NotionImage({
   if (!nprop) return
 
 
-  const url =
+  let url =
     'external' in nprop ? nprop.external.url :
       'file' in nprop ? nprop.file.url : ''
 
+  url = proceeNotionStaticImages(url)
+  
   const optimize = inRemotePattern(url)
 
 
@@ -122,6 +124,7 @@ export async function NotionImage({
         // height={ res.height }
         src={ url }
         blurDataURL={ base64 }
+        
         alt={ alt }
         { ...props }
       />
@@ -240,6 +243,10 @@ function inRemotePattern(urlstr: string): boolean {
   }
   console.log("URL doesn't match any pattern: " + url)
   return false
+}
+
+function proceeNotionStaticImages(url: string): string {
+  if (!url.includes('secure.notion-static.com')) return url
 }
 
 
