@@ -108,7 +108,7 @@ export async function NotionImage({
     `, className) }>
 
       <NextImage
-        className='object-cover'
+        className='object-cover w-full'
         src={ url }
         alt={ alt }
         { ...props }

@@ -12,7 +12,8 @@ import { CommentSection } from "@/components/giscus"
 import { NotionIcon, NotionImage } from "@/components/notion/rsc/images"
 import Link from "next/link"
 import { NotionRichText } from "@/components/notion/rsc/rich-text"
-import { formatRelative } from "date-fns"
+import { formatDistance, formatDistanceToNow, formatDuration, formatRelative } from "date-fns"
+import { InlineMentionTooltip } from "@/components/notion/client"
 
 export const dynamicParams = false
 export const dynamic = 'error'
@@ -78,7 +79,17 @@ export default async function Page({ params }: any) {
             </h1>
 
             <div className="text-sm text-zinc-500">
-              Last updated: { formatRelative(new Date(article.last_edited_time), new Date()) }
+              Last updated:
+              <InlineMentionTooltip
+                content={
+                  (new Date(article.last_edited_time)).toLocaleString()
+                }
+              >
+                <span className="ml-1 rounded-md p-1 hover:bg-zinc-900/80">
+                  { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
+                </span>
+              </InlineMentionTooltip>
+              
             </div>
 
           </header>

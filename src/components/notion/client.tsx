@@ -89,8 +89,6 @@ export function InlineMentionTooltip(p: {
             sideOffset={ 3 }
           >
             { p.content }
-            {/* Add to library */ }
-            {/* <Tooltip.Arrow className="fill-zinc-800" /> */ }
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>

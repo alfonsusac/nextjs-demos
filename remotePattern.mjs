@@ -11,6 +11,8 @@ const remotePatterns = [
     hostname: 'images.unsplash.com'
   }, {
     hostname: 'alfonsusardani.notion.site'
+  }, {
+    hostname: 'www.notion.so'
   }
 ]
     
