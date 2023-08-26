@@ -1,12 +1,10 @@
 import { cn } from "@/components/typography"
 import { CalloutBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import Image from "next/image"
-import remotePatterns from "../../../../remotePattern.mjs"
-import { getPlaiceholder } from "plaiceholder"
 import { ImageModal } from "../client"
 import Link from "next/link"
-import { get } from "https"
-import lolfetch from 'node-fetch'
+import { getImage } from "@/components/image/placeholder"
+import { NextImage } from "@/components/image/next-images"
 
 export function NotionIcon({
   icon,
@@ -101,15 +99,7 @@ export async function NotionImage({
     'external' in nprop ? nprop.external.url :
       'file' in nprop ? nprop.file.url : ''
 
-  url = proceeNotionStaticImages(url, id)
-
-  const optimize = inRemotePattern(url)
-
-
-  if (!optimize)
-    console.warn(`WARN: Image not found in remotePattern, not optimised: ${url}`)
-
-  const { img, base64 } = await getImage(url)
+  url = processNotionStaticImageURL(url, id)
 
   const ImageContent = (
     <div className={ cn(`
@@ -117,20 +107,14 @@ export async function NotionImage({
       transition-all
       hover:scale-105
     `, className) }>
-      <Image
-        unoptimized={ !optimize }
-        placeholder="blur"
-        // fill
-        className='object-cover'
-        { ...img }
-        // width={ res.width }
-        // height={ res.height }
-        src={ url }
-        blurDataURL={ base64 }
 
+      <NextImage
+        className='object-cover'
+        src={ url }
         alt={ alt }
         { ...props }
       />
+
     </div>
   )
 
@@ -139,13 +123,12 @@ export async function NotionImage({
     return (
       <ImageModal
         content={
-          <div>
-            <Image
+          <div className="flex">
+
+            <NextImage
               unoptimized
+              className="w-auto h-auto max-w-full max-h-full"
               src={ url }
-              blurDataURL={ base64 }
-              width={ img.width }
-              height={ img.height }
               alt={ alt }
               { ...props }
             />
@@ -157,6 +140,7 @@ export async function NotionImage({
             >
               Open original image
             </Link>
+
           </div>
         }
       >
@@ -166,115 +150,14 @@ export async function NotionImage({
 }
 
 
-function inRemotePattern(urlstr: string): boolean {
-
-  let url: URL
-  try {
-    url = new URL(urlstr)
-  } catch (error) {
-    // console.log("Invalid URL: " + urlstr)
-    return false
-  }
-
-  const patterns = remotePatterns as any
-
-
-  if (!patterns) return true
-
-  for (const pattern of patterns) {
-    const host = pattern.hostname
-    const path = pattern.pathname
-    const hostNoStars = host.replaceAll('*', '')
-
-    // Hostname doesn't match
-    if (url.hostname.endsWith(hostNoStars) === false) {
-      // console.log("  hostname doesn't match")
-      // console.log("  " + url.hostname)
-      // console.log("  " + hostNoStars)
-      continue
-    }
-
-    // Wildcard doesn't match
-    if (host.startsWith('**') === false) {
-      if (host.startsWith('*') === true &&
-        url.host.replace(hostNoStars, '').includes('.')
-      ) {
-        // console.log("  hostname wildcard doesn't match")
-        continue
-      }
-    }
-
-    if (path) {
-      const pathNoStars = path.replaceAll('*', '')
-
-      // Pathname doesn't match
-      if (url.pathname.startsWith(pathNoStars) === false) {
-        // console.log("  pathname doesn't match")
-        // console.log("  " + url.pathname)
-        // console.log("  " + pathNoStars)
-        continue
-      }
-
-      // Wildcard doesn't match
-      if (path.endsWith('**') === false) {
-        if (path.endsWith('*') === true &&
-          url.host.replace(hostNoStars, '').includes('.')
-        ) {
-          // console.log("  pathname wildcard doesn't match")
-          continue
-        }
-      }
-    }
-
-    if (pattern.port) {
-      if (url.port !== pattern.port) {
-        // console.log("  port doesn't match")
-        continue
-      }
-    }
-
-    if (pattern.protocol) {
-      if (url.protocol.startsWith(pattern.protocol) === false) {
-        // console.log("  pattern doesn't match")
-        continue
-      }
-
-    }
-
-    return true
-
-  }
-  console.log("URL doesn't match any pattern: " + url)
-  return false
-}
-
-function proceeNotionStaticImages(url: string, id?: string): string {
+function processNotionStaticImageURL(url: string, id?: string): string {
   if (!url.includes('secure.notion-static.com')) return url
   if (!id) throw new Error("Notion Static Images requires ID")
   const newurl = `https://alfonsusardani.notion.site/image/${encodeURIComponent(url.split('?')[0])}?table=block&id=${id}`
-  // console.log(newurl)
   return newurl
 }
 
 
 
 
-
-const getImage = async (src: string) => {
-
-  const buffer = await lolfetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()))
-
-  const {
-    metadata: { height, width },
-    ...plaiceholder
-  } = await getPlaiceholder(buffer, {
-    size: 10
-
-  },)
-
-  return {
-    ...plaiceholder,
-    img: { src, height, width },
-  }
-}
 

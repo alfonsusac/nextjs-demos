@@ -119,6 +119,8 @@ export function ImageModal(p: {
           "data-[state=open]:animate-contentShow",
           "fixed top-[50%] left-[50%]",
           "w-10/12",
+          "h-5/6",
+          // "h-10/12",
           "translate-x-[-50%] translate-y-[-50%]",
           "rounded-[6px]",
           "shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]",
