@@ -9,6 +9,8 @@ const remotePatterns = [
     pathname: '/secure.notion-static.com/**'
   }, {
     hostname: 'images.unsplash.com'
+  }, {
+    hostname: 'alfonsusardani.notion.site'
   }
 ]
     

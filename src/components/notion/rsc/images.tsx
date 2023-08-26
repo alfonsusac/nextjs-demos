@@ -6,7 +6,7 @@ import { getPlaiceholder } from "plaiceholder"
 import { ImageModal } from "../client"
 import Link from "next/link"
 import { get } from "https"
-import lolfetch from 'node-fetch';
+import lolfetch from 'node-fetch'
 
 export function NotionIcon({
   icon,
@@ -77,11 +77,14 @@ export async function NotionImage({
   alt,
   className,
   enlargable,
+  id,
   ...props
 }: {
   nprop: ImageObject
   alt: string
   enlargable?: boolean
+  id?: string
+
 }
   & Pick<
     React.DetailedHTMLProps<
@@ -98,13 +101,13 @@ export async function NotionImage({
     'external' in nprop ? nprop.external.url :
       'file' in nprop ? nprop.file.url : ''
 
-  url = proceeNotionStaticImages(url)
-  
+  url = proceeNotionStaticImages(url, id)
+
   const optimize = inRemotePattern(url)
 
 
-  if(!optimize)
-  console.warn(`WARN: Image not found in remotePattern, not optimised: ${url}`)
+  if (!optimize)
+    console.warn(`WARN: Image not found in remotePattern, not optimised: ${url}`)
 
   const { img, base64 } = await getImage(url)
 
@@ -124,7 +127,7 @@ export async function NotionImage({
         // height={ res.height }
         src={ url }
         blurDataURL={ base64 }
-        
+
         alt={ alt }
         { ...props }
       />
@@ -245,9 +248,16 @@ function inRemotePattern(urlstr: string): boolean {
   return false
 }
 
-function proceeNotionStaticImages(url: string): string {
+function proceeNotionStaticImages(url: string, id?: string): string {
   if (!url.includes('secure.notion-static.com')) return url
+  if (!id) throw new Error("Notion Static Images requires ID")
+  const newurl = `https://alfonsusardani.notion.site/image/${encodeURIComponent(url.split('?')[0])}?table=block&id=${id}`
+  // console.log(newurl)
+  return newurl
 }
+
+
+
 
 
 const getImage = async (src: string) => {

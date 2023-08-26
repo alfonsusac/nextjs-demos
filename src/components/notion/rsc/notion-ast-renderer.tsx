@@ -440,6 +440,7 @@ function getComponent({ node, params }: {
               nprop={ node.props as any }
               className="h-auto w-auto mx-auto rounded-md"
               enlargable
+              id={node.id}
             />
             <Caption center />
           </div>
