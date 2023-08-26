@@ -111,7 +111,7 @@ export function ImageModal(p: {
       <Dialog.Trigger asChild
         className="cursor-pointer"
       >{ p.children }</Dialog.Trigger>
-      <Dialog.Portal>
+      <Dialog.Portal className="z-50">
 
         <Dialog.Overlay className="bg-black/80 data-[state=open]:animate-overlayShow fixed inset-0" />
 
@@ -120,6 +120,7 @@ export function ImageModal(p: {
           "fixed top-[50%] left-[50%]",
           "w-10/12",
           "h-5/6",
+          "z-50",
           // "h-10/12",
           "translate-x-[-50%] translate-y-[-50%]",
           "rounded-[6px]",

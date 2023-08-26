@@ -105,7 +105,6 @@ export async function NotionImage({
     <div className={ cn(`
       relative
       transition-all
-      hover:scale-105
     `, className) }>
 
       <NextImage
@@ -118,30 +117,36 @@ export async function NotionImage({
     </div>
   )
 
+  return ImageContent
+
   if (!enlargable) return ImageContent
   else
+    
+    
+    
     return (
       <ImageModal
         content={
-          <div className="flex">
+          <div className="w-full h-full flex flex-col justify-center items-center">
 
-            <NextImage
-              unoptimized
-              className="w-auto h-auto max-w-full max-h-full"
-              src={ url }
-              alt={ alt }
-              { ...props }
-            />
-            <Link
-              className="block my-4 hover:brightness-150"
-              href={ url }
-              target="_blank"
-              prefetch={ false }
-            >
-              Open original image
-            </Link>
+              <NextImage
+                unoptimized
+                className="w-auto h-auto max-w-full max-h-full"
+                src={ url }
+                alt={ alt }
+                { ...props }
+              />
+              <Link
+                className="block my-4 hover:brightness-150"
+                href={ url }
+                target="_blank"
+                prefetch={ false }
+              >
+                Open original image
+              </Link>
 
-          </div>
+
+            </div>
         }
       >
         { ImageContent }

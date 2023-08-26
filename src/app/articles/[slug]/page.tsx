@@ -71,7 +71,7 @@ export default async function Page({ params }: any) {
               /articles
             </Link>
 
-            { content.type }
+            {/* { content.type } */}
 
             <h1 className="">
               <NotionRichText rich_text={ article.title } />
