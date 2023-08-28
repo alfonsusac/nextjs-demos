@@ -137,6 +137,12 @@ const dirs: {
       topics: [
         { title: "fetch()" }
       ]
+    },
+    {
+      name: "Caching",
+      topics: [
+        { title: "Data Cache"}
+      ]
     }
   ]
 

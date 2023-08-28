@@ -12,31 +12,43 @@ import { CommentSection } from "@/components/giscus"
 import { NotionIcon, NotionImage } from "@/components/notion/rsc/images"
 import Link from "next/link"
 import { NotionRichText } from "@/components/notion/rsc/rich-text"
-import { formatDistance, formatDistanceToNow, formatDuration, formatRelative } from "date-fns"
+import { formatDistanceToNow } from "date-fns"
 import { InlineMentionTooltip } from "@/components/notion/client"
+import { ViewAnalytics } from "@/components/analytics/analytics"
+import { unstable_cache } from "next/cache"
+import { getAndAddViewCount, getViewCount } from "@/components/analytics/server"
 
-export const dynamicParams = false
-export const dynamic = 'error'
+// export const dynamicParams = false
+// export const dynamic = 'error'
 
-export async function generateStaticParams() {
-  const articles = await getArticles()
-  const params = articles.map(({ slug }) => {
-    return { slug }
-  })
-  return params
-}
+// export async function generateStaticParams() {
+//   const articles = await getArticles()
+//   const params = articles.map(({ slug }) => {
+//     return { slug }
+//   })
+//   return params
+// }
 
 
 export default async function Page({ params }: any) {
 
-  const article = (await getArticlePage(params.slug))!
-  // if(!article) notFound()
+  const {article, content} = await unstable_cache(
+    async () => {
+      const article = (await getArticlePage(params.slug))!
+    
+      const content = await getPageContent(article.id)
 
-  const content = await getPageContent(article.id)
+      return {article, content}
+    },
+    [params.slug]
+  )()
 
+  const views = await getViewCount({
+    pageID: article.id
+  })
+
+  
   console.info("Done generating page!")
-
-  // console.info(content)
 
   return (
     <>
@@ -51,6 +63,7 @@ export default async function Page({ params }: any) {
           "max-w-none flex"
         ) }
       />
+      <ViewAnalytics id={article.id} />
       {
         article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
       }
@@ -89,7 +102,7 @@ export default async function Page({ params }: any) {
                   { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
                 </span>
               </InlineMentionTooltip>
-              
+              {` ● ${views} views`}
             </div>
 
           </header>

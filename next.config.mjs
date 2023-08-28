@@ -7,22 +7,10 @@ import withPlaiceholder from '@plaiceholder/next';
 const nextConfig = {
   images: {
     remotePatterns: remotePatterns
-//     remotePatterns: [
-//       {
-//         protocol: 'https',
-//         hostname: 'avatars.githubusercontent.com',
-//       }, {
-//         protocol: 'https',
-//         hostname: '**.amazonaws.com',
-//         pathname: '/secure.notion-static.com/**'
-//       }
-// ]
   },
-  // compiler: {
-  //   removeConsole: {
-  //     exclude: ['info', 'error']
-  //   }
-  // },
+  experimental: {
+    serverActions:true
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.node/,
