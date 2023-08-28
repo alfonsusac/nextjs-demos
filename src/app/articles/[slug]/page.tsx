@@ -1,4 +1,3 @@
-import { getArticlePage } from "@/components/notion/data"
 import 'katex/dist/katex.min.css'
 import { InputComponents, NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
 import { cn } from "@/components/typography"
@@ -14,9 +13,8 @@ import Link from "next/link"
 import { NotionRichText } from "@/components/notion/rsc/rich-text"
 import { formatDistanceToNow } from "date-fns"
 import { InlineMentionTooltip } from "@/components/notion/client"
-import { ViewAnalytics } from "@/components/analytics/analytics"
 import { NotionPageViews } from "./client"
-import { getArticleList } from "@/components/notion/data/articles"
+import { getArticle, getArticleList } from "@/components/notion/data/articles"
 import { getPageContent } from "@/components/notion/data/helper"
 
 export const dynamicParams = false
@@ -48,7 +46,7 @@ export default async function Page({ params }: any) {
   //   pageID: article.id
   // })
 
-  const article = (await getArticlePage(params.slug))!
+  const article = (await getArticle(params.slug))!
 
   const content = await getPageContent(article.id)
 
@@ -68,7 +66,6 @@ export default async function Page({ params }: any) {
           "max-w-none flex"
         ) }
       />
-      <ViewAnalytics id={article.id} />
       {
         article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
       }

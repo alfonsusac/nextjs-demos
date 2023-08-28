@@ -1,6 +1,6 @@
 'use client'
 
-import { getAndAddViewCount } from "@/components/analytics/server"
+import { getAndAddViewCount } from "@/components/notion/data/metadata"
 import { useEffect, useState } from "react"
 
 export function NotionPageViews(p: { id: string }) {
@@ -8,9 +8,7 @@ export function NotionPageViews(p: { id: string }) {
   const [count, setCount] = useState<number>()
 
   useEffect(() => {
-    getAndAddViewCount({
-      pageID: p.id
-    }).then((count) => {
+    getAndAddViewCount(p.id).then((count) => {
       setCount(count)
     })
   }, [p.id])
