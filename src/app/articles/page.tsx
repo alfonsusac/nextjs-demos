@@ -1,11 +1,11 @@
-import { getArticles } from "@/components/notion/data"
 import Link from 'next/link'
 import { cn } from "@/components/typography"
 import { NotionIcon } from "@/components/notion/rsc/images"
+import { getArticleList } from "@/components/notion/data/articles"
 
 export default async function Articles() {
 
-  const articles = await getArticles()
+  const articles = await getArticleList()
 
 
   return (

@@ -2,9 +2,9 @@ import { dirs } from './layout'
 import Link from 'next/link'
 import { titleCase } from 'title-case'
 import { slug } from 'github-slugger'
-import { getArticles } from '@/components/notion/data'
 import { cn } from '@/components/typography'
 import { NotionIcon } from '@/components/notion/rsc/images'
+import { getArticleList } from '@/components/notion/data/articles'
 
 
 export function IconParkSolidBrowser(props: React.SVGProps<SVGSVGElement>) {
@@ -15,7 +15,7 @@ export function IconParkSolidBrowser(props: React.SVGProps<SVGSVGElement>) {
 
 export default async function Home() {
 
-  const articles = await getArticles()
+  const articles = await getArticleList()
 
   return (
     <article className={ cn(

@@ -1,4 +1,4 @@
-import { getArticlePage, getArticles, getPageContent } from "@/components/notion/data"
+import { getArticlePage, getPageContent } from "@/components/notion/data"
 import 'katex/dist/katex.min.css'
 import { InputComponents, NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
 import { cn } from "@/components/typography"
@@ -15,37 +15,41 @@ import { NotionRichText } from "@/components/notion/rsc/rich-text"
 import { formatDistanceToNow } from "date-fns"
 import { InlineMentionTooltip } from "@/components/notion/client"
 import { ViewAnalytics } from "@/components/analytics/analytics"
-import { unstable_cache } from "next/cache"
-import { getAndAddViewCount, getViewCount } from "@/components/analytics/server"
+import { NotionPageViews } from "./client"
+import { getArticleList } from "@/components/notion/data/articles"
 
-// export const dynamicParams = false
-// export const dynamic = 'error'
+export const dynamicParams = false
+export const dynamic = 'error'
 
-// export async function generateStaticParams() {
-//   const articles = await getArticles()
-//   const params = articles.map(({ slug }) => {
-//     return { slug }
-//   })
-//   return params
-// }
+export async function generateStaticParams() {
+  const articles = await getArticleList()
+  const params = articles.map(({ slug }) => {
+    return { slug }
+  })
+  return params
+}
 
 
 export default async function Page({ params }: any) {
 
-  const {article, content} = await unstable_cache(
-    async () => {
-      const article = (await getArticlePage(params.slug))!
+  // const {article, content} = await unstable_cache(
+  //   async () => {
+  //     const article = (await getArticlePage(params.slug))!
     
-      const content = await getPageContent(article.id)
+  //     const content = await getPageContent(article.id)
 
-      return {article, content}
-    },
-    [params.slug]
-  )()
+  //     return {article, content}
+  //   },
+  //   [params.slug]
+  // )()
 
-  const views = await getViewCount({
-    pageID: article.id
-  })
+  // const views = await getViewCount({
+  //   pageID: article.id
+  // })
+
+  const article = (await getArticlePage(params.slug))!
+
+  const content = await getPageContent(article.id)
 
   
   console.info("Done generating page!")
@@ -85,9 +89,8 @@ export default async function Page({ params }: any) {
               /articles
             </Link>
 
-            {/* { content.type } */}
 
-            <h1 className="">
+            <h1>
               <NotionRichText rich_text={ article.title } />
             </h1>
 
@@ -102,7 +105,7 @@ export default async function Page({ params }: any) {
                   { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
                 </span>
               </InlineMentionTooltip>
-              {` ● ${views} views`}
+              { ` ● ` }<NotionPageViews id={ article.id } />
             </div>
 
           </header>

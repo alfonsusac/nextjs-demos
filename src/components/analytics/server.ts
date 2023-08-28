@@ -1,4 +1,4 @@
-// 'use server'
+'use server'
 
 import { notion } from "../notion/data/init"
 
