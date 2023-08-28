@@ -1,4 +1,4 @@
-import { getArticlePage, getPageContent } from "@/components/notion/data"
+import { getArticlePage } from "@/components/notion/data"
 import 'katex/dist/katex.min.css'
 import { InputComponents, NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
 import { cn } from "@/components/typography"
@@ -17,6 +17,7 @@ import { InlineMentionTooltip } from "@/components/notion/client"
 import { ViewAnalytics } from "@/components/analytics/analytics"
 import { NotionPageViews } from "./client"
 import { getArticleList } from "@/components/notion/data/articles"
+import { getPageContent } from "@/components/notion/data/helper"
 
 export const dynamicParams = false
 export const dynamic = 'error'

@@ -78,10 +78,3 @@ export const getArticlePage = cache(
 
   }
 )
-
-
-export const getPageContent = cache(async (id: string) => {
-  return await notion.blocks.children.list({
-    block_id: id,
-  })
-})
