@@ -27,7 +27,7 @@ function transformPageData(result: PageObjectResponse) {
     ...page,
     title: nameProp.title,
     flattenedTitle: rawTitle,
-    slug: slugProp,
+    slug: flattenRichText(slugProp.rich_text),
     views: viewsProp.number ?? 0
   }
 }
