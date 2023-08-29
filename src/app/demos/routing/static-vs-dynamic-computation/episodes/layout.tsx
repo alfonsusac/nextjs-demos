@@ -21,9 +21,9 @@ export default function Layout(p: { children: React.ReactNode }) {
     <nav>
       <InlineLink href={ currentPath }>Code</InlineLink>
       <span className="text-zinc-600 m-0">|</span>
-      <InlineLink href={ currentPath + "1" }>Episode 1</InlineLink>
-      <InlineLink href={ currentPath + "2" }>Episode 2</InlineLink>
-      <InlineLink href={ currentPath + "120" }>Episode 120</InlineLink>
+      <InlineLink href={ currentPath + "1" } useAnchor>Episode 1</InlineLink>
+      <InlineLink href={ currentPath + "2" } useAnchor>Episode 2</InlineLink>
+      <InlineLink href={ currentPath + "120" } useAnchor>Episode 120</InlineLink>
     </nav>
 
     { p.children }

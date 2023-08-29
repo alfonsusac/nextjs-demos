@@ -19,9 +19,9 @@ export default function Layout(p: { children: React.ReactNode }) {
     <nav>
       <InlineLink href={ currentPath }>Code</InlineLink>
       <span className="text-zinc-600 m-0">|</span>
-      <InlineLink href={ currentPath + "BMW" } >BMW</InlineLink>
-      <InlineLink href={ currentPath + "Nissan" } >Nissan</InlineLink>
-      <InlineLink href={ currentPath + "Hyundai" } useAnchor>Hyundai (No caching)</InlineLink>
+      <InlineLink href={ currentPath + "BMW" } useAnchor>BMW</InlineLink>
+      <InlineLink href={ currentPath + "Nissan" } useAnchor>Nissan</InlineLink>
+      <InlineLink href={ currentPath + "Hyundai" } useAnchor>Hyundai </InlineLink>
       <GenerateRandomLink href={ currentPath } useAnchor>Random ID</GenerateRandomLink>
     </nav>
 
