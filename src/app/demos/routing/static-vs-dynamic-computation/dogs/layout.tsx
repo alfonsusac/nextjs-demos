@@ -12,7 +12,10 @@ export default function Layout(p: { children: React.ReactNode }) {
       precomputed using <code>generateStaticParams()</code>
     </p>
     <p>
-      In the example below, only <b>Labrador</b> and <b>Pomeranian</b> are the only params that are statically generated. Retriever are prefetched using Link while on Pug prefetching is disabled.
+      In the example below, only <b>Labrador</b> and <b>Pomeranian</b> are statically generated at build time. 
+    </p>
+    <p>
+      The rest will be generated at request time.
     </p>
 
     <nav>
@@ -20,7 +23,6 @@ export default function Layout(p: { children: React.ReactNode }) {
       <span className="text-zinc-600 m-0">|</span>
       <InlineLink href={ currentPath + "Labrador" }>Labrador</InlineLink>
       <InlineLink href={ currentPath + "Pomeranian" }>Pomeranian</InlineLink>
-      <InlineLink href={ currentPath + "Retriever" }>Retriever (Prefetch)</InlineLink>
       <InlineLink href={ currentPath + "Pug" } useAnchor>Pug (No Caching)</InlineLink>
       <GenerateRandomLink href={ currentPath } useAnchor>Random ID</GenerateRandomLink>
     </nav>

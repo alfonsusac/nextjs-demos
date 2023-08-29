@@ -6,9 +6,11 @@ export async function generateStaticParams() {
   ]
 }
 
-export default function Page(p: { params: any }) {
-  return <div>
-    <h1>{ p.params.dogID }</h1>
-  </div>
+export default function Page({ params }) {
+  return (
+    <div>
+      <h1>{ p.params.dogID }</h1>
+    </div>
+  ) 
 }
 ```

@@ -12,5 +12,8 @@ export default function Page() {
       title="Build logs"
       code={ <DynamicRouteTurnedStaticBuildLog /> }
     />
+    <p>
+      Do note that not-found only works in build. In development mode, everything is rendered at request time.
+    </p>
   </>
 }

@@ -10,12 +10,17 @@ export default function Layout(p: { children: React.ReactNode }) {
     <p>
       This page shows how dynamic routing can be statically precomputed using { "\"" }force-static{ "\"" }.
     </p>
+    <p>
+      However, none of the params are known at build time.
+    </p>
+    <p>
+      So all route are statically rendered at request time.
+    </p>
     <nav>
       <InlineLink href={ currentPath }>Code</InlineLink>
       <span className="text-zinc-600 m-0">|</span>
       <InlineLink href={ currentPath + "BMW" } >BMW</InlineLink>
       <InlineLink href={ currentPath + "Nissan" } >Nissan</InlineLink>
-      <InlineLink href={ currentPath + "Ford" } prefetch={ false }>Ford (No prefetch)</InlineLink>
       <InlineLink href={ currentPath + "Hyundai" } useAnchor>Hyundai (No caching)</InlineLink>
       <GenerateRandomLink href={ currentPath } useAnchor>Random ID</GenerateRandomLink>
     </nav>

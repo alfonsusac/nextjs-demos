@@ -11,11 +11,12 @@ export default function Layout(p: { children: React.ReactNode }) {
       precomputed at build-time  <code>generateStaticParams()</code> and <code>dynamicParams = false</code>
     </p>
     <p>
-      In the example below, only <b>The first two episodes</b> are statically generated. The rest will show a notFound component.
+      In the example below, only <b>The first two episodes</b> are statically generated at build time.
     </p>
     <p>
-      Do note that not-found only works on production as in development mode, everything is rendered at request time.
+      The rest will throw a global notfound route.
     </p>
+
 
     <nav>
       <InlineLink href={ currentPath }>Code</InlineLink>
@@ -26,5 +27,7 @@ export default function Layout(p: { children: React.ReactNode }) {
     </nav>
 
     { p.children }
+
+
   </>
 }

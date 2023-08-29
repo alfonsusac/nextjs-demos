@@ -5,6 +5,7 @@ import { SVGProps, useState, useEffect } from "react"
 import { usePathname, useSelectedLayoutSegments, useRouter } from "next/navigation"
 import Link from "next/link"
 import path from "path"
+import { cn } from "./typography"
 
 export function Browser(p: {
   children: React.ReactNode
@@ -16,7 +17,10 @@ export function Browser(p: {
         <ForwardButton />
         <BreadCrumb />
       </Header>
-      <div className="p-4">
+      <div className={ cn(
+        "p-4",
+        "prose-p:"
+      ) }>
         { p.children }
       </div>
     </div>

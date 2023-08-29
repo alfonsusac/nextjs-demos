@@ -28,6 +28,10 @@ hr{
   border-t-zinc-700
 }
 
+p {
+  @apply my-2
+}
+
 article {
   @apply 
   mx-auto mb-6

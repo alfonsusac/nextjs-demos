@@ -11,10 +11,10 @@ export default function Layout(p: { children: React.ReactNode }) {
     <nav>
       <InlineLink href={ currentPath }>Code</InlineLink>
       <span className="text-zinc-600 m-0">|</span>
-      <InlineLink href={ currentPath + "Harry Potter" }>Book 1</InlineLink>
-      <InlineLink href={ currentPath + "Eloquent JavaScript" }>Book 2</InlineLink>
-      <InlineLink href={ currentPath + "Atomic Habit" } prefetch={ false }>Book 3 (No prefetch)</InlineLink>
-      <InlineLink href={ currentPath + "Hitchhiker's Guide to the Galaxy" } useAnchor>Book 4 (No caching)</InlineLink>
+      <InlineLink href={ currentPath + "Harry Potter" } useAnchor>Book 1</InlineLink>
+      <InlineLink href={ currentPath + "Eloquent JavaScript" } useAnchor>Book 2</InlineLink>
+      <InlineLink href={ currentPath + "Atomic Habit" } useAnchor>Book 3 </InlineLink>
+      <InlineLink href={ currentPath + "Hitchhiker's Guide to the Galaxy" } useAnchor>Book 4 </InlineLink>
     </nav>
     { p.children }
   </>

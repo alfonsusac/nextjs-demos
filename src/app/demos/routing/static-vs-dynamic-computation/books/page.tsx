@@ -5,7 +5,7 @@ import DynamicRouteTurnedStaticBuildLog from "./buildlog.mdx"
 export default function Page() {
   return <>
     <CodeSnippet
-      title="app/cars/[carID]/page.js"
+      title="app/books/[bookID]/page.js"
       code={ <DynamicRouteTurnedStaticCode /> }
     />
     <CodeSnippet

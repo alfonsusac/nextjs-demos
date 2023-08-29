@@ -7,11 +7,11 @@ export async function generateStaticParams() {
 }
 
 export default function Page({ params }) {
-  const title = await fetchTitle(params.episodeID)
-
-  return <div>
-    <h1>🍿 Episode { params.dogID }: { title }</h1>
-  </div>
+  return (
+    <div>
+      <h1>{ p.params.episodeID }</h1>
+    </div>
+  )
 }
 
 export const dynamicParams = false
