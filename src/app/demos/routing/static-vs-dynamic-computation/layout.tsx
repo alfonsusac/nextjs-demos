@@ -2,6 +2,7 @@ import { Browser } from "@/components/browser"
 import { InlineLink } from "@/components/link"
 import Content from "./content.mdx"
 import { TOCContent } from "@/components/toc/rsc"
+import { CommentSection } from "@/components/giscus"
 
 const currentPath = '/demos/routing/static-vs-dynamic-computation/'
 
@@ -27,6 +28,8 @@ export default async function Layout(p: { children: React.ReactNode }) {
     <TOCContent>
       <Content />
     </TOCContent>
+
+    <CommentSection />
 
   </>
 }
