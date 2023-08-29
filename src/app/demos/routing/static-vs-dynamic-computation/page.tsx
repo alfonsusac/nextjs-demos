@@ -1,4 +1,4 @@
-const currentPath = '/routing/static-vs-dynamic-computation/books/'
+const currentPath = '/demos/routing/static-vs-dynamic-computation/books/'
 
 export default function Page() {
   return <>
