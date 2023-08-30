@@ -37,7 +37,7 @@ export default async function Layout(p: {
                   match={ 2 }
                   className="text-sm"
                 >
-                  <ToCSidebar items={ await getHeadings(page.content) } startDepth={ 2 } />
+                  <ToCSidebar items={ await getHeadings(page.content) } startDepth={ 2 } depth={6} />
                 </Page>
               ) }
 
