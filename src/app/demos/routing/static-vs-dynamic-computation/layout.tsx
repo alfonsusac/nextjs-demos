@@ -1,6 +1,7 @@
 import { Browser } from "@/components/browser"
 import { InlineLink } from "@/components/link"
 import Content from "./content.mdx"
+import Text from "./text.mdx"
 import { TOCContent } from "@/components/toc/rsc"
 import { CommentSection } from "@/components/giscus"
 
@@ -26,6 +27,7 @@ export default async function Layout(p: { children: React.ReactNode }) {
     </Browser>
 
     <TOCContent>
+      {/* <Text /> */}
       <Content />
     </TOCContent>
 
