@@ -13,12 +13,9 @@ export type TOCItemType = {
 export async function getHeadings(mdx?: JSX.Element) {
 
   if (!mdx) {
-    console.warn("GetHeading: Not MDX")
+    // console.warn("GetHeading: Not MDX")
     return []
   }
-
-  // console.log("GetHeadings: " + mdx)
-
 
   const headers: TOCItemType[] = []
 
@@ -27,15 +24,12 @@ export async function getHeadings(mdx?: JSX.Element) {
 
     if (type.intrinsic && headings.includes(type.intrinsic.type)) {
       const node = type.intrinsic
-      // console.log("FOUNDDD!!!!!!!!!!")
-
       const { ...props } = node.props
 
       delete props['className']
       delete props['id']
 
       const text = innerText(node)
-      // console.log(text)
 
       const header:TOCItemType = {
         level: headings.findIndex(h => h === node.type) + 1,
@@ -44,9 +38,7 @@ export async function getHeadings(mdx?: JSX.Element) {
         id: slug(text)
       }
 
-
       headers.push(header)
-
 
     }
 
@@ -72,7 +64,7 @@ async function visitJSX2(
   }) => void
 ) {
 
-  console.log("---------------\nVisitJSX")
+  // console.log("---------------\nVisitJSX")
   const queue: ReactNode[] = []
   const depthArr: number[] = [] // to keep track the depth of current node on the tree
 
@@ -83,11 +75,9 @@ async function visitJSX2(
 
     const curr = queue.pop()
     const depth = depthArr.pop()
-    // console.log("\nPop!")
-    // console.log(curr)
 
     const print = (message: any) => {
-      console.log(Array.from({ length: depth ?? 1 }).map(() => ' | ').join('') + message)
+      // console.log(Array.from({ length: depth ?? 1 }).map(() => ' | ').join('') + message)
     }
 
     if (typeof curr === 'string' || typeof curr === 'number' || typeof curr === 'boolean') {
@@ -140,10 +130,13 @@ async function visitJSX2(
         cb({ custom: curr })
         print(type.name)
         try {
+
           const comp = await type(curr.props)
           queue.push(comp)
           depthArr.push((depth ?? 1) + 1)
+
         } catch (error: any) {
+
           const msg = error.message as string
           if (msg.includes('Client Component')) {
             print("Can't process client components yet")
@@ -152,6 +145,7 @@ async function visitJSX2(
             console.log(error.message as string)
             throw error
           }
+
         }
         // queue.push(await type(curr.props))
         continue
@@ -324,9 +318,8 @@ export async function TOCContent(p: {
   children: React.ReactNode
 }) {
   headings = await getHeadings(p.children as React.ReactElement)
-  console.log("TOCContent")
+  // console.log("TOCContent")
   // console.log(headings)
-
 
   return <UseAsTOCContentClient headings={ headings }>
     { p.children }
