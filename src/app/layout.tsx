@@ -5,6 +5,7 @@ import { Category, Content, Page } from './client'
 import Link from "next/link"
 import "prism-themes/themes/prism-one-dark.min.css"
 import MDX_RoutingComputation from "./demos/routing/static-vs-dynamic-computation/content.mdx"
+import MDX_Test from "./demos/routing/static-vs-dynamic-computation/text.mdx"
 import { cn } from '@/components/typography'
 
 const inter = Inter({
