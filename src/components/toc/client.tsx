@@ -22,7 +22,7 @@ export function ToCSidebar(p: {
   console.log("Client.tsx")
   console.log(toc)
 
-  let items = getFilteredItems((toc), p.startDepth, p.depth)
+  let items = getFilteredItems((p.items ?? toc), p.startDepth, p.depth)
   items = normalizeLevels(items) 
 
   const activeAnchor = useActiveHeadings(items.map(i => i.id))
