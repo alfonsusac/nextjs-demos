@@ -16,6 +16,9 @@ export const useTOC = () => useContext(TOCContext)
 
 export let setHeadings = (toc: TOCItemType[], location: string) => { }
 
+
+
+
 export function TOCProvider(p: { children: React.ReactNode }) {
 
   const [toc, setToc] = useState<{ toc: TOCItemType[], location: string }>({ toc: [], location: ''})

@@ -18,6 +18,10 @@ export function ToCSidebar(p: {
 
 
   const { toc } = useTOC()
+
+  console.log("Client.tsx")
+  console.log(toc)
+
   let items = getFilteredItems((toc), p.startDepth, p.depth)
   items = normalizeLevels(items) 
 
