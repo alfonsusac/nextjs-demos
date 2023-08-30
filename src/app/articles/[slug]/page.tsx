@@ -20,42 +20,30 @@ import { getPageContent } from "@/components/notion/data/helper"
 export const dynamicParams = false
 export const dynamic = 'error'
 
-export async function generateStaticParams() {
-  const articles = await getArticleList()
-  const params = articles.map(({ slug }) => {
-    return { slug }
-  })
-  return params
-}
+// export async function generateStaticParams() {
+//   const articles = await getArticleList()
+//   const params = articles.map(({ slug }) => {
+//     return { slug }
+//   })
+//   return params
+// }
 
 
 export default async function Page({ params }: any) {
 
-  // const {article, content} = await unstable_cache(
-  //   async () => {
-  //     const article = (await getArticlePage(params.slug))!
-    
-  //     const content = await getPageContent(article.id)
-
-  //     return {article, content}
-  //   },
-  //   [params.slug]
-  // )()
-
-  // const views = await getViewCount({
-  //   pageID: article.id
-  // })
-
   const article = (await getArticle(params.slug))!
 
-  const content = await getPageContent(article.id)
+  // const content = await getPageContent(article.id)
+
+  // const ast = await convertChildrenToAST(content)
+  // const headings = extractHeadings(ast)
 
   
   console.info("Done generating page!")
 
   return (
     <>
-      <NotionImage
+      {/* <NotionImage
         alt="Page Cover"
         nprop={ article.cover as any }
         className={ cn(
@@ -68,7 +56,7 @@ export default async function Page({ params }: any) {
       />
       {
         article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
-      }
+      } */}
       <div className="flex gap-4 mx-auto">
 
 
@@ -76,7 +64,7 @@ export default async function Page({ params }: any) {
         <article className="max-w-article m-0 w-full mx-auto md:mr-0">
           <header className="my-8 mt-8 space-y-2 relative">
 
-            <NotionIcon icon={ article.icon }
+            {/* <NotionIcon icon={ article.icon }
               className="text-5xl m-0 block w-12 h-12 mb-4"
             />
 
@@ -90,7 +78,7 @@ export default async function Page({ params }: any) {
 
             <h1>
               <NotionRichText rich_text={ article.title } />
-            </h1>
+            </h1> */}
 
             <div className="text-sm text-zinc-500">
               Last updated:
@@ -108,11 +96,13 @@ export default async function Page({ params }: any) {
 
           </header>
 
-          <RenderNotionPage
+          {/* <RenderNotionPage
             data={ content }
-          />
+          /> */}
 
-          <CommentSection />
+          {/* <NotionASTRenderer node={ ast } /> */}
+
+          {/* <CommentSection /> */}
           
 
 
@@ -132,7 +122,7 @@ export default async function Page({ params }: any) {
 
         
         {/* RIGHT */ }
-        <div className={ cn(
+        {/* <div className={ cn(
           'hidden md:block',
           'sticky',
           'top-40',
@@ -148,9 +138,10 @@ export default async function Page({ params }: any) {
               depth={ 3 }
               className=""
               listClassName="text-sm"
+              items={ headings }
             />
           </Sidebar>
-        </div>
+        </div> */}
       </div>
     </>
   )
@@ -170,4 +161,4 @@ async function RenderNotionPage(p: {
       <NotionASTRenderer node={ ast } components={ p.components } />
     </UseAsTOCContentClient>
   )
-}
+} 
