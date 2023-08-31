@@ -8,7 +8,8 @@
     "start": "next start",
     "prod": "next build && next start",
     "lint": "next lint",
-    "migrate init": "prisma migrate dev --name init"
+    "migrate init": "prisma migrate dev --name init",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@giscus/react": "^2.3.0",
