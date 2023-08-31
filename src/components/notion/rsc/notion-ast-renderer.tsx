@@ -13,6 +13,7 @@ import { slug } from "github-slugger"
 import { NodeTypes } from "../types"
 import { convertChildrenToAST } from "../parser/parser"
 import { NotionASTNode } from "../parser/node"
+import { JSONStringify } from "@/components/tool"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:
@@ -50,27 +51,75 @@ export function NotionASTRenderer(p: {
   onRender?: (node: NotionASTNode) => void
 }) {
 
-  return p.node.children.map((e, i) => {
+  // console.log("Notion AST Renderer?")
+  // console.log(p.node)
+  // console.log("Finish Log")
+
+  return <div className="renderer">
+    {/* <JSONStringify data={ p.node } /> */}
+    {
+      p.node.children.map((e, i) => {
+
+        // console.log("C")
+
+        const Component = getComponent({
+          node: e,
+          params: p.components
+        })
+
+        // console.log(Component)
+        // console.log("Raw content: " + p.node.raw_content)
+        // console.log("Chils Raw content: "  + e.raw_content)
+
+        // console.log("D")
+
+        // return (
+        //   <div key={ i } className={ e.type + ' ml-4'}>
+        //     {
+        //       e.children ? (
+        //         <NotionASTRenderer node={ e } components={ p.components } />
+        //       ) : null
+        //     }
+        //   </div>
+        // )
+
+        return (
+          <Component key={ i } node={ e as never }>
+            {
+              e.children ? (
+                <NotionASTRenderer
+                  node={ e }
+                  components={ p.components }
+                />
+              ) : null
+            }
+          </Component>
+        )
+      })
+    }
+  </div>
+
+  // return p.node.children.map((e, i) => {
 
 
-    const Component = getComponent({
-      node: e,
-      params: p.components
-    })
+  //   const Component = getComponent({
+  //     node: e,
+  //     params: p.components
+  //   })
 
-    return (
-      <Component key={ i } node={ e as never }>
-        {
-          e.children ? (
-            <NotionASTRenderer
-              node={ e }
-              components={ p.components }
-            />
-          ) : null
-        }
-      </Component>
-    )
-  })
+  //   return (
+  //     <Component key={ i } node={ e as never }>
+  //       {
+  //         e.children ? (
+  //           <NotionASTRenderer
+  //             node={ e }
+  //             components={ p.components }
+  //           />
+  //         ) : null
+  //       }
+  //     </Component>
+  //   )
+  // })
 }
 
 function getComponent({ node, params }: {
@@ -78,12 +127,14 @@ function getComponent({ node, params }: {
   params?: InputComponents,
 }) {
 
-  const RichText = () => node.content ?
-    <NotionRichText rich_text={ node.content } /> : null
+  const RichText =
+    () => node.content ?
+      <NotionRichText rich_text={ node.content } /> : null
   const flattenedRichText = node.raw_content
 
-  const Caption = ({ ...rest }: Omit<React.ComponentProps<typeof NotionFigureCaption>, 'caption'>) => node.props.caption ?
-    <NotionFigureCaption caption={ node.props.caption } { ...rest } /> : null
+  const Caption =
+    ({ ...rest }: Omit<React.ComponentProps<typeof NotionFigureCaption>, 'caption'>) => node.props.caption ?
+      <NotionFigureCaption caption={ node.props.caption } { ...rest } /> : null
   const flattenedCaption = node.props.caption && flattenRichText(node.props.caption)
 
   const slugid = flattenedRichText ? slug(flattenedRichText) : undefined
@@ -100,10 +151,6 @@ function getComponent({ node, params }: {
       return customComponent[node.type]!
     }
   }
-
-
-  return DefaultComponent
-
 
   async function DefaultComponent({ children, className, node, ...props }:
     React.DetailedHTMLProps<React.HTMLAttributes<any>, any>
@@ -440,7 +487,7 @@ function getComponent({ node, params }: {
               nprop={ node.props as any }
               className="h-auto w-auto mx-auto rounded-md"
               enlargable
-              id={node.id}
+              id={ node.id }
             />
             <Caption center />
           </div>
@@ -565,6 +612,8 @@ function getComponent({ node, params }: {
         return <></>
     }
   }
+
+  return DefaultComponent
 
 
 }

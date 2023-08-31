@@ -1,6 +1,7 @@
 import { BlockObjectResponse, ListBlockChildrenParameters, ListBlockChildrenResponse, PartialBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import { NotionASTNode } from "./node"
-import { notion } from "../data/init"
+import { notion } from "../../../lib/notion"
+import { unstable_cache } from "next/cache"
 
 export type BlockType = BlockObjectResponse['type']
 export type MapToAST = (newNode: NotionASTNode, currentNode: NotionASTNode) => void
@@ -16,7 +17,7 @@ export async function convertChildrenToAST(
 
   // Get function that would be called to fetch children
   const fetchChildrenFn = options?.fetchChildrenFn
-    ?? (async (id) => {
+    ?? unstable_cache(async (id) => {
       return await notion.blocks.children.list({ block_id: id })
     })
   

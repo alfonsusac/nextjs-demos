@@ -54,9 +54,10 @@ export class NotionASTNode {
     return {
       info: `${this.type} | ${this.has_children ? "hasChildren" : "noChildren"} | ${this.id}`,
       type: `${this.type} | parent:${this.parent?.type}`,
-      content: this.content?.map(c => c.plain_text).join(''),
+      raw_content: this.raw_content,
       props: this.props,
       children: this.children,
+      hello: "Hello",
     }
   }
 }

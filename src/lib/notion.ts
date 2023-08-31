@@ -6,11 +6,11 @@ const globalForNotion = globalThis as unknown as {
 
 export const notion =
   globalForNotion.notion ?? (() => {
-    console.log("Creating new Notion Client...")
+    // console.log("Creating new Notion Client...")
     return new Client({ auth: process.env.NOTION_TOKEN })
   })()
 
 if (process.env.NODE_ENV !== 'production') {
-  console.log("Production")
+  // console.log("Production")
   globalForNotion.notion = notion
 }

@@ -8,7 +8,7 @@ import { formatRelative } from "date-fns"
 import { InlineMentionTooltip } from "../client"
 import { slug } from "github-slugger"
 import { cn } from "@/components/typography"
-import { notion } from "../data/init"
+import { notion } from "../../../lib/notion"
 
 type Annotation = RichTextItemResponse['annotations']
 

@@ -1,5 +1,5 @@
 import { cache } from "react"
-import { notion } from "./init"
+import { notion } from "../../../lib/notion"
 import { NumberPropertyItemObjectResponse, PageObjectResponse, RichTextItemResponse, RichTextPropertyItemObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import { flattenRichText } from "../rsc/rich-text"
 import { slug as slugify } from "github-slugger"
@@ -21,14 +21,12 @@ function transformPageData(result: PageObjectResponse) {
     rich_text: Array<RichTextItemResponse>
     id: string
   }
-  const viewsProp = page.properties.Views as NumberPropertyItemObjectResponse
   const rawTitle = flattenRichText(nameProp.title)
   return {
     ...page,
     title: nameProp.title,
     flattenedTitle: rawTitle,
     slug: flattenRichText(slugProp.rich_text),
-    views: viewsProp.number ?? 0
   }
 }
 
