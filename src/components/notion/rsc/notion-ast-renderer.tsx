@@ -54,7 +54,7 @@ export function NotionASTRenderer(p: {
   // console.log(p.node)
   // console.log("Finish Log")
 
-  return <div className="renderer">
+  return <>
     {/* <JSONStringify data={ p.node } /> */}
     {
       p.node.children.map((e, i) => {
@@ -96,7 +96,7 @@ export function NotionASTRenderer(p: {
         )
       })
     }
-  </div>
+  </>
 
   // return p.node.children.map((e, i) => {
 

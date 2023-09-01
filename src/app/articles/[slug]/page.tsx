@@ -111,7 +111,7 @@ export default async function Page({ params }: any) {
             />
 
             <Link
-              className="text-sm p-2 rounded-md text-zinc-500 hover:bg-zinc-900 decoration-zinc-600 underline-offset-4 -mx-2"
+              className="text-sm p-2 rounded-md text-zinc-400 hover:bg-zinc-900 decoration-zinc-600 underline-offset-4 -mx-2"
               href="/articles"
             >
               /articles
@@ -192,13 +192,15 @@ export default async function Page({ params }: any) {
         ) }>
           In this article
           <Sidebar>
-            <ToCSidebar
-              startDepth={ 1 }
-              depth={ 3 }
-              className=""
-              listClassName="text-sm"
-              items={ headings }
-            />
+            <li>
+              <ToCSidebar
+                startDepth={ 1 }
+                depth={ 3 }
+                className=""
+                listClassName="text-sm"
+                items={ headings }
+              />
+            </li>
           </Sidebar>
         </div>
       </div>

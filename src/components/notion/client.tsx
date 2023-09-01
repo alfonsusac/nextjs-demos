@@ -26,8 +26,8 @@ export function Toggle(p:
     <Collapsible.Root open={ open } onOpenChange={ setOpen }>
       <Collapsible.Trigger asChild>
 
-        <div className={ cn(
-          "toggle flex cursor-pointer hover:bg-zinc-900/70 py-1 rounded-sm",
+        <button className={ cn(
+          "toggle flex cursor-pointer hover:bg-zinc-900/70 py-1 rounded-sm w-full",
           p.className
         ) }>
           <div className={ cn("h-[1lh] w-8 text-center flex-shrink-0") }>
@@ -40,7 +40,7 @@ export function Toggle(p:
             } />
           </div>
           { p.headerSlot }
-        </div>
+        </button>
 
       </Collapsible.Trigger>
 
