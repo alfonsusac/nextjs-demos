@@ -13,7 +13,6 @@ import { slug } from "github-slugger"
 import { NodeTypes } from "../types"
 import { convertChildrenToAST } from "../parser/parser"
 import { NotionASTNode } from "../parser/node"
-import { JSONStringify } from "@/components/tool"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:
@@ -479,7 +478,7 @@ function getComponent({ node, params }: {
         const url =
           'external' in node.props ? node.props.external.url :
             'file' in node.props ? node.props.file.url : ''
-
+        
         return (
           <div className={ c("my-2 relative w-full p-2") } { ...props }>
             <NotionImage

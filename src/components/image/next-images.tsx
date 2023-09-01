@@ -1,6 +1,7 @@
 import { inRemotePattern } from "../next/remotePattern"
 import Image from "next/image"
 import { getImage } from "./placeholder"
+import { cn } from "../typography"
 
 type NextImageProp = React.ComponentProps<typeof Image>
 
@@ -10,6 +11,8 @@ export async function NextImage({
   unoptimized,
   width,
   height,
+  className,
+  loader,
   ...props
 }: NextImageProp) {
 
@@ -39,13 +42,21 @@ export async function NextImage({
 
   return (
     <Image
-      unoptimized={ unoptimized ?? optimize }
+      unoptimized={ unoptimized ?? !optimize }
+      className={ cn(className, (unoptimized ?? !optimize) ? 'not-optimize' : 'optimized') }
       src={ src }
       alt={ alt }
       width={ _width }
       height={ _height }
+      sizes='100vw'
+      // fill
+      // width={ 30 }
+      // height={ 30 }
       placeholder="blur"
       blurDataURL={ _blurDataURL }
+      style={ {
+        aspectRatio: `${_width} / ${_height}`
+      }}
       { ...props }
     />
   )
