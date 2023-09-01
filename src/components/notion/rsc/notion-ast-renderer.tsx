@@ -13,6 +13,7 @@ import { slug } from "github-slugger"
 import { NodeTypes } from "../types"
 import { convertChildrenToAST } from "../parser/parser"
 import { NotionASTNode } from "../parser/node"
+import { createElement } from "react"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:
@@ -50,48 +51,25 @@ export function NotionASTRenderer(p: {
   onRender?: (node: NotionASTNode) => void
 }) {
 
-  // console.log("Notion AST Renderer?")
-  // console.log(p.node)
-  // console.log("Finish Log")
-
   return <>
-    {/* <JSONStringify data={ p.node } /> */}
     {
       p.node.children.map((e, i) => {
-
-        // console.log("C")
 
         const Component = getComponent({
           node: e,
           params: p.components
         })
 
-        // console.log(Component)
-        // console.log("Raw content: " + p.node.raw_content)
-        // console.log("Chils Raw content: "  + e.raw_content)
-
-        // console.log("D")
-
-        // return (
-        //   <div key={ i } className={ e.type + ' ml-4'}>
-        //     {
-        //       e.children ? (
-        //         <NotionASTRenderer node={ e } components={ p.components } />
-        //       ) : null
-        //     }
-        //   </div>
-        // )
-
         return (
           <Component key={ i } node={ e as never }>
-            {
+            {/* {
               e.children ? (
                 <NotionASTRenderer
                   node={ e }
                   components={ p.components }
                 />
               ) : null
-            }
+            } */}
           </Component>
         )
       })
