@@ -30,15 +30,15 @@ export type NodeTypes = {
   }
   'heading_1': NotionASTNode & {
     type: 'heading_1'
-    props: OmitRichText<Heading1BlockObjectResponse['heading_1']>
+    props: OmitRichText<Heading1BlockObjectResponse['heading_1']> & { is_toggleable: boolean }
   }
   'heading_2': NotionASTNode & {
     type: 'heading_2'
-    props: OmitRichText<Heading2BlockObjectResponse['heading_2']>
+    props: OmitRichText<Heading2BlockObjectResponse['heading_2']> & { is_toggleable: boolean }
   }
   'heading_3': NotionASTNode & {
     type: 'heading_3'
-    props: OmitRichText<Heading3BlockObjectResponse['heading_3']>
+    props: OmitRichText<Heading3BlockObjectResponse['heading_3']> & { is_toggleable: boolean }
   }
   'paragraph': NotionASTNode & {
     type: 'paragraph'
