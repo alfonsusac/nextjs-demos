@@ -44,7 +44,9 @@ export function Toggle(p:
 
       </Collapsible.Trigger>
 
-      <Collapsible.Content> { p.children } </Collapsible.Content>
+      <Collapsible.Content>
+        { p.children }
+      </Collapsible.Content>
     </Collapsible.Root>
   )
 }

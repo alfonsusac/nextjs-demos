@@ -1,7 +1,8 @@
 import { BulletedListItemBlockObjectResponse, NumberedListItemBlockObjectResponse, ToDoBlockObjectResponse, Heading1BlockObjectResponse, Heading2BlockObjectResponse, Heading3BlockObjectResponse, ParagraphBlockObjectResponse, CodeBlockObjectResponse, ToggleBlockObjectResponse, QuoteBlockObjectResponse, DividerBlockObjectResponse, EquationBlockObjectResponse, CalloutBlockObjectResponse, ColumnListBlockObjectResponse, ColumnBlockObjectResponse, TableBlockObjectResponse, TableRowBlockObjectResponse, BookmarkBlockObjectResponse, ImageBlockObjectResponse, VideoBlockObjectResponse, PdfBlockObjectResponse, AudioBlockObjectResponse, FileBlockObjectResponse, EmbedBlockObjectResponse, LinkPreviewBlockObjectResponse, SyncedBlockBlockObjectResponse, ChildPageBlockObjectResponse, ChildDatabaseBlockObjectResponse, BreadcrumbBlockObjectResponse, TableOfContentsBlockObjectResponse, LinkToPageBlockObjectResponse, TemplateBlockObjectResponse, UnsupportedBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import { NotionASTNode } from "./parser/node"
 
-type OmitRichText<T> = Omit<T, 'rich_text'>
+// type OmitRichText<T> = Omit<T, 'rich_text'>
+type OmitRichText<T> = T // does nothing atm
 
 export type NodeTypes = {
   'root': NotionASTNode & {

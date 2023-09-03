@@ -39,8 +39,7 @@ export class NotionASTNode {
         this.content = props.rich_text
         this.raw_content = flattenRichText(props.rich_text)
       }
-      else
-        this.props[prop] = props[prop]
+      this.props[prop] = props[prop]
     }
 
   }

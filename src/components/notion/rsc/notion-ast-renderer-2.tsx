@@ -1,7 +1,9 @@
-import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
 import { NotionASTNode } from "../parser/node"
 import { NodeTypes } from "../types"
-import { convertChildrenToAST } from "../parser/parser"
+import { H2 } from "@/components/typography"
+import { Toggle } from "../client"
+import { NotionRichText } from "./rich-text"
+import { Heading1, HeadingBuilder } from "./components/headings"
 
 
 /** ----------------------------------------------------------
@@ -9,13 +11,18 @@ import { convertChildrenToAST } from "../parser/parser"
  * 
  * 
  */
+type RichTextProp = () => JSX.Element
+type NestedChildrenProp = (param: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => JSX.Element
+
+export type NotionComponentProp<T extends NotionASTNode['type']> = {
+  children?: React.ReactNode,
+  richText?: React.ReactNode,
+  node: NodeTypes[T],
+  Children?: NestedChildrenProp,
+}
 
 type NotionASTComponentMap = {
-  [key in NotionASTNode['type']]:
-  (
-    param: React.DetailedHTMLProps<React.HTMLAttributes<any>, any> &
-    { node: NodeTypes[key] }
-  ) => React.ReactNode
+  [key in NotionASTNode['type']]:( param: NotionComponentProp<key> ) => React.ReactNode
 }
 
 export type InputComponents = (
@@ -33,10 +40,23 @@ export async function NotionASTRenderer({ ast, ...rest }: {
   components?: InputComponents
 }) {
 
+  const defaultComponents: NotionASTComponentMap = {
+
+    /**
+     *   ※ Heading 1
+     */
+    heading_1: HeadingBuilder(1),
+    heading_2: HeadingBuilder(2),
+    heading_3: HeadingBuilder(3),
+    
+
+
+  }
+
 
 
   const components: NotionASTComponentMap = {
-    
+
   }
 
   return <NotionASTRendererRecursor node={ ast } componentMap={ components } />
@@ -55,7 +75,10 @@ function NotionASTRendererRecursor({ node, componentMap }: {
 
     const Component = componentMap[node.type]
     return (
-      <Component key={ index } node={ childn as never }>
+      <Component
+        key={ index }
+        node={ childn as never }
+      >
         { childn.children &&
           <NotionASTRendererRecursor node={ childn } componentMap={ components } />
         }
