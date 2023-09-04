@@ -1,24 +1,31 @@
 import { H2, H3, H4 } from "@/components/typography"
 import { Toggle } from "../../client"
 import { NotionComponentProp } from "../notion-ast-renderer-2"
+import { RichTextNode } from "./common"
+import { flattenRichText } from "../rich-text"
+import { slug } from "github-slugger"
 
 export function HeadingBuilder(level: 1 | 2 | 3) {
 
   return function NotionHeading({
-    node, Children, children, richText
+    node,
+    children,
+    className
   }: NotionComponentProp<'heading_1' | 'heading_2' | 'heading_3'>) {
 
+    const slugid = slug(flattenRichText(node.props.rich_text))
+
     const InnerHeading = level === 1 ? (
-      <H2>
-        { richText }
+      <H2 className={ className } id={ slugid }>
+        <RichTextNode node={ node } />
       </H2>
     ) : level === 2 ? (
-      <H3>
-        { richText }
+      <H3 className={ className } id={ slugid }>
+        <RichTextNode node={ node } />
       </H3>
     ) : level === 3 ? (
-      <H4>
-        { richText }
+      <H4 className={ className } id={ slugid }>
+        <RichTextNode node={ node } />
       </H4>
     ) : <></>
 

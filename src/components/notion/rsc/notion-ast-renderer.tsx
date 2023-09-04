@@ -6,12 +6,10 @@ import { CodeRSC } from "@/components/code-snippet/rsc"
 import { KaTeXRSC } from "@/components/katex/rsc"
 import { getFileName, getMetaInfo } from "@/components/metadata/util"
 import Image from "next/image"
-import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
 import { H2, H3, H4, cn } from "@/components/typography"
 import { NotionIcon, NotionImage } from "./images"
 import { slug } from "github-slugger"
 import { NodeTypes } from "../types"
-import { convertChildrenToAST } from "../parser/parser"
 import { NotionASTNode } from "../parser/node"
 
 type NotionASTComponentMap = {
@@ -31,26 +29,6 @@ export type InputComponents = (
     node: NotionASTNode
   }
 ) => Partial<NotionASTComponentMap>
-
-// export async function RenderNotionPage(p: {
-//   data: ListBlockChildrenResponse
-//   components?: InputComponents
-// }) {
-//   const ast = await convertChildrenToAST(p.data)
-
-//   const components = getComponentMap(p.components)
-
-
-
-//   return (
-
-//     // <NotionASTRenderer node={ ast } components={ p.components } />
-//     <NotionASTRendererNew node={ ast } componentMap={ components } />
-
-//   )
-// }
-
-
 
 export function NotionASTRenderer(p: {
   node: NotionASTNode,
@@ -85,99 +63,99 @@ export function NotionASTRenderer(p: {
   </>
 }
 
-function NotionASTRendererNew(p: {
-  node: NotionASTNode,
-  componentMap: NotionASTComponentMap
-}) {
-  return <>
-    {
-      p.node.children.map((node, index) => {
+// function NotionASTRendererNew(p: {
+//   node: NotionASTNode,
+//   componentMap: NotionASTComponentMap
+// }) {
+//   return <>
+//     {
+//       p.node.children.map((node, index) => {
 
-        const flattenedRichText = node.raw_content
-        const flattenedCaption = node.props.caption && flattenRichText(node.props.caption)
-        const blockColor = node.props.color as ApiColor
-        const slugid = flattenedRichText && slug(flattenedRichText)
+//         const flattenedRichText = node.raw_content
+//         const flattenedCaption = node.props.caption && flattenRichText(node.props.caption)
+//         const blockColor = node.props.color as ApiColor
+//         const slugid = flattenedRichText && slug(flattenedRichText)
 
-        function RichText() {
-          return node.content && <NotionRichText rich_text={ node.content } />
-        }
-        function Caption(p: Omit<React.ComponentProps<typeof NotionFigureCaption>, 'caption'>) {
-          return node.props.caption && <NotionFigureCaption caption={ node.props.caption } { ...p } />
-        }
-
-
-
-        const Component = p.componentMap[node.type]
-        return (
-          <Component key={ index } node={ node }>
-            {
-              node.children ? (
-                <NotionASTRendererNew node={ node } componentMap={ p.componentMap } />
-              ) : null
-            }
-          </Component>
-        )
-
-      })
-    }
-  </>
-}
-
-export type InputComponentsNew = (
-  comps: {
-    RichText: React.ReactNode
-    Caption: React.ReactNode
-    flattenedRichText?: string
-    flattenedCaption?: string
-    node: NotionASTNode
-  }
-) => Partial<NotionASTComponentMap>
-
-type NotionASTComponentMapNew = {
-  [key in NotionASTNode['type']]?:
-  (
-    param: React.DetailedHTMLProps<React.HTMLAttributes<any>, any> &
-    {
-      node: NotionASTNode
-      slugid?: string
-      richText?: JSX.Element
-    }
-  ) => React.ReactNode
-}
-
-function getComponentMap(customComponent?: InputComponentsNew): NotionASTComponentMapNew {
-
-  function NestedChildren(p: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & { node: NotionASTNode }) {
-    return p.node.children?.length > 0 && <div { ...p }>{ p.children }</div>
-  }
-  function c(...c: string[]) {
-    return cn(...c, convertColorToClassname(blockColor))
-  }
-
-  const deafultMap: NotionASTComponentMapNew = {
-
-    'heading_1'(param) {
-      if (param.node.props.is_toggleable) {
-        return (
-          <Toggle className="toggle-heading1" headerSlot={
-            <H2 className={ c("my-0") } id={ param.slugid }>
-              { param.richText }
-              {/* <QuickComponents(param.node).RichText /> */ }
-            </H2 >
-          }>
-            <NestedChildren className="pl-4" node={ param.node }>
-              {param.children}
-            </NestedChildren>
-          </Toggle>
-        )
-      }
-    }
-  }
+//         function RichText() {
+//           return node.content && <NotionRichText rich_text={ node.content } />
+//         }
+//         function Caption(p: Omit<React.ComponentProps<typeof NotionFigureCaption>, 'caption'>) {
+//           return node.props.caption && <NotionFigureCaption caption={ node.props.caption } { ...p } />
+//         }
 
 
-  return deafultMap
 
-}
+//         const Component = p.componentMap[node.type]
+//         return (
+//           <Component key={ index } node={ node }>
+//             {
+//               node.children ? (
+//                 <NotionASTRendererNew node={ node } componentMap={ p.componentMap } />
+//               ) : null
+//             }
+//           </Component>
+//         )
+
+//       })
+//     }
+//   </>
+// }
+
+// export type InputComponentsNew = (
+//   comps: {
+//     RichText: React.ReactNode
+//     Caption: React.ReactNode
+//     flattenedRichText?: string
+//     flattenedCaption?: string
+//     node: NotionASTNode
+//   }
+// ) => Partial<NotionASTComponentMap>
+
+// type NotionASTComponentMapNew = {
+//   [key in NotionASTNode['type']]?:
+//   (
+//     param: React.DetailedHTMLProps<React.HTMLAttributes<any>, any> &
+//     {
+//       node: NotionASTNode
+//       slugid?: string
+//       richText?: JSX.Element
+//     }
+//   ) => React.ReactNode
+// }
+
+// function getComponentMap(customComponent?: InputComponentsNew): NotionASTComponentMapNew {
+
+//   function NestedChildren(p: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & { node: NotionASTNode }) {
+//     return p.node.children?.length > 0 && <div { ...p }>{ p.children }</div>
+//   }
+//   function c(...c: string[]) {
+//     return cn(...c, convertColorToClassname(blockColor))
+//   }
+
+//   const deafultMap: NotionASTComponentMapNew = {
+
+//     'heading_1'(param) {
+//       if (param.node.props.is_toggleable) {
+//         return (
+//           <Toggle className="toggle-heading1" headerSlot={
+//             <H2 className={ c("my-0") } id={ param.slugid }>
+//               { param.richText }
+//               {/* <QuickComponents(param.node).RichText /> */ }
+//             </H2 >
+//           }>
+//             <NestedChildren className="pl-4" node={ param.node }>
+//               {param.children}
+//             </NestedChildren>
+//           </Toggle>
+//         )
+//       }
+//     }
+//   }
+
+
+//   return deafultMap
+
+// }
 
 
 

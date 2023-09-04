@@ -3,10 +3,11 @@ import { cn } from "@/components/typography"
 import { NotionIcon } from "@/components/notion/rsc/images"
 import { getArticleList } from "@/components/notion/data/articles"
 
+export const revalidate = 600 // 10 minutes
+
 export default async function Articles() {
 
   const articles = await getArticleList()
-
 
   return (
     <div className={ cn(

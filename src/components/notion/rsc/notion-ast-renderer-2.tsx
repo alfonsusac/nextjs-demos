@@ -3,7 +3,15 @@ import { NodeTypes } from "../types"
 import { H2 } from "@/components/typography"
 import { Toggle } from "../client"
 import { NotionRichText } from "./rich-text"
-import { Heading1, HeadingBuilder } from "./components/headings"
+import { BulletedList, NumberedList, TodoList } from "./components/lists"
+import { ListItem } from "./components/list-items"
+import { HeadingBuilder } from "./components/headings"
+import { CalloutBlock, Paragraph, QuoteBlock, ToggleBlock } from "./components/nestables"
+import { ColumnBlock, ColumnListBlock, DividerBlock } from "./components/dividers"
+import { TableBlock, TableRow } from "./components/tables"
+import { LinkBookmark } from "./components/link-previews"
+import { AudioBlock, EmbedBlock, FileBlock, ImageBlock, PDFBlock, VideoBlock } from "./components/embeds"
+import { CodeBlock, EquationBlock } from "./components/exotic-texts"
 
 
 /** ----------------------------------------------------------
@@ -17,8 +25,10 @@ type NestedChildrenProp = (param: React.DetailedHTMLProps<React.HTMLAttributes<H
 export type NotionComponentProp<T extends NotionASTNode['type']> = {
   children?: React.ReactNode,
   richText?: React.ReactNode,
+  caption?: React.ReactNode,
   node: NodeTypes[T],
   Children?: NestedChildrenProp,
+  className?: string,
 }
 
 type NotionASTComponentMap = {
@@ -37,29 +47,67 @@ export type InputComponents = (
 
 export async function NotionASTRenderer({ ast, ...rest }: {
   ast: NotionASTNode,
-  components?: InputComponents
+  components?: NotionASTComponentMap
 }) {
+
+  // console.log("> Notion AST Renderer")
 
   const defaultComponents: NotionASTComponentMap = {
 
-    /**
-     *   ※ Heading 1
-     */
-    heading_1: HeadingBuilder(1),
-    heading_2: HeadingBuilder(2),
-    heading_3: HeadingBuilder(3),
-    
+    // ※ Headings
+    'heading_1': HeadingBuilder(1),
+    'heading_2': HeadingBuilder(2),
+    'heading_3': HeadingBuilder(3),
 
+    // ※ Lists
+    'to_do': TodoList,
+    'bulleted_list_item': BulletedList,
+    'numbered_list_item': NumberedList,
+    'list_item': ListItem,
+
+    // ※ Nestables
+    'paragraph': Paragraph,
+    'toggle': ToggleBlock,
+    'quote': QuoteBlock,
+    'callout': CalloutBlock,
+
+    // ※ Exotic Texts
+    'equation': EquationBlock,
+    'code': CodeBlock,
+
+    // ※ Dividers
+    'divider': DividerBlock,
+    'column_list': ColumnListBlock,
+    'column': ColumnBlock,
+
+    // ※ Tables
+    'table': TableBlock,
+    'table_row': TableRow,
+
+    // ※ Embeds
+    'bookmark': LinkBookmark,
+    'video': VideoBlock,
+    'image': ImageBlock,
+    'pdf': PDFBlock,
+    'audio': AudioBlock,
+    'file': FileBlock,
+    'embed': EmbedBlock,
+
+    // ※ Not Implemented
+    'template': () => <></>,
+    'synced_block': () => <></>,
+    'child_page': () => <></>,
+    'child_database': () => <></>,
+    'breadcrumb': () => <></>,
+    'table_of_contents': () => <></>,
+    'link_to_page': () => <></>,
+    'link_preview': () => <></>,
+    'unsupported': () => <></>,
+    'root': () => <></>,
 
   }
 
-
-
-  const components: NotionASTComponentMap = {
-
-  }
-
-  return <NotionASTRendererRecursor node={ ast } componentMap={ components } />
+  return <NotionASTRendererRecursor node={ ast } componentMap={ defaultComponents } />
 }
 
 /**
@@ -67,22 +115,49 @@ export async function NotionASTRenderer({ ast, ...rest }: {
  * ----------------------------------------------------------
  */
 
-function NotionASTRendererRecursor({ node, componentMap }: {
+async function NotionASTRendererRecursor({ node, componentMap }: {
   node: NotionASTNode,
   componentMap: NotionASTComponentMap
 }) {
-  return node.children.map((childn, index) => {
+  // console.log("> Recursion Notion AST Renderer ")
+  // console.log(node.children)
 
-    const Component = componentMap[node.type]
+  return await Promise.all(node.children.map(async (childn, index) => {
+
+    const Component = componentMap[childn.type]
+
+    // console.log(childn.type)
+    // console.log(Component.toString())
+
     return (
       <Component
         key={ index }
         node={ childn as never }
+
       >
         { childn.children &&
-          <NotionASTRendererRecursor node={ childn } componentMap={ components } />
+          <NotionASTRendererRecursor node={ childn } componentMap={ componentMap } />
         }
       </Component>
     )
-  })
+  }))
+
+  // return node.children.map((childn, index) => {
+
+  //   console.log("  > Child")
+
+  //   const Component = componentMap[node.type]
+
+  //   return (
+  //     <Component
+  //       key={ index }
+  //       node={ childn as never }
+
+  //     >
+  //       { childn.children &&
+  //         <NotionASTRendererRecursor node={ childn } componentMap={ componentMap } />
+  //       }
+  //     </Component>
+  //   )
+  // })
 }

@@ -1,5 +1,5 @@
 import 'katex/dist/katex.min.css'
-import { InputComponents, NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
+// import { InputComponents, NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
 import { cn } from "@/components/typography"
 import { Sidebar } from "@/app/demos/layout"
 import { ToCSidebar } from "@/components/toc/client"
@@ -19,6 +19,7 @@ import { getPageContent } from "@/components/notion/data/helper"
 import { unstable_cache } from 'next/cache'
 // import { getAndAddViewCount } from '@/components/notion/data/metadata'
 import prisma from '@/lib/prisma'
+import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
 
 // ! Server action not working yet in static routes.
 
@@ -32,7 +33,6 @@ import prisma from '@/lib/prisma'
 //   })
 //   return params
 // }
-
 
 export default async function Page({ params }: any) {
 
@@ -159,7 +159,11 @@ export default async function Page({ params }: any) {
             data={ content }
           /> */}
 
-          <NotionASTRenderer node={ ast } />
+          {/* <UseAsTOCContentClient headings={ headings }>
+            <NotionASTRenderer ast={ ast } />
+          </UseAsTOCContentClient> */}
+
+          <NotionASTRenderer ast={ ast } />
 
           <CommentSection />
 
@@ -210,16 +214,16 @@ export default async function Page({ params }: any) {
 
 
 
-async function RenderNotionPage(p: {
-  data: ListBlockChildrenResponse
-  components?: InputComponents
-}) {
-  const ast = await convertChildrenToAST(p.data)
-  const headings = extractHeadings(ast)
+// async function RenderNotionPage(p: {
+//   data: ListBlockChildrenResponse
+//   components?: InputComponents
+// }) {
+//   const ast = await convertChildrenToAST(p.data)
+//   const headings = extractHeadings(ast)
 
-  return (
-    <UseAsTOCContentClient headings={ headings }>
-      <NotionASTRenderer node={ ast } components={ p.components } />
-    </UseAsTOCContentClient>
-  )
-} 
+//   return (
+//     <UseAsTOCContentClient headings={ headings }>
+//       <NotionASTRenderer node={ ast } components={ p.components } />
+//     </UseAsTOCContentClient>
+//   )
+// } 
