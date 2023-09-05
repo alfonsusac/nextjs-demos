@@ -58,7 +58,6 @@ export function ImageBlock({
         alt="A Picture"
         nprop={ node.props as any }
         className="h-auto w-auto mx-auto rounded-md"
-        enlargable
         id={ node.id }
       />
       <CaptionNode center node={ node } />
@@ -121,6 +120,8 @@ export async function FileBlock({
   node,
 }: NotionComponentProp<'file'>) {
 
+  console.log("FileBlock Async")
+
   const url =
     'external' in node.props ? node.props.external.url :
       'file' in node.props ? node.props.file.url : ''
@@ -164,6 +165,8 @@ export async function EmbedBlock({
   className,
   node,
 }: NotionComponentProp<'embed'>) {
+
+  console.log("EmbedBlock Async")
 
   const url = node.props.url as string
 

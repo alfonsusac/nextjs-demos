@@ -9,6 +9,8 @@ export async function LinkBookmark({
   node,
 }: NotionComponentProp<'bookmark'>) {
 
+  console.log("LinkBookmark Async")
+
   const metadata = await getMetaInfo(node.props.url)
 
   return (
