@@ -15,12 +15,11 @@ import { NotionPageViews } from "./client"
 import { ArticlePageData, getArticle } from "@/components/notion/data/articles"
 import { getPageContent } from "@/components/notion/data/helper"
 import { unstable_cache } from 'next/cache'
-// import { getAndAddViewCount } from '@/components/notion/data/metadata'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
 import { cache } from 'react'
 import { Audit } from '@/components/timer'
 import supabase from '@/lib/supabase'
-import notion from '@/lib/notion'
+import { ImageResponse } from 'next/server'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -32,26 +31,18 @@ import notion from '@/lib/notion'
 //   })
 //   return params
 // }
-async function getPageDetails(slug: string) {
-  const data = await cache(async () => await unstable_cache(
-    async () => {
-      console.log("CACHE MISS!")
-      const article = await getArticle(slug)
-      const content = await getPageContent(article.id)
-      return { article, content }
-    },
-    [slug],
-    {
-      tags: ['articles', slug],
-    }
-  )())()
-  return data
-}
+
 
 export async function generateMetadata({ params }: any) {
-  const { article } = await getPageDetails(params.slug)
+  const { article, content } = await getPageDetails(params.slug)
+  const img = new ImageResponse((
+    <div className="">
+      Test
+    </div>
+  ))
   return {
-    title: article.flattenedTitle
+    title: article.flattenedTitle,
+    description: "Next.js Notes, Tips and Tricks - by @alfonsusac",
   }
 }
 
@@ -197,6 +188,22 @@ export default async function Page({ params }: any) {
       </div>
     </>
   )
+}
+
+async function getPageDetails(slug: string) {
+  const data = await cache(async () => await unstable_cache(
+    async () => {
+      console.log("CACHE MISS!")
+      const article = await getArticle(slug)
+      const content = await getPageContent(article.id)
+      return { article, content }
+    },
+    [slug],
+    {
+      tags: ['articles', slug],
+    }
+  )())()
+  return data
 }
 
 async function getPageMetadata(id: string) {

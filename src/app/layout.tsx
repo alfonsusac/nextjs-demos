@@ -14,8 +14,20 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: 'Next.js Notes',
+  title: {
+    template: '%s | Next.js Notes',
+    default: 'Next.js Notes'
+  },
   description: 'Alfonsusac\'s Next.js Demo',
+  generator: 'Next.js',
+  applicationName: 'Next.js',
+  referrer: 'origin-when-cross-origin',
+  keywords: ['Next.js', 'React', 'JavaScript'],
+  colorScheme: 'dark',
+  creator: '@alfonsusac',
+  openGraph: {
+    siteName: 'Next.js Tricks',
+  }
 }
 
 const layoutGenerationTime = new Date()
