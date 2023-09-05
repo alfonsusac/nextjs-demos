@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache"
 import notion from "@/lib/notion"
 import { flattenRichText } from "./utils"
 
-async function parseNotionHref(c: string) {
+export async function parseNotionHref(c: string) {
   if (c.startsWith('/')) {
     const blockid = c.split('#')[1]
     try {

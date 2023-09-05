@@ -2,14 +2,25 @@ import * as cheerio from 'cheerio'
 //@ts-ignore
 import parse from 'url-metadata/lib/parse'
 import nodefetch from 'node-fetch'
+import { unstable_cache } from 'next/cache'
+import { Audit } from '../timer'
 
 export async function getMetaInfo(source: string) {
   try {
     const sourceurl = new URL(source)
 
-    const metadata = await urlMetadata_withFavicon(sourceurl.toString(), {
-      descriptionLength: 100
-    })
+    const metadata = await unstable_cache(
+      async () => {
+        const audit = new Audit('', false)
+        const data = await urlMetadata_withFavicon(sourceurl.toString(), { descriptionLength: 100 })
+        audit.mark('Link Preview Component Metadata')
+        return data
+      },
+      [sourceurl.toString()],
+      {
+        revalidate: 3600,
+      }
+    )()
 
     const rawfaviconpath = metadata['fluid-faviconpath'] ? metadata['fluid-faviconpath'] as string :
       metadata['faviconpath'] ? metadata['faviconpath'] as string : undefined

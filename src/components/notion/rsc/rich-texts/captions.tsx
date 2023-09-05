@@ -1,6 +1,6 @@
 import { cn } from "@/components/typography"
 import { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
-import { NotionRichText } from "../rich-text"
+import { NotionRichText } from "./parser"
 
 
 export function NotionFigureCaption(p: {

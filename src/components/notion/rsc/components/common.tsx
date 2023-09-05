@@ -1,5 +1,5 @@
 import { NotionASTNode } from "../../parser/node"
-import { NotionRichText } from "../rich-text"
+import { NotionRichText } from "../rich-texts/parser"
 import { NotionFigureCaption } from "../rich-texts/captions"
 
 export function RichTextNode({ node }: { node: NotionASTNode }) {

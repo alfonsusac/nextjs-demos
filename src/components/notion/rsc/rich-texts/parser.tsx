@@ -1,17 +1,14 @@
 import { EquationRichTextItemResponse, MentionRichTextItemResponse, RichTextItemResponse, TextRichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
 import clsx from "clsx"
 import { twMerge } from "tailwind-merge"
-import { KaTeXRSC } from "../../katex/rsc"
-import { getMetaInfo } from "../../metadata/util"
-import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, MaterialSymbolsPerson, PhGlobe, PhNotionLogoFill } from "../../svg"
+import { KaTeXRSC } from "../../../katex/rsc"
+import { getMetaInfo } from "../../../metadata/util"
+import { AtInlineSymbol, CalendarInlineIcon, DatabasePageIcon, MaterialSymbolsPerson, PhGlobe, PhNotionLogoFill } from "../../../svg"
 import { formatRelative } from "date-fns"
-import { InlineMentionTooltip } from "../client"
-import { slug } from "github-slugger"
+import { InlineMentionTooltip } from "../../client"
 import { cn } from "@/components/typography"
-import { notion } from "../../../lib/notion"
-import { unstable_cache } from "next/cache"
-import { convertColorToClassname } from "./rich-texts/classname"
-import { flattenRichText } from "./rich-texts/utils"
+import { convertColorToClassname } from "./classname"
+import { parseNotionHref } from "./href"
 
 export function NotionRichText(p: {
   rich_text: RichTextItemResponse[]
@@ -100,6 +97,8 @@ export function NotionRichText(p: {
         settings={ { strict: false } }
       />
     }
+
+
 
     async function InlineMention() {
       const mention = (t as MentionRichTextItemResponse).mention
@@ -197,7 +196,6 @@ export function NotionRichText(p: {
         case 'user':
 
           if ('type' in mention.user) {
-
             return (
               <InlineMentionTooltip content={
                 <>
@@ -216,7 +214,6 @@ export function NotionRichText(p: {
               </InlineMentionTooltip>
             )
 
-
           } else return <></>
 
         default:
@@ -226,30 +223,6 @@ export function NotionRichText(p: {
 
   })
 
-}
-
-async function parseNotionHref(c: string) {
-  if (c.startsWith('/')) {
-    const blockid = c.split('#')[1]
-    try {
-
-      const blockdata = await unstable_cache(
-        async () => await notion.blocks.retrieve({
-          block_id: blockid
-        }) as any, [blockid]
-      )()
-
-      const rich_text = blockdata[blockdata.type!].rich_text as RichTextItemResponse[]
-      const text = flattenRichText(rich_text)!
-      const anchorlink = `#${slug(text)}`
-      return anchorlink
-    } catch (error) {
-      console.log(error)
-      return c
-    }
-  } else {
-    return c
-  }
 }
 
 

@@ -1,7 +1,7 @@
 import { cn } from "@/components/typography"
 import { NotionComponentProp } from "../notion-ast-renderer-2"
 import { NodeTypes } from "../../types"
-import { NotionRichText } from "../rich-text"
+import { NotionRichText } from "../rich-texts/parser"
 
 export function TableBlock({
   className,
