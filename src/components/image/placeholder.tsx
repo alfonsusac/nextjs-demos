@@ -8,7 +8,7 @@ import { Audit } from '../timer'
 export async function getImage(src: string) {
 
   const audit = new Audit('Image Component', false)
-  const cache = unstable_cache(
+  const cache = await unstable_cache(
     async () => {
       const buffer = await fetch2(src).then(async (res) => Buffer.from(await res.arrayBuffer()))
 
@@ -25,9 +25,9 @@ export async function getImage(src: string) {
         img: { src, height, width },
       }
 
-      console.log("Size of GetImage Cached: " + sizeof(res) + " Bytes")
+      console.log("- Size of GetImage Cached: " + sizeof(res) + " Bytes")
 
-      audit.mark('Cache Miss Retrieving')
+      // audit.mark('- Retrieving Image Cache')
 
       return res
     },
