@@ -2,7 +2,7 @@
 
 import { type ComponentProps, type ReactElement } from 'react'
 import katex, { KatexOptions } from 'katex'
-
+import 'katex/dist/katex.min.css'
 
 export type Props<T extends keyof JSX.IntrinsicElements = 'div'> =
   ComponentProps<T> &
@@ -16,7 +16,7 @@ export type Props<T extends keyof JSX.IntrinsicElements = 'div'> =
     math: string
   }
 
-export async function KaTeXRSC({
+export function KaTeXRSC({
   children,
   math,
   block,
@@ -26,8 +26,8 @@ export async function KaTeXRSC({
   as: asComponent,
   ...props
 }: Props) {
-  // @ts-expect-error CSS not JS
-  await import('katex/dist/katex.min.css')
+  // @ ts-expect-error CSS not JS
+  // await import('katex/dist/katex.min.css')
 
   const Component = asComponent || (block ? 'div' : 'span')
   const content = (children ?? math) as string

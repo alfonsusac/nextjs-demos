@@ -9,6 +9,7 @@ import { InlineMentionTooltip } from "../client"
 import { slug } from "github-slugger"
 import { cn } from "@/components/typography"
 import { notion } from "../../../lib/notion"
+import { unstable_cache } from "next/cache"
 
 type Annotation = RichTextItemResponse['annotations']
 
@@ -52,6 +53,30 @@ export function NotionRichText(p: {
     const { bold, italic, strikethrough, underline, code, color } = t.annotations
     const isUnformatted = !bold && !italic && !strikethrough && !underline && !code && color === 'default'
 
+    const InlineText = async () => {
+      const href = t.href
+      const { text } = (t as TextRichTextItemResponse)
+      const content = text.content.split('\n').map((c, i) => i ? [<br key={ i } />, c] : c)
+      return (
+        href ? (
+
+          <InlineMentionTooltip content={
+            <>
+              <PhGlobe className="inline text-zinc-600 mr-1 leading mb-1" />
+              { href }
+            </>
+          }>
+            <a className={ annotationCN } href={ await parseNotionHref(href) }>
+              { content }
+            </a>
+          </InlineMentionTooltip>
+
+        ) : isUnformatted
+          ? (<>{ content }</>)
+          : (<span className={ annotationCN }>{ content }</span>)
+      )
+    }
+
     switch (t.type) {
       case 'text':
         return <InlineText key={ i } />
@@ -65,28 +90,7 @@ export function NotionRichText(p: {
 
 
 
-    async function InlineText() {
-      const href = t.href
-      const { text } = (t as TextRichTextItemResponse)
-      const content = text.content.split('\n').map((c, i) => i ? [<br key={ i } />, c] : c)
-      return (
-        href
-          ? (
-            <InlineMentionTooltip content={
-              <>
-                <PhGlobe className="inline text-zinc-600 mr-1 leading mb-1" />
-                { href }
-              </>
-            }>
-              <a className={ annotationCN } href={ await parseNotionHref(href) }>
-                { content }
-              </a>
-            </InlineMentionTooltip>
-          ) : isUnformatted
-            ? (<>{ content }</>)
-            : (<span className={ annotationCN }>{ content }</span>)
-      )
-    }
+
 
     function InlineEquation() {
       const { expression } = (t as EquationRichTextItemResponse).equation
@@ -112,7 +116,6 @@ export function NotionRichText(p: {
               href={ t.href! }
               className={
                 clsx(annotationCN, inlinePaddingCN, inlineHoverCN, '')
-
               }
             >
               <span className="h-full inline-block text-zinc-600 text-sm pr-0.5">
@@ -230,9 +233,13 @@ async function parseNotionHref(c: string) {
   if (c.startsWith('/')) {
     const blockid = c.split('#')[1]
     try {
-      const blockdata = await notion.blocks.retrieve({
-        block_id: blockid
-      }) as any
+
+      const blockdata = await unstable_cache(
+        async () => await notion.blocks.retrieve({
+          block_id: blockid
+        }) as any, [blockid]
+      )()
+
       const rich_text = blockdata[blockdata.type!].rich_text as RichTextItemResponse[]
       const text = flattenRichText(rich_text)!
       const anchorlink = `#${slug(text)}`
@@ -293,59 +300,3 @@ export function convertColorToClassname(color?: ApiColor) {
     default: return
   }
 }
-
-// export const colorToTw: {
-//   [key in ApiColor]: string
-// } = {
-//   default: "",
-//   gray: "text-zinc-500",
-//   brown: "text-yellow-800",
-//   orange: "text-orange-500",
-//   yellow: "text-yellow-400",
-//   green: "text-green-500",
-//   blue: "text-blue-500",
-//   purple: "text-purple-500",
-//   pink: "text-pink-500",
-//   red: "text-red-500",
-//   gray_background: "bg-zinc-800/50",
-//   brown_background: "bg-yellow-900/50",
-//   orange_background: "bg-orange-800/50",
-//   yellow_background: "bg-yellow-800/50",
-//   green_background: "bg-green-800/50",
-//   blue_background: "bg-blue-800/50",
-//   purple_background: "bg-purple-800/50",
-//   pink_background: "bg-pink-800/50",
-//   red_background: "bg-red-800/50"
-// }
-
-export function NotionFigureCaption(p: {
-  caption: RichTextItemResponse[]
-  center?: true
-} & React.DetailedHTMLProps<
-  React.HTMLAttributes<
-    HTMLDivElement
-  >, HTMLDivElement
->
-) {
-  const { className, caption, center, ...props } = p
-  return (
-    <>
-      {
-        p.caption ? (
-          <div className={
-            twMerge(clsx(
-              "text-sm text-zinc-400 mt-2 w-full",
-              center ? 'mx-auto text-center' : "",
-              className,
-            )) }
-            { ...props }
-          >
-            <NotionRichText rich_text={ caption } />
-          </div>
-        ) : null
-      }
-    </>
-
-  )
-}
-

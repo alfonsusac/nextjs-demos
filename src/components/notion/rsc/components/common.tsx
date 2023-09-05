@@ -1,5 +1,6 @@
 import { NotionASTNode } from "../../parser/node"
-import { NotionFigureCaption, NotionRichText } from "../rich-text"
+import { NotionRichText } from "../rich-text"
+import { NotionFigureCaption } from "../rich-texts/captions"
 
 export function RichTextNode({ node }: { node: NotionASTNode }) {
   if('rich_text' in node.props)

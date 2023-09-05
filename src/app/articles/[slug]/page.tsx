@@ -40,7 +40,7 @@ import supabase from '@/lib/supabase'
 
 export default async function Page({ params }: any) {
 
-
+  console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
   // Cached Data
   const a = new Audit("Generating Page")
   const {
@@ -158,10 +158,6 @@ export default async function Page({ params }: any) {
                       .from('Article')
                       .update({ views: prev + 1 })
                       .eq('id', id)
-                    // await prisma.article.update({
-                      // where: { id: article.id },
-                      // data: { views: { increment: 1 } }
-                    // })
                   }
                 }
               />

@@ -1,4 +1,4 @@
-import { NotionFigureCaption, NotionRichText, flattenRichText, ApiColor, convertColorToClassname } from "./rich-text"
+import { NotionRichText, flattenRichText, ApiColor, convertColorToClassname } from "./rich-text"
 import clsx from "clsx"
 import { CheckboxSVG, FileDownloadIcon } from "@/components/svg"
 import { Toggle } from "../client"
@@ -11,6 +11,7 @@ import { NotionIcon, NotionImage } from "./images"
 import { slug } from "github-slugger"
 import { NodeTypes } from "../types"
 import { NotionASTNode } from "../parser/node"
+import { NotionFigureCaption } from "./rich-texts/captions"
 
 type NotionASTComponentMap = {
   [key in NotionASTNode['type']]:
@@ -524,7 +525,6 @@ function getComponent({ node, customComponent: params }: {
               alt="A Picture"
               nprop={ node.props as any }
               className="h-auto w-auto mx-auto rounded-md"
-              enlargable
               id={ node.id }
             />
             <Caption center />
