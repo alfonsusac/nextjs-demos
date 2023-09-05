@@ -3,16 +3,18 @@ import { NotionComponentProp } from "../notion-ast-renderer-2"
 import { cn } from "@/components/typography"
 import Image from "next/image"
 import { CaptionNode } from "./common"
+import { Audit } from "@/components/timer"
 
 export async function LinkBookmark({
   className,
   node,
 }: NotionComponentProp<'bookmark'>) {
 
-  console.log("LinkBookmark Async")
-
+  // console.log("LinkBookmark Async")
+  const audit = new Audit('', false)
   const metadata = await getMetaInfo(node.props.url)
-
+  audit.mark('Link Bookmark Component')
+    
   return (
     <div className="my-2">
       <a
