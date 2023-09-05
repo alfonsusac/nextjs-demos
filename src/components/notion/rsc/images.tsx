@@ -110,8 +110,15 @@ export function NotionImage({
 
 
 function processNotionStaticImageURL(url: string, id?: string): string {
-  if (!url.includes('secure.notion-static.com')) return url
+  if (
+    !url.includes('secure.notion-static.com')
+    && !url.includes('prod-files-secure')
+  ) return url
+
   if (!id) throw new Error("Notion Static Images requires ID")
+   
+  // Convert URL from block retrieve
+  //  into Notion's Static Website URL
   const newurl = `https://alfonsusardani.notion.site/image/${encodeURIComponent(url.split('?')[0])}?table=block&id=${id}`
   return newurl
 }
