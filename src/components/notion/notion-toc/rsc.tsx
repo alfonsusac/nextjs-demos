@@ -1,8 +1,10 @@
 import { TOCItemType } from "@/components/toc/rsc"
 import { NotionASTNode, visitNotionAST } from "../parser/node"
 import { slug } from "github-slugger"
+import { Audit } from "@/components/timer"
 
 export function extractHeadings(node: NotionASTNode) {
+
   const headings: TOCItemType[] = []
 
   visitNotionAST(node, (node) => { 
