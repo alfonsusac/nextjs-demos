@@ -89,8 +89,8 @@ export function NotionASTRenderer({ ast, ...rest }: {
     'bookmark': () => <></>, // async
     // 'bookmark': LinkBookmark, // async
     'video': VideoBlock,
-    'image': () => <></>, 
-    // 'image': ImageBlock, 
+    // 'image': () => <></>, // async
+    'image': ImageBlock, // async
     'pdf': PDFBlock, 
     'audio': AudioBlock, 
     'file': FileBlock, // async
@@ -128,16 +128,11 @@ function NotionASTRendererRecursor({ node, componentMap }: {
   node: NotionASTNode,
   componentMap: NotionASTComponentMap
 }) {
-  // console.log("> Recursion Notion AST Renderer ")
 
   return node.children.map((childnode, index) => {
 
-    // console.log(childnode)
     const Component = componentMap[childnode.type]
     if(!Component) return <></>
-
-    // console.log(childn.type)
-    // console.log(Component.toString())
 
     return (
       <Component
