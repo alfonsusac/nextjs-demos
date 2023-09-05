@@ -3,9 +3,7 @@ import 'katex/dist/katex.min.css'
 import { cn } from "@/components/typography"
 import { Sidebar } from "@/app/demos/layout"
 import { ToCSidebar } from "@/components/toc/client"
-import { ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints"
 import { convertChildrenToAST } from "@/components/notion/parser/parser"
-import { UseAsTOCContentClient } from "@/components/toc/context"
 import { extractHeadings } from "@/components/notion/notion-toc/rsc"
 import { CommentSection } from "@/components/giscus"
 import { NotionIcon, NotionImage } from "@/components/notion/rsc/images"
@@ -14,22 +12,19 @@ import { NotionRichText } from "@/components/notion/rsc/rich-texts/parser"
 import { formatDistanceToNow } from "date-fns"
 import { InlineMentionTooltip } from "@/components/notion/client"
 import { NotionPageViews } from "./client"
-import { getArticle } from "@/components/notion/data/articles"
+import { ArticlePageData, getArticle } from "@/components/notion/data/articles"
 import { getPageContent } from "@/components/notion/data/helper"
 import { unstable_cache } from 'next/cache'
 // import { getAndAddViewCount } from '@/components/notion/data/metadata'
-import prisma from '@/lib/prisma'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
-import { Suspense } from 'react'
-import { NotionASTNode } from '@/components/notion/parser/node'
+import { cache } from 'react'
 import { Audit } from '@/components/timer'
 import supabase from '@/lib/supabase'
+import notion from '@/lib/notion'
 
 // ! Server action not working yet in static routes.
-
 // export const dynamicParams = false
 // export const dynamic = 'error'
-
 // export async function generateStaticParams() {
 //   const articles = await getArticleList()
 //   const params = articles.map(({ slug }) => {
@@ -37,54 +32,47 @@ import supabase from '@/lib/supabase'
 //   })
 //   return params
 // }
+async function getPageDetails(slug: string) {
+  const data = await cache(async () => await unstable_cache(
+    async () => {
+      console.log("CACHE MISS!")
+      const article = await getArticle(slug)
+      const content = await getPageContent(article.id)
+      return { article, content }
+    },
+    [slug],
+    {
+      tags: ['articles', slug],
+    }
+  )())()
+  return data
+}
+
+export async function generateMetadata({ params }: any) {
+  const { article } = await getPageDetails(params.slug)
+  return {
+    title: article.flattenedTitle
+  }
+}
 
 export default async function Page({ params }: any) {
 
   console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
   // Cached Data
   const a = new Audit("Generating Page")
-  const {
-    article,
-    content,
-    // _ast,
-    // headings,
-  } = await unstable_cache(
-    async () => {
-
-      const a = new Audit("[page] Retrieve Page Data & Content")
-      const article = (await getArticle(params.slug))!
-      const content = await getPageContent(article.id)
-      a.mark("Retrieving Page Data & Content")
-      return {
-        article,
-        content,
-        // _ast,
-        // headings
-      }
-    },
-    [params.slug], // basically like dependency array. Required.
-    {
-      tags: ['articles', params.slug]
-    }
-  )();
+  const { article, content, } = await getPageDetails(params.slug)
   a.mark('Try Getting Cached Page Data')
-  
-  // const ast = { ..._ast } as NotionASTNode
+
   const ast = await convertChildrenToAST(content)
   a.mark('Convert ListBlock to AST')
 
   const headings = extractHeadings(ast)
   a.mark('Extract Headings')
-
-  // const CachedRender = await unstable_cache(
-  //   async () => <NotionASTRenderer ast={ ast } />,
-  //   [params.slug]
-  // )
-
+  
   // Dynamic Data
   const metadata = await getPageMetadata(article.id)
   a.mark('Retrieve Page Metadata')
-
+  
   // const article = (await getArticle(params.slug))!
   // const content = await getPageContent(article.id)
   // const ast = await convertChildrenToAST(content)
@@ -154,10 +142,11 @@ export default async function Page({ params }: any) {
                 loadView={
                   async (id, prev) => {
                     'use server'
-                    await supabase
+                    const res = await supabase
                       .from('Article')
                       .update({ views: prev + 1 })
                       .eq('id', id)
+                      .select('views')
                   }
                 }
               />
@@ -166,24 +155,8 @@ export default async function Page({ params }: any) {
 
           </header>
 
-          {/* <RenderNotionPage
-            data={ content }
-          /> */}
-
-          {/* <UseAsTOCContentClient headings={ headings }>
-            <NotionASTRenderer ast={ ast } />
-          </UseAsTOCContentClient> */}
-
-          {/* <Suspense fallback={"Loading Content..."}>
-            <NotionASTRenderer ast={ ast } />
-            <CommentSection />
-          </Suspense> */}
-
           <NotionASTRenderer ast={ ast } />
-
-          {/* <CachedRender /> */}
-
-
+          <CommentSection />
 
           <footer className="mt-12 py-12 border-t border-t-zinc-600 text-zinc-500 text-sm space-y-2 leading-normal">
             <p>
@@ -197,8 +170,6 @@ export default async function Page({ params }: any) {
             </p>
           </footer>
         </article>
-
-
 
         {/* RIGHT */ }
         <div className={ cn(
@@ -227,22 +198,6 @@ export default async function Page({ params }: any) {
     </>
   )
 }
-
-
-
-// async function RenderNotionPage(p: {
-//   data: ListBlockChildrenResponse
-//   components?: InputComponents
-// }) {
-//   const ast = await convertChildrenToAST(p.data)
-//   const headings = extractHeadings(ast)
-
-//   return (
-//     <UseAsTOCContentClient headings={ headings }>
-//       <NotionASTRenderer node={ ast } components={ p.components } />
-//     </UseAsTOCContentClient>
-//   )
-// }
 
 async function getPageMetadata(id: string) {
 
@@ -273,19 +228,6 @@ async function getPageMetadata(id: string) {
     console.log("Error getting views")
     console.error(error)
   }
-
-  // let metadata = await prisma.article.findUnique({
-  //   where: { id },
-  //   select: {
-  //     views: true
-  //   }
-  // })
-  // if (!metadata) {
-  //   metadata = await prisma.article.create({
-  //     data: { id, views: 0 }
-  //   })
-  // }
-
 
   return metadata
 }
