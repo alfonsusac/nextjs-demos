@@ -1,9 +1,5 @@
 import { cn } from "@/components/typography"
 import { CalloutBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints"
-import Image from "next/image"
-import { ImageModal } from "../client"
-import Link from "next/link"
-import { getImage } from "@/components/image/placeholder"
 import { NextImage } from "@/components/image/next-images"
 
 export function NotionIcon({
@@ -70,30 +66,22 @@ type ImageObject = {
   }
 }
 
-export async function NotionImage({
-  nprop,
-  alt,
-  className,
-  enlargable,
-  id,
-  ...props
+export function NotionImage({
+  nprop, alt, className, id, ...props
 }: {
   nprop: ImageObject
   alt: string
-  enlargable?: boolean
   id?: string
-
-}
-  & Pick<
-    React.DetailedHTMLProps<
-      React.ImgHTMLAttributes<
-        HTMLImageElement
-      >, HTMLImageElement
-    >, 'src' | 'alt' | 'className'
-  >
+} & Pick<
+  React.DetailedHTMLProps<
+    React.ImgHTMLAttributes<
+      HTMLImageElement
+    >, HTMLImageElement
+  >, 'src' | 'alt' | 'className'
+>
 ) {
-  if (!nprop) return
 
+  if (!nprop) return
 
   let url =
     'external' in nprop ? nprop.external.url :
@@ -118,40 +106,6 @@ export async function NotionImage({
   )
 
   return ImageContent
-
-  if (!enlargable) return ImageContent
-  else
-    
-    
-    
-    return (
-      <ImageModal
-        content={
-          <div className="w-full h-full flex flex-col justify-center items-center">
-
-              <NextImage
-                unoptimized
-                className="w-auto h-auto max-w-full max-h-full"
-                src={ url }
-                alt={ alt }
-                { ...props }
-              />
-              <Link
-                className="block my-4 hover:brightness-150"
-                href={ url }
-                target="_blank"
-                prefetch={ false }
-              >
-                Open original image
-              </Link>
-
-
-            </div>
-        }
-      >
-        { ImageContent }
-      </ImageModal>
-    )
 }
 
 
