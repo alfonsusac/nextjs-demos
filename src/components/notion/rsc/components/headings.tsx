@@ -46,5 +46,4 @@ export function HeadingBuilder(level: 1 | 2 | 3) {
 
   }
 
-
 }

@@ -16,11 +16,11 @@ export function CodeRSC(p: {
       theme='one-dark-pro'
       title={ p.title }
       className={ cn(
-        'border border-zinc-800 rounded-lg my-4 relative w-full bg-black',
+        'bg-zinc-900 rounded-lg my-4 relative w-full',
         'prose-pre:!m-0',
         'prose-pre:!bg-inherit',
         'prose-pre:rounded-none',
-        'prose-pre:border-none'
+        'prose-pre:border-none',
       ) }
       codeClassName='p-0 -my-1'
       extensions={ [

@@ -53,6 +53,7 @@ export const getArticleList = cache(
 )
 
 
+
 export const getArticle = cache(
   async (slug: string) => {
     // Search using slug
@@ -63,32 +64,6 @@ export const getArticle = cache(
         rich_text: { equals: slug }
       }
     })
-    // Update if no slug
-    // if (response.results.length === 0) {
-
-    //   const articles = await getArticleList()
-    //   const article = articles.find(r => r.slug === slug)
-    //   if (!article) return undefined
-    //   await updateSlug(article.id, slug)
-    //   return article
-
-    // }
     return transformPageData(response.results[0] as PageObjectResponse)
   }
 )
-
-// async function updateSlug(id: string, slug: string) {
-//   return await notion.pages.update({
-//     page_id: id,
-//     properties: {
-//       'slug': {
-//         rich_text: [
-//           {
-//             type: 'text',
-//             text: { content: slug }
-//           }
-//         ]
-//       }
-//     }
-//   })
-// }
