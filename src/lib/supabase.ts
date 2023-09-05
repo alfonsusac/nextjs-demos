@@ -1,11 +1,7 @@
 import { createClient } from "@supabase/supabase-js"
 import { Database } from "./database.types"
+import fetch2 from "node-fetch"
 
-function getEnv() {
-  const env = process.env.SUPABASE_SERVICE_KEY
-  if(!env) throw "Please provide SUPABASE_SERVICE_KEY"
-  return env
-}
 
 const supabaseClientSingleton = () => {
   return createClient<Database>(
@@ -15,8 +11,20 @@ const supabaseClientSingleton = () => {
       auth: {
         persistSession: false
       },
-    }
+      global: {
+        fetch: fetch2 as typeof fetch
+      }
+    },
   )
+}
+
+
+
+
+function getEnv() {
+  const env = process.env.SUPABASE_SERVICE_KEY
+  if (!env) throw "Please provide SUPABASE_SERVICE_KEY"
+  return env
 }
 
 type SupabaseClientSingleton = ReturnType<typeof supabaseClientSingleton>
