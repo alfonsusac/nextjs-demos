@@ -86,8 +86,8 @@ export function NotionASTRenderer({ ast, ...rest }: {
     'table_row': TableRow,
 
     // ※ Embeds
-    'bookmark': () => <></>, // async
-    // 'bookmark': LinkBookmark, // async
+    // 'bookmark': () => <></>, // async
+    'bookmark': LinkBookmark, // async
     'video': VideoBlock,
     // 'image': () => <></>, // async
     'image': ImageBlock, // async
