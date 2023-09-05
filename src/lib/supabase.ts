@@ -2,7 +2,6 @@ import { createClient } from "@supabase/supabase-js"
 import { Database } from "./database.types"
 import fetch2 from "node-fetch"
 
-
 const supabaseClientSingleton = () => {
   return createClient<Database>(
     'https://yjccvjyuflpawraittig.supabase.co',
@@ -17,9 +16,6 @@ const supabaseClientSingleton = () => {
     },
   )
 }
-
-
-
 
 function getEnv() {
   const env = process.env.SUPABASE_SERVICE_KEY
