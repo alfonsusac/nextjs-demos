@@ -12,6 +12,7 @@ import { TableBlock, TableRow } from "./components/tables"
 import { LinkBookmark } from "./components/link-previews"
 import { AudioBlock, EmbedBlock, FileBlock, ImageBlock, PDFBlock, VideoBlock } from "./components/embeds"
 import { CodeBlock, EquationBlock } from "./components/exotic-texts"
+import { Audit } from "@/components/timer"
 
 
 /** ----------------------------------------------------------
@@ -45,7 +46,7 @@ export type InputComponents = (
   }
 ) => Partial<NotionASTComponentMap>
 
-export async function NotionASTRenderer({ ast, ...rest }: {
+export function NotionASTRenderer({ ast, ...rest }: {
   ast: NotionASTNode,
   components?: NotionASTComponentMap
 }) {
@@ -85,13 +86,15 @@ export async function NotionASTRenderer({ ast, ...rest }: {
     'table_row': TableRow,
 
     // ※ Embeds
-    'bookmark': LinkBookmark,
+    'bookmark': () => <></>, // async
+    // 'bookmark': LinkBookmark, // async
     'video': VideoBlock,
-    'image': ImageBlock,
-    'pdf': PDFBlock,
-    'audio': AudioBlock,
-    'file': FileBlock,
-    'embed': EmbedBlock,
+    'image': () => <></>, 
+    // 'image': ImageBlock, 
+    'pdf': PDFBlock, 
+    'audio': AudioBlock, 
+    'file': FileBlock, // async
+    'embed': EmbedBlock, // async
 
     // ※ Not Implemented
     'template': () => <></>,
@@ -107,7 +110,13 @@ export async function NotionASTRenderer({ ast, ...rest }: {
 
   }
 
-  return <NotionASTRendererRecursor node={ ast } componentMap={ defaultComponents } />
+  const audit = new Audit('', false)
+
+  const RenderResult = <NotionASTRendererRecursor node={ ast } componentMap={ defaultComponents } />
+
+  audit.mark('Render Content')
+
+  return RenderResult
 }
 
 /**
@@ -115,16 +124,17 @@ export async function NotionASTRenderer({ ast, ...rest }: {
  * ----------------------------------------------------------
  */
 
-async function NotionASTRendererRecursor({ node, componentMap }: {
+function NotionASTRendererRecursor({ node, componentMap }: {
   node: NotionASTNode,
   componentMap: NotionASTComponentMap
 }) {
   // console.log("> Recursion Notion AST Renderer ")
-  // console.log(node.children)
 
-  return await Promise.all(node.children.map(async (childn, index) => {
+  return node.children.map((childnode, index) => {
 
-    const Component = componentMap[childn.type]
+    // console.log(childnode)
+    const Component = componentMap[childnode.type]
+    if(!Component) return <></>
 
     // console.log(childn.type)
     // console.log(Component.toString())
@@ -132,32 +142,14 @@ async function NotionASTRendererRecursor({ node, componentMap }: {
     return (
       <Component
         key={ index }
-        node={ childn as never }
+        node={ childnode as never }
 
       >
-        { childn.children &&
-          <NotionASTRendererRecursor node={ childn } componentMap={ componentMap } />
+        { childnode.children &&
+          <NotionASTRendererRecursor node={ childnode } componentMap={ componentMap } />
         }
       </Component>
     )
-  }))
+  })
 
-  // return node.children.map((childn, index) => {
-
-  //   console.log("  > Child")
-
-  //   const Component = componentMap[node.type]
-
-  //   return (
-  //     <Component
-  //       key={ index }
-  //       node={ childn as never }
-
-  //     >
-  //       { childn.children &&
-  //         <NotionASTRendererRecursor node={ childn } componentMap={ componentMap } />
-  //       }
-  //     </Component>
-  //   )
-  // })
 }
