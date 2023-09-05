@@ -8,7 +8,8 @@
     "start": "next start",
     "prod": "next build && next start",
     "lint": "next lint",
-    "migrate init": "prisma migrate dev --name init",
+    "migrate init": "prisma migrate dev --name init && supabase gen types typescript --project-id yjccvjyuflpawraittig > database.types.ts",
+    "types": "supabase gen types typescript --project-id yjccvjyuflpawraittig > database.types.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -24,6 +25,7 @@
     "@radix-ui/react-collapsible": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.6",
+    "@supabase/supabase-js": "^2.33.1",
     "@types/katex": "^0.16.2",
     "@types/node": "^20.4.4",
     "@types/probe-image-size": "^7.2.0",

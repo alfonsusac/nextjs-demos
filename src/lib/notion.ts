@@ -1,7 +1,7 @@
 import { Client } from "@notionhq/client"
 
 const notionClientSingleton = () => {
-  console.log("Creating new Notion Client...")
+  // console.log("Creating new Notion Client...")
   return new Client({ auth: process.env.NOTION_TOKEN })
 }
 

@@ -20,6 +20,10 @@ import { unstable_cache } from 'next/cache'
 // import { getAndAddViewCount } from '@/components/notion/data/metadata'
 import prisma from '@/lib/prisma'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
+import { Suspense } from 'react'
+import { NotionASTNode } from '@/components/notion/parser/node'
+import { Audit } from '@/components/timer'
+import supabase from '@/lib/supabase'
 
 // ! Server action not working yet in static routes.
 
@@ -36,52 +40,59 @@ import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2
 
 export default async function Page({ params }: any) {
 
-  console.log("A")
 
+  // Cached Data
+  const a = new Audit("Generating Page")
   const {
     article,
-    content
+    content,
+    // _ast,
+    // headings,
   } = await unstable_cache(
     async () => {
+
+      const a = new Audit("[page] Retrieve Page Data & Content")
       const article = (await getArticle(params.slug))!
       const content = await getPageContent(article.id)
-      return { article, content }
+      a.mark("Retrieving Page Data & Content")
+      return {
+        article,
+        content,
+        // _ast,
+        // headings
+      }
     },
     [params.slug], // basically like dependency array. Required.
     {
       tags: ['articles', params.slug]
     }
-  )()
-
-
-  const ast = await convertChildrenToAST(content)
-  const headings = extractHeadings(ast)
+  )();
+  a.mark('Try Getting Cached Page Data')
   
-  let metadata = await prisma.article.findUnique({
-    where: {
-      id: article.id,
-    },
-    select: {
-      views: true
-    }
-  })
-  if (!metadata) {
-    metadata = await prisma.article.create({
-      data: {
-        id: article.id,
-        views: 0
-      }
-    })
-  } 
+  // const ast = { ..._ast } as NotionASTNode
+  const ast = await convertChildrenToAST(content)
+  a.mark('Convert ListBlock to AST')
 
-  console.log("B")
+  const headings = extractHeadings(ast)
+  a.mark('Extract Headings')
+
+  // const CachedRender = await unstable_cache(
+  //   async () => <NotionASTRenderer ast={ ast } />,
+  //   [params.slug]
+  // )
+
+  // Dynamic Data
+  const metadata = await getPageMetadata(article.id)
+  a.mark('Retrieve Page Metadata')
 
   // const article = (await getArticle(params.slug))!
   // const content = await getPageContent(article.id)
   // const ast = await convertChildrenToAST(content)
   // const headings = extractHeadings(ast)
 
+  a.total()
   console.info("Done generating page!")
+  console.info("Rendering Page...")
 
   return (
     <>
@@ -141,12 +152,16 @@ export default async function Page({ params }: any) {
                 id={ article.id }
                 num={ metadata.views }
                 loadView={
-                  async (id) => {
+                  async (id, prev) => {
                     'use server'
-                    await prisma.article.update({
-                      where: { id: article.id },
-                      data: { views:{ increment: 1 }}
-                    })
+                    await supabase
+                      .from('Article')
+                      .update({ views: prev + 1 })
+                      .eq('id', id)
+                    // await prisma.article.update({
+                      // where: { id: article.id },
+                      // data: { views: { increment: 1 } }
+                    // })
                   }
                 }
               />
@@ -163,9 +178,14 @@ export default async function Page({ params }: any) {
             <NotionASTRenderer ast={ ast } />
           </UseAsTOCContentClient> */}
 
+          {/* <Suspense fallback={"Loading Content..."}>
+            <NotionASTRenderer ast={ ast } />
+            <CommentSection />
+          </Suspense> */}
+
           <NotionASTRenderer ast={ ast } />
 
-          <CommentSection />
+          {/* <CachedRender /> */}
 
 
 
@@ -226,4 +246,50 @@ export default async function Page({ params }: any) {
 //       <NotionASTRenderer node={ ast } components={ p.components } />
 //     </UseAsTOCContentClient>
 //   )
-// } 
+// }
+
+async function getPageMetadata(id: string) {
+
+  const metadata = {
+    views: 0
+  }
+
+  try {
+
+    const res = await supabase
+      .from('Article')
+      .select('views')
+      .eq('id', id)
+
+    const views = res.data?.[0].views
+
+    if (!views) {
+      await supabase
+        .from('Article')
+        .insert({ id, views: 0 })
+    }
+
+    if (views) {
+      metadata.views = views
+    }
+
+  } catch (error) {
+    console.log("Error getting views")
+    console.error(error)
+  }
+
+  // let metadata = await prisma.article.findUnique({
+  //   where: { id },
+  //   select: {
+  //     views: true
+  //   }
+  // })
+  // if (!metadata) {
+  //   metadata = await prisma.article.create({
+  //     data: { id, views: 0 }
+  //   })
+  // }
+
+
+  return metadata
+}
