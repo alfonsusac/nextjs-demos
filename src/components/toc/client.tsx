@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { useTOC } from "./context"
 import { TOCItemType } from "./rsc"
-import clsx from "clsx"
 import { cn } from "../typography"
 
 
@@ -18,9 +17,6 @@ export function ToCSidebar(p: {
 
 
   const { toc } = useTOC()
-
-  // console.log("Client.tsx")
-  // console.log(toc)
 
   let items = getFilteredItems((p.items ?? toc), p.startDepth, p.depth)
   items = normalizeLevels(items) 
