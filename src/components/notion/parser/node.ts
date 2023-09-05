@@ -1,9 +1,5 @@
 import { BlockObjectResponse, RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
-import { MapToAST } from "./parser"
-import { flattenRichText } from "../rsc/rich-text"
-
-
-
+import { flattenRichText } from "../rsc/rich-texts/utils"
 
 /**
  * Responsible to convert Notion "Blocks" to Notion AST Node

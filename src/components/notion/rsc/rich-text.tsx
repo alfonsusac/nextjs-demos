@@ -10,15 +10,8 @@ import { slug } from "github-slugger"
 import { cn } from "@/components/typography"
 import { notion } from "../../../lib/notion"
 import { unstable_cache } from "next/cache"
-import { convertColorToClassname } from "./rich-texts/util"
-
-type Annotation = RichTextItemResponse['annotations']
-
-export function flattenRichText(rt: RichTextItemResponse[]) {
-  return rt.map(r => r.plain_text).join('')
-}
-
-
+import { convertColorToClassname } from "./rich-texts/classname"
+import { flattenRichText } from "./rich-texts/utils"
 
 export function NotionRichText(p: {
   rich_text: RichTextItemResponse[]
@@ -52,7 +45,13 @@ export function NotionRichText(p: {
     )
 
     const { bold, italic, strikethrough, underline, code, color } = t.annotations
-    const isUnformatted = !bold && !italic && !strikethrough && !underline && !code && color === 'default'
+    const isUnformatted =
+      !bold
+      && !italic
+      && !strikethrough
+      && !underline
+      && !code
+      && color === 'default'
 
     const InlineText = async () => {
       const href = t.href
@@ -109,7 +108,6 @@ export function NotionRichText(p: {
       const inlineHoverCN = 'hover:bg-[#1F1F22] hover:shadow-[0px_0px_0px_3px_#1F1F22]'
 
       switch (mention.type) {
-
 
         case 'database':
           return (
@@ -256,4 +254,3 @@ async function parseNotionHref(c: string) {
 
 
 
-export type ApiColor = Annotation['color']

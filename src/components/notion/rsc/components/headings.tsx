@@ -2,8 +2,8 @@ import { H2, H3, H4 } from "@/components/typography"
 import { Toggle } from "../../client"
 import { NotionComponentProp } from "../notion-ast-renderer-2"
 import { RichTextNode } from "./common"
-import { flattenRichText } from "../rich-text"
 import { slug } from "github-slugger"
+import { flattenRichText } from "../rich-texts/utils"
 
 export function HeadingBuilder(level: 1 | 2 | 3) {
 

@@ -1,7 +1,7 @@
 import { CodeRSC } from "@/components/code-snippet/rsc"
 import { NotionComponentProp } from "../notion-ast-renderer-2"
-import { flattenRichText } from "../rich-text"
 import { KaTeXRSC } from "@/components/katex/rsc"
+import { flattenRichText } from "../rich-texts/utils"
 
 // ! Colors not yet working
 export function CodeBlock({
