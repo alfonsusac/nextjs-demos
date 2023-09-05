@@ -7,6 +7,7 @@ const ARTICLE_DATABASE_ID = '3a6b7f9f0fed440e924494b2c64dc10d'
 
 
 
+export type ArticlePageData = ReturnType<typeof transformPageData>
 
 function transformPageData(result: PageObjectResponse) {
   const { parent, ...page } = result as PageObjectResponse
