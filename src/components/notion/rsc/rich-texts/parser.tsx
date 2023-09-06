@@ -112,6 +112,7 @@ export function NotionRichText(p: {
         case 'database':
           return (
             <a
+              target="_blank"
               href={ t.href! }
               className={
                 clsx(annotationCN, inlinePaddingCN, inlineHoverCN, '')
@@ -165,7 +166,11 @@ export function NotionRichText(p: {
         case 'link_preview':
           const metadata = await getMetaInfo(t.href!)
           return (
-            <a className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN) } href={ t.href! } target="_blank">
+            <a
+              className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN) }
+              href={ t.href! }
+              target="_blank"
+            >
               <span className="h-full inline-block text-zinc-300 text-sm pr-0.5">
                 {// eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -183,7 +188,11 @@ export function NotionRichText(p: {
 
         case 'page':
           return (
-            <a className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN) } href={ t.href! } target="_blank">
+            <a
+              className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN) }
+              href={ t.href! }
+              target="_blank"
+            >
               <span className="h-full inline-block text-zinc-300 text-sm pr-0.5">
                 <PhNotionLogoFill className="inline text-lg mb-1" />
               </span>
