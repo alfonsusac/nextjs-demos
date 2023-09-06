@@ -185,7 +185,7 @@ export default async function Page({ params }: any) {
   )
 }
 
-async function getPageDetails(slug: string) {
+export async function getPageDetails(slug: string) {
   const data = await cache(async () => await unstable_cache(
     async () => {
       console.log("CACHE MISS!")
