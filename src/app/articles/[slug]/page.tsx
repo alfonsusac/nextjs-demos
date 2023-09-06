@@ -34,12 +34,7 @@ import { ImageResponse } from 'next/server'
 
 
 export async function generateMetadata({ params }: any) {
-  const { article, content } = await getPageDetails(params.slug)
-  const img = new ImageResponse((
-    <div className="">
-      Test
-    </div>
-  ))
+  const { article } = await getPageDetails(params.slug)
   return {
     title: article.flattenedTitle,
     description: "Next.js Notes, Tips and Tricks - by @alfonsusac",
