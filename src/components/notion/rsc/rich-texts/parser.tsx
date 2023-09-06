@@ -51,26 +51,29 @@ export function NotionRichText(p: {
       && color === 'default'
 
     const InlineText = async () => {
-      const href = t.href
       const { text } = (t as TextRichTextItemResponse)
       const content = text.content.split('\n').map((c, i) => i ? [<br key={ i } />, c] : c)
+
+      if (!t.href) return isUnformatted
+        ? <>{ content }</>
+        : <span className={ annotationCN }>{ content }</span>
+
+      const href = await parseNotionHref(t.href)
+
       return (
-        href ? (
-
-          <InlineMentionTooltip content={
-            <>
-              <PhGlobe className="inline text-zinc-600 mr-1 leading mb-1" />
-              { href }
-            </>
-          }>
-            <a className={ annotationCN } href={ await parseNotionHref(href) }>
-              { content }
-            </a>
-          </InlineMentionTooltip>
-
-        ) : isUnformatted
-          ? (<>{ content }</>)
-          : (<span className={ annotationCN }>{ content }</span>)
+        <InlineMentionTooltip content={
+          <>
+            <PhGlobe className="inline text-zinc-600 mr-1 leading mb-1" />
+            { href }
+          </>
+        }>
+          <a className={ annotationCN }
+            href={ href }
+            target={ href.startsWith('#') ? undefined : '_blank' }
+          >
+            { content }
+          </a>
+        </InlineMentionTooltip>
       )
     }
 
@@ -84,8 +87,6 @@ export function NotionRichText(p: {
       default:
         return <></>
     }
-
-
 
 
 
