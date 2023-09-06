@@ -13,10 +13,11 @@ export function CodeRSC(p: {
     <Code
       lang={ p.language }
       // theme="one-dark-pro"
-      theme='one-dark-pro'
+      theme='github-dark-dimmed'
       title={ p.title }
       className={ cn(
-        'bg-zinc-900 rounded-lg my-4 relative w-full',
+        'bg-zinc-900 rounded-lg relative',
+        'p-3 left-0 right-0',
         'prose-pre:!m-0',
         'prose-pre:!bg-inherit',
         'prose-pre:rounded-none',
@@ -32,7 +33,7 @@ export function CodeRSC(p: {
             const textspans = getFileSpans(title ?? '')
             return (
               <label
-                className="p-3 text-xs text-zinc-400 px-4 flex justify-between bg-black w-full"
+                className="p-3 text-xs text-zinc-400 px-6 flex justify-between bg-black w-full"
                 htmlFor={ title }
               >
                 <div className="flex gap-1">
