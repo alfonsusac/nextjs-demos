@@ -12,20 +12,14 @@ export default async function Articles() {
   return (
     <div className={ cn(
       "mx-auto mt-4",
-
       "prose-h1:text-4xl",
-
       "prose-hr:my-8",
-
       "max-w-article"
     ) }>
-
       <h1 className="mb-4">
         All Articles
       </h1>
-
       <hr />
-      
       <ul className="p-0">
         {
           articles.map(r => (
@@ -34,7 +28,6 @@ export default async function Articles() {
               <Link
                 href={ `/articles/${r.slug}` }
                 className={ cn(
-                  // "border border-zinc-600 mb-2",
                   "block p-4 m-0 rounded-md hover:bg-zinc-900/50 no-underline cursor-pointer",
                   "leading-tight",
                   "transition-all"
