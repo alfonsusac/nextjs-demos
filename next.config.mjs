@@ -16,7 +16,10 @@ const nextConfig = {
       test: /\.node/,
       use: 'raw-loader',
     });
-
+    config.module.rules.push({
+      test: /\.txt/,
+      use: 'raw-loader',
+    })
     return config
   }
   

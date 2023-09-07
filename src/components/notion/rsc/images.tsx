@@ -2,6 +2,7 @@ import { cn } from "@/components/typography"
 import { CalloutBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import { NextImage } from "@/components/image/next-images"
 
+
 export function NotionIcon({
   icon,
   className
