@@ -65,6 +65,6 @@ export function inRemotePattern(urlstr: string): boolean {
     }
     return true
   }
-  console.log("URL doesn't match any pattern: " + url)
+  // console.log("URL doesn't match any pattern: " + url)
   return false
 }
