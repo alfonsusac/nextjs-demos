@@ -120,8 +120,6 @@ export async function FileBlock({
   node,
 }: NotionComponentProp<'file'>) {
 
-  console.log("FileBlock Async")
-
   const url =
     'external' in node.props ? node.props.external.url :
       'file' in node.props ? node.props.file.url : ''
@@ -165,8 +163,6 @@ export async function EmbedBlock({
   className,
   node,
 }: NotionComponentProp<'embed'>) {
-
-  console.log("EmbedBlock Async")
 
   const url = node.props.url as string
 
