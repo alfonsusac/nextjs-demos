@@ -27,7 +27,7 @@ export function Toggle(p:
       <Collapsible.Trigger asChild>
 
         <button className={ cn(
-          "toggle flex cursor-pointer hover:bg-zinc-900/70 py-1 rounded-sm w-full",
+          "toggle flex cursor-pointer hover:bg-zinc-900/70 py-1 rounded-sm w-full text-left",
           p.className
         ) }>
           <div className={ cn("h-[1lh] w-8 text-center flex-shrink-0") }>
