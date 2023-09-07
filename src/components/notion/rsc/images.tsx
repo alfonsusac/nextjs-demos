@@ -26,30 +26,21 @@ export function NotionIcon({
         { icon.emoji }
       </span>
     </div>
-
-  if (icon.type === 'external')
+  else
     // eslint-disable-next-line @next/next/no-img-element
     return <img
       alt='Callout Icon'
-      className={ cn("inline w-6 h-6 rounded-sm", className) }
-      src={ icon.external.url }
+      className={ cn("inline w-5 h-5 rounded-sm max-w-[1.5rem]", className) }
+      src={
+        icon.type === 'external' ? icon.external.url :
+          icon.type === 'file' ? icon.file.url : undefined
+      }
       style={ {
         marginTop: '0.1em',
         verticalAlign: '-0.1em',
-        minWidth: '1em'
-      } }
-    />
-
-  if (icon.type === 'file')
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img
-      alt='Callout Icon'
-      className={ cn("inline w-6 h-6 rounded-sm", className) }
-      src={ icon.file.url }
-      style={ {
-        marginTop: '0.1em',
-        verticalAlign: '-0.1em',
-        minWidth: '1em'
+        minWidth: '1.25rem',
+        maxWidth: '1.25rem',
+        maxHeight: '1.25rem',
       } }
     />
 }
@@ -111,15 +102,14 @@ export function NotionImage({
 
 
 function processNotionStaticImageURL(url: string, id?: string): string {
+  // Convert URL from block retrieve
+  //  into Notion's Static Website URL
   if (
     !url.includes('secure.notion-static.com')
     && !url.includes('prod-files-secure')
   ) return url
-
-  if (!id) throw new Error("Notion Static Images requires ID")
-   
-  // Convert URL from block retrieve
-  //  into Notion's Static Website URL
+  if (!id)
+    throw new Error("Notion Static Images requires ID")
   const newurl = `https://alfonsusardani.notion.site/image/${encodeURIComponent(url.split('?')[0])}?table=block&id=${id}`
   return newurl
 }
