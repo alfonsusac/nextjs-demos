@@ -39,6 +39,7 @@
     "eslint": "^8.45.0",
     "eslint-config-next": "latest",
     "github-slugger": "^2.0.0",
+    "jimp": "^0.22.10",
     "katex": "^0.16.8",
     "mdast": "^3.0.0",
     "mdx-mermaid": "^2.0.0",
