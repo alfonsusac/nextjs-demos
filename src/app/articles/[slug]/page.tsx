@@ -1,5 +1,4 @@
 import 'katex/dist/katex.min.css'
-// import { InputComponents, NotionASTRenderer } from "@/components/notion/rsc/notion-ast-renderer"
 import { cn } from "@/components/typography"
 import { Sidebar } from "@/app/demos/layout"
 import { ToCSidebar } from "@/components/toc/client"
@@ -12,14 +11,13 @@ import { NotionRichText } from "@/components/notion/rsc/rich-texts/parser"
 import { formatDistanceToNow } from "date-fns"
 import { InlineMentionTooltip } from "@/components/notion/client"
 import { NotionPageViews } from "./client"
-import { ArticlePageData, getArticle } from "@/components/notion/data/articles"
+import { getArticle } from "@/components/notion/data/articles"
 import { getPageContent } from "@/components/notion/data/helper"
 import { unstable_cache } from 'next/cache'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
 import { cache } from 'react'
 import { Audit } from '@/components/timer'
 import supabase from '@/lib/supabase'
-import { ImageResponse } from 'next/server'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -31,7 +29,6 @@ import { ImageResponse } from 'next/server'
 //   })
 //   return params
 // }
-
 
 export async function generateMetadata({ params }: any) {
   const { article } = await getPageDetails(params.slug)

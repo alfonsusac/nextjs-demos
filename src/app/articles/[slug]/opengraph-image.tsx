@@ -63,9 +63,9 @@ export default async function OpenGraphImage_ArticlePages({ params }: { params: 
       } }
         className="my-8 mt-8 space-y-2 relative"
       >
-        {/* <NotionIcon icon={ article.icon }
+        <NotionIcon icon={ article.icon }
           className="text-5xl m-0 block w-12 h-12 mb-4"
-        /> */}
+        />
         <div style={ {
           fontSize: '2rem',
           lineHeight: '1.25rem',

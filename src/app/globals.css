@@ -176,12 +176,15 @@ div article {
 
 /* BROWSER DEMO */
 
-div.browser, div.browser p{
+div.browser{
   @apply text-sm leading-normal
 }
 
 div.browser h1 {
   @apply text-xl py-2
+}
+div.browser h2 {
+  @apply text-lg
 }
 
 div.browser nav {
