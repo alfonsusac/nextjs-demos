@@ -20,24 +20,32 @@ export async function NextImage({
   let _width: number | `${number}` | undefined = undefined
   let _height: number | `${number}` | undefined = undefined
   let _blurDataURL: string | undefined = undefined
+
   if (typeof src === 'string') {
     optimize = inRemotePattern(src)
-    if (!optimize)
-      console.warn(`WARN: Image not found in remotePattern, not optimised: ${src}`)
+    if (!optimize) console.warn(`WARN: Image not found in remotePattern, not optimised: ${src}`)
 
+    
     const data = await getImage(src)
 
-    if (!width || !height) {
-      _width = data.img.width
-      _height = data.img.height
-    } else {
-      _width = width,
-      _height = height
+    if (data) {
+      if (!width || !height) {
+        if(data.width)
+          _width = data.width
+        if(data.height)
+          _height = data.height
+      } else {
+        _width = width,
+        _height = height
+      }
+      
+      if(data.base64)
+        _blurDataURL = data.base64
     }
-    
-    _blurDataURL = data.base64
 
   }
+
+
 
 
   return (
