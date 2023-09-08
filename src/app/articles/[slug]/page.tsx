@@ -77,6 +77,7 @@ export default async function Page({ params }: any) {
           "top-0 left-0 right-0 m-0",
           "max-w-none flex"
         ) }
+        id={ article.id }
       />
       {
         article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
@@ -211,7 +212,9 @@ async function getPageMetadata(id: string) {
       .select('views')
       .eq('id', id)
 
-    const views = res.data?.[0].views
+    // console.log(res)
+    
+    const views = res.data?.[0]?.views
 
     if (!views) {
       await supabase
