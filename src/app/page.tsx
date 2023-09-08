@@ -19,7 +19,7 @@ export default async function Home() {
 
   return (
     <article className={ cn(
-      "mx-auto mt-12",
+      "mx-auto mt-12 max-w-xl",
       "prose-hr:my-4",
       "prose-h2:mb-4",
       "prose-h2:text-center",
