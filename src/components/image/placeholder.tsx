@@ -61,7 +61,6 @@ export async function getImage(src: string) {
     ['image', src],
     {
       tags: ['image', src],
-      revalidate: 2
     }
   )();
 

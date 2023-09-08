@@ -140,7 +140,7 @@ export default async function Page({ params }: any) {
           </header>
 
           <NotionASTRenderer ast={ ast } />
-          <CommentSection />
+          {/* <CommentSection /> */}
 
           <footer className="mt-12 py-12 border-t border-t-zinc-600 text-zinc-500 text-sm space-y-2 leading-normal">
             <p>
