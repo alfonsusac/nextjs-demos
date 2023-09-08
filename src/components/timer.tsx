@@ -18,8 +18,13 @@ export class Audit {
   }
 }
 
+export async function audit(prompt: string, cb: () => Promise<any>) {
+  const a = new Audit(prompt)
+  const ret = await cb()
+  a.total()
+  return ret
+}
 
-export function MeasureRender(p:{children:React.ReactNode}) {
-  
-
+export function clearLog() {
+  console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 }

@@ -70,7 +70,7 @@ export async function LinkBookmark({
             }
 
             <div /* LINK */ >
-              { metadata.url ? metadata.url.host : node.props.url }
+              { metadata.url ? (new URL(metadata.url)).host : node.props.url }
             </div>
 
             

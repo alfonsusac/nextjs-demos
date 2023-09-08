@@ -18,7 +18,7 @@ export async function getMetaInfo(source: string) {
       },
       [sourceurl.toString()],
       {
-        revalidate: 1,
+        revalidate: 3600,
       }
     )()
 

@@ -16,8 +16,9 @@ import { getPageContent } from "@/components/notion/data/helper"
 import { unstable_cache } from 'next/cache'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
 import { cache } from 'react'
-import { Audit } from '@/components/timer'
+import { Audit, audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
+import { nanoid } from 'nanoid'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -38,32 +39,64 @@ export async function generateMetadata({ params }: any) {
   }
 }
 
+function getRandom() {
+  return nanoid(4)
+}
+
+async function getCachedRandom() {
+  return await cache(
+    async () => {
+      const id = nanoid(4)
+      console.log("Getting Random Number!! " + id)
+      return id
+    }
+  )()
+}
+
+async function getDedupedRandom2() {
+  return await cache(async () => nanoid(4))()
+}
+
+const getDedupedRandom = cache(async () => nanoid(4))
+
 export default async function Page({ params }: any) {
 
-  console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+  clearLog()
+
   // Cached Data
   const a = new Audit("Generating Page")
-  const { article, content, } = await getPageDetails(params.slug)
+  const { article, content, } = await getMemoizedPageDetails(params.slug)
+  const tmp = await getMemoizedPageDetails(params.slug)
+  const tmp2 = await getMemoizedPageDetails(params.slug)
+  const tmp3 = await getMemoizedPageDetails(params.slug)
+  console.log("DedupedRandom: " + await getDedupedRandom())
+  console.log("DedupedRandom: " + await getDedupedRandom())
+  console.log("DedupedRandom: " + await getDedupedRandom())
+  console.log("DedupedRandom2: " + await getDedupedRandom2())
+  console.log("DedupedRandom2: " + await getDedupedRandom2())
+  console.log("DedupedRandom2: " + await getDedupedRandom2())
   a.mark('Try Getting Cached Page Data')
 
-  const ast = await convertChildrenToAST(content)
-  a.mark('Convert ListBlock to AST')
+  const ast = await audit(
+    'Convert ListBlock to AST',
+    async () => await convertChildrenToAST(content),
+  )
+  const headings = await audit(
+    'Extract Headings',
+    async () => await extractHeadings(ast),
+  )
 
-  const headings = extractHeadings(ast)
-  a.mark('Extract Headings')
-  
   // Dynamic Data
-  const metadata = await getPageMetadata(article.id)
-  a.mark('Retrieve Page Metadata')
-  
-  // const article = (await getArticle(params.slug))!
-  // const content = await getPageContent(article.id)
-  // const ast = await convertChildrenToAST(content)
-  // const headings = extractHeadings(ast)
+  const metadata = await audit(
+    'Retrieve Page Metadata',
+    async () => await getPageMetadata(article.id)
+  )
 
   a.total()
   console.info("Done generating page!")
   console.info("Rendering Page...")
+
+
 
   return (
     <>
@@ -83,87 +116,22 @@ export default async function Page({ params }: any) {
         article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
       }
       <div className="flex gap-4 mx-auto">
-
-
         {/* LEFT */ }
         <article className="max-w-article m-0 w-full mx-auto md:mr-0">
-          <header className="my-8 mt-8 space-y-2 relative">
-
-            <NotionIcon icon={ article.icon }
-              className="text-5xl m-0 block w-12 h-12 mb-4"
-            />
-
-            <Link
-              className="text-sm p-2 rounded-md text-zinc-400 hover:bg-zinc-900 decoration-zinc-600 underline-offset-4 -mx-2"
-              href="/articles"
-            >
-              /articles
-            </Link>
-
-
-            <h1>
-              <NotionRichText rich_text={ article.title } />
-            </h1>
-
-            <div className="text-sm text-zinc-500">
-
-              Last updated:
-              <InlineMentionTooltip
-                content={
-                  (new Date(article.last_edited_time)).toLocaleString()
-                }
-              >
-                <span className="ml-1 rounded-md p-1 hover:bg-zinc-900/80">
-                  { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
-                </span>
-              </InlineMentionTooltip>
-
-              { ` ● ` }
-
-              <NotionPageViews
-                id={ article.id }
-                num={ metadata.views }
-                loadView={
-                  async (id, prev) => {
-                    'use server'
-                    const res = await supabase
-                      .from('Article')
-                      .update({ views: prev + 1 })
-                      .eq('id', id)
-                      .select('views')
-                  }
-                }
-              />
-
-            </div>
-
-          </header>
-
-          <NotionASTRenderer ast={ ast } />
+          <Header />
+          {/* <NotionASTRenderer ast={ ast } /> */}
           {/* <CommentSection /> */}
-
           <footer className="mt-12 py-12 border-t border-t-zinc-600 text-zinc-500 text-sm space-y-2 leading-normal">
-            <p>
-              The content on this website are purely written by Alfon to help people better understand how Next.js works and are not affiliated with Vercel (unofficial).
-            </p>
-            <p>
-              If you have any comments for improvement on the website or the content feel free to visit <a href="https://github.com/alfonsusac/nextjs-demos/issues">the respository</a> which is 100% open source.
-            </p>
-            <p>
-              Written by <a href="https://github.com/alfonsusac">@alfonsusac</a>
-            </p>
+            <FooterContent />
           </footer>
         </article>
 
         {/* RIGHT */ }
         <div className={ cn(
           'hidden md:block',
-          'sticky',
-          'top-40',
-          'w-56',
-          'h-full',
+          'sticky top-20',
+          'w-56 h-full',
           'mt-32',
-
         ) }>
           In this article
           <Sidebar>
@@ -181,12 +149,77 @@ export default async function Page({ params }: any) {
       </div>
     </>
   )
+
+  function Header() {
+    return (
+      <header className="my-8 mt-8 space-y-2 relative">
+        <NotionIcon icon={ article.icon }
+          className="text-5xl m-0 block w-12 h-12 mb-4"
+        />
+        <Link
+          className="text-sm p-2 rounded-md text-zinc-400 hover:bg-zinc-900 decoration-zinc-600 underline-offset-4 -mx-2"
+          href="/articles"
+        >
+          /articles
+        </Link>
+        <h1>
+          <NotionRichText rich_text={ article.title } />
+        </h1>
+        <div className="text-sm text-zinc-500">
+          Last updated:
+          <InlineMentionTooltip
+            content={
+              (new Date(article.last_edited_time)).toLocaleString()
+            }
+          >
+            <span className="ml-1 rounded-md p-1 hover:bg-zinc-900/80">
+              { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
+            </span>
+          </InlineMentionTooltip>
+          { ` ● ` }
+          <NotionPageViews
+            id={ article.id }
+            num={ metadata.views }
+            loadView={
+              async (id, prev) => {
+                'use server'
+                const res = await supabase
+                  .from('Article')
+                  .update({ views: prev + 1 })
+                  .eq('id', id)
+                  .select('views')
+              }
+            }
+          />
+        </div>
+      </header>
+    )
+  }
+
+  function FooterContent() {
+    return (
+      <>
+        <p>
+          The content on this website are purely written by Alfon to help people better understand how Next.js works and are not affiliated with Vercel (unofficial).
+        </p>
+        <p>
+          If you have any comments for improvement on the website or the content feel free to visit <a href="https://github.com/alfonsusac/nextjs-demos/issues">the respository</a> which is 100% open source.
+        </p>
+        <p>
+          Written by <a href="https://github.com/alfonsusac">@alfonsusac</a>
+        </p>
+      </>
+    )
+  }
 }
 
+
+// ❌ this doesn't work
 export async function getPageDetails(slug: string) {
-  const data = await cache(async () => await unstable_cache(
+
+  const getCachedData = unstable_cache(
     async () => {
-      console.log("CACHE MISS!")
+      console.log("CACHE MISS! GET PAGE DETAILS")
       const article = await getArticle(slug)
       const content = await getPageContent(article.id)
       return { article, content }
@@ -195,9 +228,22 @@ export async function getPageDetails(slug: string) {
     {
       tags: ['articles', slug],
     }
-  )())()
-  return data
+  )
+
+  const getMemoizedData = cache(
+    async () => {
+      console.log("Is this getting logged? " + Math.random())
+      return await getCachedData()
+    }
+  )
+
+  return getMemoizedData()
 }
+
+// @ts-ignore
+export const getMemoizedPageDetails = cache(getPageDetails)
+
+
 
 async function getPageMetadata(id: string) {
 

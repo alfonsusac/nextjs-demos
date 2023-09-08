@@ -174,7 +174,7 @@ export function NotionRichText(p: {
               <span className="h-full inline-block text-zinc-300 text-sm pr-0.5">
                 {// eslint-disable-next-line @next/next/no-img-element
                   <img
-                    alt={ metadata.url?.hostname }
+                    alt={ metadata.url ? (new URL(metadata.url)).hostname : 'Link preview' }
                     className="inline text-lg mb-1 w-4 h-4 rounded-sm"
                     src={ metadata.faviconpath }
                   /> }
