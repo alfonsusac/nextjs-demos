@@ -13,12 +13,12 @@ export async function getMetaInfo(source: string) {
       async () => {
         const audit = new Audit('', false)
         const data = await urlMetadata_withFavicon(sourceurl.toString(), { descriptionLength: 100 })
-        audit.mark('Link Preview Component Metadata')
+        audit.mark('Cache Miss - getMetaInfo')
         return data
       },
       [sourceurl.toString()],
       {
-        revalidate: 3600,
+        revalidate: 1,
       }
     )()
 
@@ -42,7 +42,7 @@ export async function getMetaInfo(source: string) {
       image: metadata['twitter:image'] ? metadata['twitter:image'] as string :
         metadata['og:image'] ? metadata['og:image'] as string : undefined,
       faviconpath: faviconpath ? faviconpath as string : undefined,
-      url: sourceurl,
+      url: source,
       raw: metadata
     }
   } catch (error) {
@@ -65,7 +65,7 @@ export async function getFileName(url: string) {
     }
   }
   if (metadata.url === undefined) {
-    (metadata.url as any) = new URL(url)
+    (metadata.url as any) = url
   }
   return metadata
 

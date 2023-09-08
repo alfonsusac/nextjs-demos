@@ -131,7 +131,7 @@ export async function FileBlock({
   const source =
     url?.includes('notion-static.com')
       ? 'notion-static.com'
-      : filename?.url?.hostname
+      : filename?.url ? (new URL(filename.url)).hostname : undefined
 
   return (
     <div className={ cn(className, "my-4 no-underline ") }>
