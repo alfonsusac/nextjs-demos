@@ -19,6 +19,7 @@ import { cache } from 'react'
 import { Audit, audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
 import { nanoid } from 'nanoid'
+import { getCachedPageDetails } from './data'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -32,49 +33,22 @@ import { nanoid } from 'nanoid'
 // }
 
 export async function generateMetadata({ params }: any) {
-  const { article } = await getPageDetails(params.slug)
+  const { article } = await getCachedPageDetails(params.slug, "Metadata")
   return {
     title: article.flattenedTitle,
     description: "Next.js Notes, Tips and Tricks - by @alfonsusac",
   }
 }
 
-function getRandom() {
-  return nanoid(4)
-}
-
-async function getCachedRandom() {
-  return await cache(
-    async () => {
-      const id = nanoid(4)
-      console.log("Getting Random Number!! " + id)
-      return id
-    }
-  )()
-}
-
-async function getDedupedRandom2() {
-  return await cache(async () => nanoid(4))()
-}
-
-const getDedupedRandom = cache(async () => nanoid(4))
-
 export default async function Page({ params }: any) {
-
+  
   clearLog()
-
   // Cached Data
   const a = new Audit("Generating Page")
-  const { article, content, } = await getMemoizedPageDetails(params.slug)
-  const tmp = await getMemoizedPageDetails(params.slug)
-  const tmp2 = await getMemoizedPageDetails(params.slug)
-  const tmp3 = await getMemoizedPageDetails(params.slug)
-  console.log("DedupedRandom: " + await getDedupedRandom())
-  console.log("DedupedRandom: " + await getDedupedRandom())
-  console.log("DedupedRandom: " + await getDedupedRandom())
-  console.log("DedupedRandom2: " + await getDedupedRandom2())
-  console.log("DedupedRandom2: " + await getDedupedRandom2())
-  console.log("DedupedRandom2: " + await getDedupedRandom2())
+  const { article, content, } = await getCachedPageDetails(params.slug, "Page.tsx 1")
+  const tmp = await getCachedPageDetails(params.slug, "Page.tsx 2")
+  const tmp2 = await getCachedPageDetails(params.slug, "Page.tsx 3")
+  const tmp3 = await getCachedPageDetails(params.slug, "Page.tsx 4")
   a.mark('Try Getting Cached Page Data')
 
   const ast = await audit(
