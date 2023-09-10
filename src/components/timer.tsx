@@ -16,6 +16,10 @@ export class Audit {
     this._end = performance.now()
     console.log(`- ${`${this.header ? "(total)" : ""} ${this.prompt}`.padEnd(40)}: ${((this._end - this._start) / 1000).toPrecision(3)} s`)
   }
+  getSec() {
+    this._end = performance.now()
+    return ((this._end - this._start) / 1000)
+  }
 }
 
 export async function audit(prompt: string, cb: () => Promise<any>) {

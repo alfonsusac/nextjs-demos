@@ -14,11 +14,9 @@ import { NotionPageViews } from "./client"
 import { getArticle } from "@/components/notion/data/articles"
 import { getPageContent } from "@/components/notion/data/helper"
 import { unstable_cache } from 'next/cache'
-import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
 import { cache } from 'react'
 import { Audit, audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
-import { nanoid } from 'nanoid'
 import { getCachedPageDetails } from './data'
 
 // ! Server action not working yet in static routes.
@@ -33,7 +31,7 @@ import { getCachedPageDetails } from './data'
 // }
 
 export async function generateMetadata({ params }: any) {
-  const { article } = await getCachedPageDetails(params.slug, "Metadata")
+  const { article } = await getCachedPageDetails(params.slug)
   return {
     title: article.flattenedTitle,
     description: "Next.js Notes, Tips and Tricks - by @alfonsusac",
@@ -41,15 +39,15 @@ export async function generateMetadata({ params }: any) {
 }
 
 export default async function Page({ params }: any) {
-  
+
   clearLog()
   // Cached Data
   const a = new Audit("Generating Page")
-  const { article, content, } = await getCachedPageDetails(params.slug, "Page.tsx 1")
-  const tmp = await getCachedPageDetails(params.slug, "Page.tsx 2")
-  const tmp2 = await getCachedPageDetails(params.slug, "Page.tsx 3")
-  const tmp3 = await getCachedPageDetails(params.slug, "Page.tsx 4")
-  a.mark('Try Getting Cached Page Data')
+  const { article, content } = await getCachedPageDetails(params.slug)
+  // const tmp = await getCachedPageDetails(params.slug)
+  // const tmp2 = await getCachedPageDetails(params.slug)
+  // const tmp3 = await getCachedPageDetails(params.slug)
+  a.mark('')
 
   const ast = await audit(
     'Convert ListBlock to AST',
@@ -57,7 +55,7 @@ export default async function Page({ params }: any) {
   )
   const headings = await audit(
     'Extract Headings',
-    async () => await extractHeadings(ast),
+    async () => extractHeadings(ast),
   )
 
   // Dynamic Data
@@ -69,8 +67,6 @@ export default async function Page({ params }: any) {
   a.total()
   console.info("Done generating page!")
   console.info("Rendering Page...")
-
-
 
   return (
     <>
@@ -90,17 +86,18 @@ export default async function Page({ params }: any) {
         article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
       }
       <div className="flex gap-4 mx-auto">
-        {/* LEFT */ }
+        
+        {/* LEFT */}
         <article className="max-w-article m-0 w-full mx-auto md:mr-0">
           <Header />
-          {/* <NotionASTRenderer ast={ ast } /> */}
-          {/* <CommentSection /> */}
+          {/* <NotionASTRenderer ast={ ast } /> */ }
+          {/* <CommentSection /> */ }
           <footer className="mt-12 py-12 border-t border-t-zinc-600 text-zinc-500 text-sm space-y-2 leading-normal">
             <FooterContent />
           </footer>
         </article>
 
-        {/* RIGHT */ }
+        {/* RIGHT */}
         <div className={ cn(
           'hidden md:block',
           'sticky top-20',
@@ -215,7 +212,7 @@ export async function getPageDetails(slug: string) {
 }
 
 // @ts-ignore
-export const getMemoizedPageDetails = cache(getPageDetails)
+// export const getMemoizedPageDetails = cache(getPageDetails)
 
 
 
@@ -233,7 +230,7 @@ async function getPageMetadata(id: string) {
       .eq('id', id)
 
     // console.log(res)
-    
+
     const views = res.data?.[0]?.views
 
     if (!views) {

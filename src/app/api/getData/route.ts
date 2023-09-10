@@ -8,13 +8,10 @@ export type GetDataResponse = Awaited<
 > extends NextResponse<infer T> ? T : never
 
 export async function GET() {
-  
   const data = nanoid(8)
   const date = Date.now()
-
   return NextResponse.json({
     data, date
   })
-
 }
 
