@@ -7,9 +7,7 @@ export function NotionPageViews(p: {
   num: number
   loadView: (id:string, prev: number) => Promise<void>
 }) {
-
   const [mount, setMount] = useState(false)
-
   useEffect(() => {
     // Carefull, this will be run every render!
     if (!mount) {
@@ -18,9 +16,7 @@ export function NotionPageViews(p: {
         setMount(true)
       })()
     }
-
   })
-
   return `${p.num} views`
 
 }
