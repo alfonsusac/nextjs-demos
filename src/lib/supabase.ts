@@ -11,7 +11,7 @@ const supabaseClientSingleton = () => {
         persistSession: false
       },
       global: {
-        fetch: fetch2 as typeof fetch
+        fetch: fetch2 as unknown as typeof fetch
       }
     },
   )
