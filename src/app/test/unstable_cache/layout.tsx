@@ -25,9 +25,9 @@ export default async function Layout(p:{children: React.ReactNode}) {
   const val2 = await getFn()
   const val3 = await getFn()
 
-  console.log(val1)
-  console.log(val2)
-  console.log(val3)
+  // console.log(val1)
+  // console.log(val2)
+  // console.log(val3)
 
   console.log("--done--\n\n")
 
