@@ -1,6 +1,8 @@
 import { BlockObjectResponse, RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
 import { flattenRichText } from "../rsc/rich-texts/utils"
 
+
+export type NotionASTNodeType = NotionASTNode['toJSON']
 /**
  * Responsible to convert Notion "Blocks" to Notion AST Node
  */
@@ -47,12 +49,20 @@ export class NotionASTNode {
 
   toJSON() {
     return {
-      info: `${this.type} | ${this.has_children ? "hasChildren" : "noChildren"} | ${this.id}`,
-      type: `${this.type} | parent:${this.parent?.type}`,
-      raw_content: this.raw_content,
+      id: this.id,
+      type: this.type,
+      has_children: this.has_children,
+      is_group: this.is_group,
+      content: this.content,
       props: this.props,
+      raw_content: this.raw_content,
       children: this.children,
-      hello: "Hello",
+
+      // Meta
+      meta: {
+        summary: `${this.type} | ${this.has_children ? "hasChildren" : "noChildren"} | ${this.id}`,
+        type: `${this.type} | parent:${this.parent?.type}`,
+      }
     }
   }
 }

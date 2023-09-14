@@ -16,6 +16,8 @@ import supabase from '@/lib/supabase'
 import { getPageData } from './page-data'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
 import { cache } from 'react'
+import { unstable_cache } from 'next/cache'
+import { nanoid } from 'nanoid'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -27,11 +29,6 @@ import { cache } from 'react'
 //   })
 //   return params
 // }
-
-
-
-
-
 
 
 export async function generateMetadata({ params }: any) {
@@ -46,12 +43,22 @@ export default async function Page({ params }: any) {
 
   clearLog()
   const a = new Audit("Generating Page")
-  const { article, content } = await getPageData(params.slug)
+  const { article, content, ast } = await getPageData(params.slug)
 
-  const ast = await audit(
-    'Convert ListBlock to AST',
-    async () => await convertChildrenToAST(content),
-  )
+  const randomid = await unstable_cache(
+    async () => {      
+      return await unstable_cache(
+        async () => nanoid(4)
+      ) ()
+    }
+  )()
+
+  console.log(`-  RandomID: ${ast}`)
+
+  // const ast = await audit(
+  //   'Convert ListBlock to AST',
+  //   async () => await convertChildrenToAST(content),
+  // )
   const headings = await audit(
     'Extract Headings',
     async () => extractHeadings(ast),

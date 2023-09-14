@@ -1,10 +1,10 @@
 import { getMetaInfo } from "@/components/metadata/util"
 import { NotionComponentProp } from "../notion-ast-renderer-2"
 import { cn } from "@/components/typography"
-import Image from "next/image"
 import { CaptionNode } from "./common"
 import { Audit } from "@/components/timer"
 import Link from "next/link"
+import Image from "next/image"
 
 export async function LinkBookmark(P: {
   url: string,

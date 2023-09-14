@@ -1,5 +1,5 @@
 import { BlockObjectResponse, ListBlockChildrenParameters, ListBlockChildrenResponse, PartialBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints"
-import { NotionASTNode } from "./node"
+import { NotionASTNode, NotionASTNodeType } from "./node"
 import { notion } from "../../../lib/notion"
 import { unstable_cache } from "next/cache"
 import { Audit } from "@/components/timer"
@@ -15,8 +15,6 @@ export async function convertChildrenToAST(
     ASTCallbackMap: MapToASTFnMap
   }
 ) {
-
-
   // Get function that would be called to fetch children
   const fetchChildrenFn = options?.fetchChildrenFn
     ?? unstable_cache(async (id) => {
@@ -33,7 +31,6 @@ export async function convertChildrenToAST(
   // Assign default mapping behavior and override from custom maps
   const mapToASTFnMap: MapToASTFnMap = options?.ASTCallbackMap
     ? { ...defaultMapToASTFnMap, ...options.ASTCallbackMap } : defaultMapToASTFnMap
-
 
   const root = new NotionASTNode()
   await mapBlockListToAST(data.results, root, fetchChildrenFn, mapToASTFnMap)
