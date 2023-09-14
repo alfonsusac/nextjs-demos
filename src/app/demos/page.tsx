@@ -15,7 +15,7 @@ export default function Demos() {
       "prose-h4:leading-8",
       "prose-h4:mt-8",
 
-      "prose-h4:text-zinc-300"
+      "prose-h4:text-slate-300"
     ) }>
       <h1 className="mb-3">
         Demos
@@ -38,11 +38,11 @@ export default function Demos() {
                 className={ cn(
                   "p-1.5 px-4 rounded-md",
                   "cursor-pointer",
-                  // "outline outline-1 outline-zinc-800",
-                  "underline decoration-zinc-700",
+                  // "outline outline-1 outline-slate-800",
+                  "underline decoration-slate-700",
                   // "shadow-[0px_0px_200px_80px_#ffffff22]",
 
-                  "hover:bg-zinc-900 hover:text-white"
+                  "hover:bg-slate-900 hover:text-white"
                 ) }
 
                 href={ `/demos/${slug(category.name)}/${slug(page.title)}` }

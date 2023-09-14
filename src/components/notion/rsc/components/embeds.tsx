@@ -139,14 +139,14 @@ export async function FileBlock({
         href={ url }
         target="_blank"
         download={ filename }
-        className="p-4 no-underline bg-zinc-900/50 rounded-md hover:bg-zinc-900 w-full flex flex-col cursor-pointer"
+        className="p-4 no-underline bg-slate-900/50 rounded-md hover:bg-slate-900 w-full flex flex-col cursor-pointer"
       >
         <FileDownloadIcon className="inline text-2xl mb-1" />
         <div className="">
-          <span className="text-zinc-200">
+          <span className="text-slate-200">
             { filename ? filename.title : "Unknown File Source" }
           </span>
-          <span className="text-sm mx-2 text-zinc-500">
+          <span className="text-sm mx-2 text-slate-500">
             ({ source })
           </span>
         </div>

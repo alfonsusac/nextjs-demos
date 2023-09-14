@@ -1,5 +1,5 @@
 export default async function NotFound() {
-  return <div className="p-4 border border-zinc-800 rounded-lg mx-auto h-fit ">
+  return <div className="p-4 border border-slate-800 rounded-lg mx-auto h-fit ">
     <div className="max-w-lg m-auto flex flex-col items-center justify-center">
       <h1 className="text-xl py-2">
         Route Not Found

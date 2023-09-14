@@ -103,7 +103,7 @@ export default function RootLayout(p: {
               alt="Profile Picture"
               className="rounded-2xl w-6 h-6"
             />
-            {/* <span className="font-light text-zinc-600">/</span> */}
+            {/* <span className="font-light text-slate-600">/</span> */}
             {/* <Link href='/'>
               Next.js Notes
             </Link> */}

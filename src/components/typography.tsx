@@ -41,7 +41,7 @@ function Anchor(p: {
       <div className={
         cn(
           "text-2xl", // idk how to automate
-          "text-zinc-600",
+          "text-slate-600",
           "before:content-['#']",
           "transition-all",
           "group-hover:rotate-[30deg]",

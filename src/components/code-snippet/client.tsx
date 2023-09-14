@@ -17,7 +17,7 @@ export default function CodeSnippet(p: {
   
   return (
     <div className={ cn(
-      "border border-zinc-800 rounded-lg my-4 relative w-full"
+      "border border-slate-800 rounded-lg my-4 relative w-full"
     ) }>
       <input 
         type="checkbox"
@@ -27,7 +27,7 @@ export default function CodeSnippet(p: {
         title={ p.title }
       />
       <label
-        className="p-3 text-xs text-zinc-400 px-4 flex justify-between after:content-['expand'] peer-checked:after:content-['collapse']"
+        className="p-3 text-xs text-slate-400 px-4 flex justify-between after:content-['expand'] peer-checked:after:content-['collapse']"
         htmlFor={p.title}
       >
         <div className="flex gap-1">
@@ -41,7 +41,7 @@ export default function CodeSnippet(p: {
           }
         </div>
       </label>
-      <div className="overflow-hidden h-0 peer-checked:h-full border-t border-t-zinc-800">
+      <div className="overflow-hidden h-0 peer-checked:h-full border-t border-t-slate-800">
         { p.code }
         { p.children }
       </div>

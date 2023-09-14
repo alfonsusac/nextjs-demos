@@ -27,7 +27,7 @@ export function Toggle(p:
       <Collapsible.Trigger asChild>
 
         <button className={ cn(
-          "toggle flex cursor-pointer hover:bg-zinc-900/70 py-1 rounded-sm w-full text-left",
+          "toggle flex cursor-pointer hover:bg-slate-900/70 py-1 rounded-sm w-full text-left",
           p.className
         ) }>
           <div className={ cn("h-[1lh] w-8 text-center flex-shrink-0") }>
@@ -84,8 +84,8 @@ export function InlineMentionTooltip(p: {
               // "leading-none",
               "shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]",
               "will-change-[transform,opacity]",
-              "bg-zinc-800 p-1 pb-0.5 pr-1.5 text-xs text-zinc-400",
-              "border-zinc-700 border",
+              "bg-slate-800 p-1 pb-0.5 pr-1.5 text-xs text-slate-400",
+              "border-slate-700 border",
               "inline-block align-middle"
             ) }
             sideOffset={ 3 }

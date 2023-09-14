@@ -1,5 +1,5 @@
 export default async function Loading() {
-  return <div className="p-4 border border-zinc-800 rounded-lg">
+  return <div className="p-4 border border-slate-800 rounded-lg">
     <h1 className="text-xl py-2">
       <MingcuteLoadingFill className="animate-spin inline mx-2 mb-1"/>
       Loading...

@@ -1,5 +1,5 @@
 export default async function NotFound() {
-  return <div className="p-4 border border-zinc-800 rounded-lg">
+  return <div className="p-4 border border-slate-800 rounded-lg">
     <h1 className="text-xl py-2">
       Not Found
     </h1>

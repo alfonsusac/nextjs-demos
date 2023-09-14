@@ -18,7 +18,7 @@ export default function Layout(p: { children: React.ReactNode }) {
     </p>
     <nav>
       <InlineLink href={ currentPath }>Code</InlineLink>
-      <span className="text-zinc-600 m-0">|</span>
+      <span className="text-slate-600 m-0">|</span>
       <InlineLink href={ currentPath + "BMW" } useAnchor>BMW</InlineLink>
       <InlineLink href={ currentPath + "Nissan" } useAnchor>Nissan</InlineLink>
       <InlineLink href={ currentPath + "Hyundai" } useAnchor>Hyundai </InlineLink>

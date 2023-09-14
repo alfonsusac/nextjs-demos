@@ -30,32 +30,32 @@ export async function LinkBookmark(P: {
         "w-full",
         "flex flex-row items-stretch",
         "border",
-        "border-zinc-800",
+        "border-slate-800",
         "no-underline",
         "group relative overflow-hidden transition-all",
 
-        "border-zinc-900",
+        "border-slate-900",
         "rounded-lg",
-        "bg-gradient-to-bl from-zinc-950 shadow-inner",
+        "bg-gradient-to-bl from-slate-950 shadow-inner",
 
-        "duration-500",
-        "hover:border-zinc-800",
-        "hover:scale-105",
+        "duration-100",
+        "hover:border-slate-800",
+        // "hover:scale-[1.01]",
       ) }
     >
-      <div className="hidden group-hover:block absolute w-full h-full group-hover:bg-zinc-600/10 transition-all bg-gradient- from-zinc-600/20" />
+      <div className="hidden group-hover:block absolute w-full h-full group-hover:bg-slate-600/10 transition-all bg-gradient- from-slate-600/20" />
       {/* LEFT */}
       <div className="p-4 w-full">
-        <div className="text-zinc-200 truncate w-full">
+        <div className="text-slate-200 truncate w-full">
           { metadata.title }<span className="">
-            <svg className="inline align-text-top text-zinc-400 " xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M7 7h10m0 0v10m0-10L7 17"></path></svg>
+            <svg className="inline align-text-top text-slate-400 " xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M7 7h10m0 0v10m0-10L7 17"></path></svg>
           </span>
         </div>
 
         { // DESCRIPTION
           metadata.description ? (
             <div className={ cn(
-              "text-sm text-zinc-400",
+              "text-sm text-slate-400",
               "mt-1 mb-2 h-10 w-full",
               "line-clamp-2"
             ) }>
@@ -64,7 +64,7 @@ export async function LinkBookmark(P: {
           ) : null
         }
         {/* FOOTER */ }
-        <div className="text-sm text-zinc-500 flex flex-row gap-2">
+        <div className="text-sm text-slate-500 flex flex-row gap-2">
 
           {
             metadata.faviconpath ? (

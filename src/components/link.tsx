@@ -27,7 +27,7 @@ export function InlineLink(p: {
         "flex-shrink-0",
         selected ?
           "text-blue-500 hover:text-blue-400" :
-          "text-zinc-400 hover:text-zinc-300",
+          "text-slate-400 hover:text-slate-300",
         p.block ? "block" : "inline"
       ) }
       prefetch={ p.prefetch }
@@ -43,7 +43,7 @@ export function InlineLink(p: {
         "flex-shrink-0",
         selected ?
           "text-blue-500 hover:text-blue-400" :
-          "text-zinc-400 hover:text-zinc-300",
+          "text-slate-400 hover:text-slate-300",
         p.block ? "block" : "inline"
       ) }
     >

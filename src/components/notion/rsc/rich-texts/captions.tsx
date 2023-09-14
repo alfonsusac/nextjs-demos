@@ -16,7 +16,7 @@ export function NotionFigureCaption(p: {
   return (
     p.caption ? (
       <div className={ cn(
-        "text-sm text-zinc-400 mt-2 w-full",
+        "text-sm text-slate-400 mt-2 w-full",
         center ? 'mx-auto text-center' : "",
         className,
       ) }

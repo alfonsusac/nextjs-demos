@@ -16,7 +16,7 @@ export function CodeRSC(p: {
       theme='github-dark-dimmed'
       title={ p.title }
       className={ cn(
-        'bg-zinc-900 rounded-lg relative',
+        'bg-slate-900 rounded-lg relative',
         'p-3 left-0 right-0',
         'prose-pre:!m-0',
         'prose-pre:!bg-inherit',
@@ -33,7 +33,7 @@ export function CodeRSC(p: {
             const textspans = getFileSpans(title ?? '')
             return (
               <label
-                className="p-3 text-xs text-zinc-400 px-6 flex justify-between bg-black w-full"
+                className="p-3 text-xs text-slate-400 px-6 flex justify-between bg-black w-full"
                 htmlFor={ title }
               >
                 <div className="flex gap-1">

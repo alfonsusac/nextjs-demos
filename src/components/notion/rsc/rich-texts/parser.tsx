@@ -33,7 +33,7 @@ export function NotionRichText(p: {
           'underline' : '',
         curr.annotations.code ?
           cn(
-            'font-mono text-[0.8750em] py-1 bg-zinc-800',
+            'font-mono text-[0.8750em] py-1 bg-slate-800',
             prev?.annotations.code ? '' : 'pl-1 rounded-l-md',
             next?.annotations.code ? '' : 'pr-1 rounded-r-md',
           ) : '',
@@ -63,7 +63,7 @@ export function NotionRichText(p: {
       return (
         <InlineMentionTooltip content={
           <>
-            <PhGlobe className="inline text-zinc-600 mr-1 leading mb-1" />
+            <PhGlobe className="inline text-slate-600 mr-1 leading mb-1" />
             { href }
           </>
         }>
@@ -118,10 +118,10 @@ export function NotionRichText(p: {
                 clsx(annotationCN, inlinePaddingCN, inlineHoverCN, '')
               }
             >
-              <span className="h-full inline-block text-zinc-600 text-sm pr-0.5">
-                <DatabasePageIcon className="inline text-lg text-zinc-600 mb-1" />
+              <span className="h-full inline-block text-slate-600 text-sm pr-0.5">
+                <DatabasePageIcon className="inline text-lg text-slate-600 mb-1" />
               </span>
-              <span className="decoration-zinc-600 text-zinc-300 underline">
+              <span className="decoration-slate-600 text-slate-300 underline">
                 { t.plain_text }
               </span>
             </a>
@@ -139,17 +139,17 @@ export function NotionRichText(p: {
           return (
             <InlineMentionTooltip content={
               <>
-                <CalendarInlineIcon className="inline text-zinc-600 mr-1 leading mb-1" />
+                <CalendarInlineIcon className="inline text-slate-600 mr-1 leading mb-1" />
                 {
                   mention.date.start + (endDate ? ` → ${mention.date.end}` : '')
                 }
               </>
             }>
-              <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, 'hover:tex-zinc-300') }>
-                <span className="h-full inline text-zinc-600 text-sm pr-0.5">
+              <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, 'hover:tex-slate-300') }>
+                <span className="h-full inline text-slate-600 text-sm pr-0.5">
                   <AtInlineSymbol className="inline text-lg mb-1" />
                 </span>
-                <span className="decoration-zinc-600 text-zinc-400">
+                <span className="decoration-slate-600 text-slate-400">
                   {
                     includeTime ? (
                       `${start} ${end ? ' → ' + end : ''}`
@@ -171,7 +171,7 @@ export function NotionRichText(p: {
               href={ t.href! }
               target="_blank"
             >
-              <span className="h-full inline-block text-zinc-300 text-sm pr-0.5">
+              <span className="h-full inline-block text-slate-300 text-sm pr-0.5">
                 {// eslint-disable-next-line @next/next/no-img-element
                   <img
                     alt={ metadata.url ? (new URL(metadata.url)).hostname : 'Link preview' }
@@ -179,7 +179,7 @@ export function NotionRichText(p: {
                     src={ metadata.faviconpath }
                   /> }
               </span>
-              <span className="decoration-zinc-600 text-zinc-400">
+              <span className="decoration-slate-600 text-slate-400">
                 { metadata.title }
               </span>
             </a>
@@ -193,10 +193,10 @@ export function NotionRichText(p: {
               href={ t.href! }
               target="_blank"
             >
-              <span className="h-full inline-block text-zinc-300 text-sm pr-0.5">
+              <span className="h-full inline-block text-slate-300 text-sm pr-0.5">
                 <PhNotionLogoFill className="inline text-lg mb-1" />
               </span>
-              <span className="decoration-zinc-600 text-zinc-400">
+              <span className="decoration-slate-600 text-slate-400">
                 { t.plain_text }
               </span>
             </a>
@@ -209,15 +209,15 @@ export function NotionRichText(p: {
             return (
               <InlineMentionTooltip content={
                 <>
-                  <MaterialSymbolsPerson className="inline text-zinc-600 mr-1 leading mb-1" />
+                  <MaterialSymbolsPerson className="inline text-slate-600 mr-1 leading mb-1" />
                   Person
                 </>
               }>
-                <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, 'hover:tex-zinc-300') }>
-                  <span className="h-full inline text-zinc-600 text-sm pr-0.5">
+                <span className={ clsx(annotationCN, inlinePaddingCN, inlineHoverCN, 'hover:tex-slate-300') }>
+                  <span className="h-full inline text-slate-600 text-sm pr-0.5">
                     <AtInlineSymbol className="inline text-lg mb-1" />
                   </span>
-                  <span className="decoration-zinc-600 text-zinc-400">
+                  <span className="decoration-slate-600 text-slate-400">
                     { mention.user.name }
                   </span>
                 </span>

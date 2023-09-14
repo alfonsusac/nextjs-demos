@@ -30,7 +30,7 @@ export default async function Articles() {
               <Link
                 href={ `/articles/${r.slug}` }
                 className={ cn(
-                  "block p-4 m-0 rounded-md hover:bg-zinc-900/50 no-underline cursor-pointer",
+                  "block p-4 m-0 rounded-md hover:bg-slate-900/50 no-underline cursor-pointer",
                   "leading-tight",
                   "transition-all"
                 ) }
@@ -46,7 +46,7 @@ export default async function Articles() {
                     <div className="font-semibold mt-1 group-hover:text-white transition-all">
                       { r.flattenedTitle }
                     </div>
-                    <div className="text-xs text-zinc-500">
+                    <div className="text-xs text-slate-500">
                       { new Date(r.last_edited_time).toDateString() }
                     </div>
                   </div>

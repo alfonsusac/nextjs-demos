@@ -34,7 +34,7 @@ export function Page(p:{
       "text-sm font-normal leading-5",
       "transition-all duration-150",
       "hover:brightness-150",
-      selected ? "text-blue-500" : "text-zinc-400",
+      selected ? "text-blue-500" : "text-slate-400",
       p.className
     ) }>
       <Link href={ path } className="block">

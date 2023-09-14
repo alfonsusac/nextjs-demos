@@ -67,8 +67,8 @@ export function CalloutBlock({
       className,
       "flex gap-3",
       "p-4 my-2",
-      "rounded-md border-zinc-800",
-      "bg-zinc-900"
+      "rounded-md border-slate-800",
+      "bg-slate-900"
     ) }>
       <NotionIcon icon={ node.props.icon } />
       <div>

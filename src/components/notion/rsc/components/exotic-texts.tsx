@@ -31,7 +31,7 @@ export function EquationBlock({
 
   return (
     <KaTeXRSC
-      className="py-2 hover:bg-zinc-900"
+      className="py-2 hover:bg-slate-900"
       math={ node.props.expression }
       block
       settings={ {

@@ -76,7 +76,7 @@ export default async function Page({ params }: any) {
         nprop={ article.cover as any }
         className={ cn(
           "w-full h-60 object-cover",
-          "after:bg-gradient-to-t after:from-zinc-800 after:to-transparent",
+          "after:bg-gradient-to-t after:from-slate-800 after:to-transparent",
           "absolute",
           "top-0 left-0 right-0 m-0",
           "max-w-none flex"
@@ -93,7 +93,7 @@ export default async function Page({ params }: any) {
           <Header />
           <NotionASTRenderer ast={ ast } />
           <CommentSection />
-          <footer className="mt-12 py-12 border-t border-t-zinc-600 text-zinc-500 text-sm space-y-2 leading-normal">
+          <footer className="mt-12 py-12 border-t border-t-slate-600 text-slate-500 text-sm space-y-2 leading-normal">
             <FooterContent />
           </footer>
         </article>
@@ -129,7 +129,7 @@ export default async function Page({ params }: any) {
           className="text-5xl m-0 block w-12 h-12 mb-4"
         />
         <Link
-          className="text-sm p-2 rounded-md text-zinc-400 hover:bg-zinc-900 decoration-zinc-600 underline-offset-4 -mx-2"
+          className="text-sm p-2 rounded-md text-slate-400 hover:bg-slate-900 decoration-slate-600 underline-offset-4 -mx-2"
           href="/articles"
         >
           /articles
@@ -143,14 +143,14 @@ export default async function Page({ params }: any) {
 
 
         {/* METADATA */}
-        <div className="text-sm text-zinc-500">
+        <div className="text-sm text-slate-500">
           Last updated:
           <InlineMentionTooltip
             content={
               (new Date(article.last_edited_time)).toLocaleString()
             }
           >
-            <span className="ml-1 rounded-md p-1 hover:bg-zinc-900/80">
+            <span className="ml-1 rounded-md p-1 hover:bg-slate-900/80">
               { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
             </span>
           </InlineMentionTooltip>

@@ -22,7 +22,7 @@ export function White(p: {
   children: React.ReactNode
 }) {
   return (
-    <Highlight className="text-zinc-50 bg-zinc-800/30">
+    <Highlight className="text-slate-50 bg-slate-800/30">
       {p.children}
     </Highlight>
   )

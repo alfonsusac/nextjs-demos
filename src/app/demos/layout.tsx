@@ -60,7 +60,7 @@ export default async function Layout(p: {
 
           { p.children }
 
-          <footer className="mt-12 py-12 border-t border-t-zinc-900 text-zinc-500 text-sm space-y-2 leading-normal">
+          <footer className="mt-12 py-12 border-t border-t-slate-900 text-slate-500 text-sm space-y-2 leading-normal">
             <p>
               The content on this website are purely written by Alfon to help people better understand how Next.js works and are not affiliated with Vercel (unofficial).
             </p>

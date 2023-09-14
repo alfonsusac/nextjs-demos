@@ -11,7 +11,7 @@ export function Browser(p: {
   children: React.ReactNode
 }) {
   return (
-    <div className="w-full border border-zinc-600 rounded-xl mb-12 pb-1 browser">
+    <div className="w-full border border-slate-600 rounded-xl mb-12 pb-1 browser">
       <Header>
         <BackButton />
         <ForwardButton />
@@ -31,7 +31,7 @@ function Header(p: {
   children: React.ReactNode
 }) {
   return (
-    <div className="border-b border-bottom-zinc-600s max-w-full h-10 border-b-zinc-600 flex flex-row items-center p-4 space-x-1">
+    <div className="border-b border-bottom-slate-600s max-w-full h-10 border-b-slate-600 flex flex-row items-center p-4 space-x-1">
       { p.children }
     </div>
   )
@@ -48,7 +48,7 @@ function BackButton() {
 
   return (
     <Button onClick={ () => router.back() }>
-      <BackLogo className={ clsx("w-5 h-5", disabled ? "text-zinc-500" : "") } />
+      <BackLogo className={ clsx("w-5 h-5", disabled ? "text-slate-500" : "") } />
     </Button>
   )
 }
@@ -64,7 +64,7 @@ function ForwardButton() {
 
   return (
     <Button onClick={ () => router.forward() }>
-      <ForwardLogo className={ clsx("w-5 h-5", disabled ? "text-zinc-500" : "") } />
+      <ForwardLogo className={ clsx("w-5 h-5", disabled ? "text-slate-500" : "") } />
     </Button>
   )
 }
@@ -84,7 +84,7 @@ function BreadCrumb() {
 
   return (
     <div className="w-full flex gap-1">
-      <Link href={ commonSegment } className="text-zinc-600">acme.com</Link>
+      <Link href={ commonSegment } className="text-slate-600">acme.com</Link>
       {
         breadcrumbSegments.map((s, i) => {
           const link = path.join(commonSegment, ...breadcrumbSegments.slice(0, breadcrumbSegments.findIndex(p => p === s) + 1)).replace(/\\/g, '/')
@@ -92,7 +92,7 @@ function BreadCrumb() {
             return <span key={ i }>/</span>
           else
             // if (i === breadcrumbSegments.length - 1)
-            //   return <span key={ i } className="text-zinc-400" >{ s }</span>
+            //   return <span key={ i } className="text-slate-400" >{ s }</span>
             // else
               return <Link key={ i } href={ link } >{ s }</Link>
         }
@@ -105,7 +105,7 @@ function BreadCrumb() {
 
 function Button(p: { children: React.ReactNode, onClick?: () => void }) {
   return (
-    <div className="h-7 w-7 hover:bg-zinc-800 rounded-md flex items-center justify-center cursor-pointer select-none" onClick={ p.onClick }>
+    <div className="h-7 w-7 hover:bg-slate-800 rounded-md flex items-center justify-center cursor-pointer select-none" onClick={ p.onClick }>
       { p.children }
     </div>
   )

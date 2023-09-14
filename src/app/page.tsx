@@ -25,17 +25,16 @@ export default async function Home() {
   }) {
     return (
       <Link href={ P.href } className={ cn(
-        "w-full border border-zinc-900 rounded-xl p-5 bg-gradient-to-bl from-zinc-950 shadow-inner cursor-pointer transition-all group no-underline",
+        "w-full border border-slate-500/10 rounded-xl p-5 bg-gradient-to-bl from-slate-900/20 shadow-inner cursor-pointer transition-all group no-underline",
         "transition-all duration-500",
-        "hover:border-zinc-800",
-        "hover:from-zinc-900",
-        "hover:brightness-110",
-        "hover:scale-105",
+        "hover:border-slate-500/20",
+        "hover:from-slate-900/0",
+        // "hover:scale-105",
       ) }>
-        <div className="text-zinc-200 text-xl font-medium pb-1">
-          { P.title } <span className="text-zinc-600 group-hover:text-blue-500 transition-all">{ '->' }</span>
+        <div className="text-slate-200 text-xl font-medium pb-1">
+          { P.title } <span className="text-slate-600 group-hover:text-blue-500 transition-all">{ '->' }</span>
         </div>
-        <div className="text-sm text-zinc-400/80">
+        <div className="text-sm text-slate-400/80">
           { P.children }
         </div>
       </Link>
@@ -44,7 +43,7 @@ export default async function Home() {
 
   return (
     <article className={ cn(
-      "mx-auto mt-12 max-w-xl w-full",
+      "mx-auto mt-12 max-w-xl w-full relative",
       "prose-hr:my-4",
     ) }>
       <header className="text-center pt-8 ">
@@ -72,9 +71,13 @@ export default async function Home() {
         </Card>
       </section>
 
-      <section className="py-24">
-        <header className="pb-8 text-center">
-          <h2 className="text-xl text-zinc-300 pb-1 m-0">
+
+      <section className="py-16">
+        <div className="w-full flex flex-row justify-center self-center h-0 relative">
+          <div className="gradient-spotlight w-full h-[50rem] -mt-[25rem]" />
+        </div>
+        <header className="pb-8 text-center pt-12">
+          <h2 className="text-xl text-slate-50 pb-1 m-0">
             Quick Links
           </h2>
           <p className="text-sm m-0 p-0">
@@ -129,9 +132,9 @@ export default async function Home() {
             <Link className={ cn(
               "p-1.5 px-4 rounded-md",
               "cursor-pointer",
-              "underline decoration-zinc-700",
+              "underline decoration-slate-700",
 
-              "hover:bg-zinc-900 hover:text-white"
+              "hover:bg-slate-900 hover:text-white"
             ) }
 
               href={ `/demos/${slug(cat.name)}/${slug(item.title)}` }
@@ -147,7 +150,7 @@ export default async function Home() {
 
       {/* {
         dirs.flat(1).map(category =>
-          <div key={ category.name } className="p-4 border border-zinc-600 rounded-md mb-2">
+          <div key={ category.name } className="p-4 border border-slate-600 rounded-md mb-2">
             <div className="font-semibold ">
               { category.name }
             </div>
@@ -172,8 +175,8 @@ export default async function Home() {
               <Link
                 href={ `/articles/${r.slug}` }
                 className={ cn(
-                  // "border border-zinc-600 mb-2",
-                  "block p-4 m-0 rounded-md hover:bg-zinc-900/50 no-underline cursor-pointer",
+                  // "border border-slate-600 mb-2",
+                  "block p-4 m-0 rounded-md hover:bg-slate-900/50 no-underline cursor-pointer",
                   "leading-tight",
                   "transition-all"
                 ) }
@@ -189,7 +192,7 @@ export default async function Home() {
                     <div className="font-semibold mt-1 group-hover:text-white transition-all">
                       { r.flattenedTitle }
                     </div>
-                    <div className="text-xs text-zinc-500">
+                    <div className="text-xs text-slate-500">
                       { new Date(r.last_edited_time).toDateString() }
                     </div>
                   </div>

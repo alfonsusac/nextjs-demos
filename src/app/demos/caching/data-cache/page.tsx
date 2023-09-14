@@ -41,7 +41,7 @@ async function Data_BackgroundRevalidation({revalidate, length}:{ revalidate?: n
 
   const renderTime = Date.now()
 
-  return <div className="rounded-lg border border-zinc-700 bg-zinc-950 p-1 px-3 mt-4">
+  return <div className="rounded-lg border border-slate-700 bg-slate-950 p-1 px-3 mt-4">
     <p>
       Fetch result = <code>{ cache.data }</code> <br />
     </p>

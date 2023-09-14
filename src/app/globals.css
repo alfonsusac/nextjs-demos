@@ -12,9 +12,12 @@ html {
 }
 body {
   @apply bg-black
-  text-zinc-300/80;
-
+  text-slate-300/80 overflow-x-hidden;
   scrollbar-gutter: stable;
+  /* background: radial-gradient(#42434E, #000) */
+  background: #212146;
+  background: radial-gradient(circle at right bottom, #1b1b33 0%, #0d0d18 40%, #07070a );
+  
 }
 h1,
 h2,
@@ -24,12 +27,12 @@ h5,
 h6 {
   overflow-wrap: anywhere;
   @apply font-semibold
-  text-zinc-200;
+  text-slate-200;
 }
 
 hr {
   @apply my-8
-  border-t-zinc-700;
+  border-t-slate-700;
 }
 
 p {
@@ -54,20 +57,20 @@ article {
   }
   li {
     @apply ml-8 my-2
-    marker:text-zinc-500;
+    marker:text-slate-500;
     .checked {
-      @apply text-zinc-400 line-through;
+      @apply text-slate-400 line-through;
     }
   }
 
   /* TYPOGRAPHY */
 
   strong {
-    @apply text-zinc-100 font-bold;
+    @apply text-slate-100 font-bold;
   }
   h1 {
     @apply text-5xl
-    text-zinc-200 
+    text-slate-200 
     /* g-gradient-to-t from-[#aaa] to-white;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; */
@@ -98,7 +101,7 @@ article {
   a {
     @apply underline
     underline-offset-[0.2rem]
-    text-zinc-200;
+    text-slate-200;
   }
 
   blockquote {
@@ -106,8 +109,8 @@ article {
     pl-4
     italic
     my-4
-    border-l-zinc-600
-    text-zinc-400;
+    border-l-slate-600
+    text-slate-400;
   }
   table {
     @apply mx-auto my-4;
@@ -115,7 +118,7 @@ article {
     th,
     td {
       @apply border-x-0 
-      border-zinc-800 
+      border-slate-800 
       p-2 px-3 
       text-sm
       border-y
@@ -153,8 +156,8 @@ div article {
   pre {
     @apply border
     rounded-lg
-    border-zinc-800
-    bg-zinc-950;
+    border-slate-800
+    bg-slate-950;
   }
   code {
     @apply border-none
@@ -162,7 +165,7 @@ div article {
     px-1
     rounded-sm
     py-[0.15rem]
-    bg-zinc-800;
+    bg-slate-800;
   }
   pre > code {
     @apply px-0
@@ -180,7 +183,7 @@ div article {
   pre[class*="language-"] {
     @apply border-none
     rounded-none
-    bg-zinc-950;
+    bg-slate-950;
   }
 }
 
@@ -202,8 +205,19 @@ div.browser nav {
 }
 
 div.browser article {
-  @apply mt-4 p-4 border border-zinc-800 rounded-lg;
+  @apply mt-4 p-4 border border-slate-800 rounded-lg;
 }
 div.browser article h2 {
   @apply text-xl pt-2 pb-1 my-0;
+}
+
+
+.gradient-spotlight{
+  @apply -left-48 -z-10;
+  transform: scale(200%);
+  background: 
+    0% center / 50% 100% no-repeat conic-gradient(from 0.25turn at 70% 50%, #132A57, transparent),
+    100% center / 50% 100% no-repeat conic-gradient(from 0.75turn at 30% 50%, transparent, #132A57);
+    /* conic-gradient(from 0.75turn at 70% 50%, transparent, #1e1e35); */
+  mask: radial-gradient(closest-side, #e66465aa, transparent);
 }

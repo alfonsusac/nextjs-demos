@@ -17,7 +17,7 @@ function annotationToClassName(className: string, annotation: Annotation) {
       annotation.underline ?
         'underline' : '',
       annotation.code ?
-        'font-mono text-[0.8750em] p-1 -mx-1 bg-zinc-800 rounded-md ' : '',
+        'font-mono text-[0.8750em] p-1 -mx-1 bg-slate-800 rounded-md ' : '',
       convertColorToClassname(annotation.color),
       className,
     )
@@ -29,7 +29,7 @@ export type ApiColor = Annotation['color']
 export function convertColorToClassname(color?: ApiColor) {
   switch (color) {
     case 'default': return ''
-    case 'gray': return "text-zinc-500"
+    case 'gray': return "text-slate-500"
     case 'brown': return "text-yellow-800"
     case 'orange': return "text-orange-500"
     case 'yellow': return "text-yellow-400"
@@ -38,7 +38,7 @@ export function convertColorToClassname(color?: ApiColor) {
     case 'purple': return "text-purple-500"
     case 'pink': return "text-pink-500"
     case 'red': return "text-red-500"
-    case 'gray_background': return "bg-zinc-800/50"
+    case 'gray_background': return "bg-slate-800/50"
     case 'brown_background': return "bg-yellow-900/50"
     case 'orange_background': return "bg-orange-800/50"
     case 'yellow_background': return "bg-yellow-800/50"
