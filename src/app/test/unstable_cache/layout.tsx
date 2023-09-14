@@ -1,10 +1,7 @@
 import { delay } from "@/lib/cache"
 import { nanoid } from "nanoid"
 import { unstable_cache } from "next/cache"
-import { getFn } from "./page"
-
-
-
+import { getFn } from "./data"
 
 export default async function Layout(p:{children: React.ReactNode}) {
   console.log("\n\n--begin (layout)--")

@@ -3,6 +3,7 @@ import { delay, memoizeTesting } from "@/lib/cache"
 import { nanoid } from "nanoid"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
+import { getFn } from "./data"
 
 // Page for testing
 
