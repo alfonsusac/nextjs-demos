@@ -23,7 +23,7 @@ export class Audit {
 }
 
 export async function audit(prompt: string, cb: () => Promise<any>) {
-  const a = new Audit(prompt)
+  const a = new Audit(prompt, false)
   const ret = await cb()
   a.total()
   return ret
