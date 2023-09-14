@@ -11,16 +11,18 @@ export default async function Articles() {
 
   return (
     <div className={ cn(
-      "mx-auto mt-4",
-      "prose-h1:text-4xl",
+      "mx-auto mt-24",
+      "prose-h1:text-5xl",
       "prose-hr:my-8",
       "max-w-article"
     ) }>
-      <h1 className="mb-4">
-        All Articles
+      <h1 className="mb-3">
+        Articles
       </h1>
-      <hr />
-      <ul className="p-0">
+      <p>
+        Articles that I wrote related to Next.js
+      </p>
+      <ul className="p-0 pt-12">
         {
           articles.map(r => (
             <li key={ r.id } className="list-none m-0 transition-all group -my-2 sm:-mx-8">

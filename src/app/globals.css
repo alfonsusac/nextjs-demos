@@ -6,133 +6,143 @@
   color-scheme: dark;
 }
 
-html{ 
+html {
   @apply scroll-smooth
-  scroll-p-32
-  
+  scroll-p-32;
 }
-body{ 
+body {
   @apply bg-black
   text-zinc-300/80;
 
   scrollbar-gutter: stable;
-  
 }
-h1, h2, h3, h4, h5, h6 { 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: anywhere;
   @apply font-semibold
-  text-zinc-200
+  text-zinc-200;
 }
 
-hr{ 
+hr {
   @apply my-8
-  border-t-zinc-700
+  border-t-zinc-700;
 }
 
 p {
-  @apply my-2
+  @apply my-2;
 }
 
 article {
-  @apply 
-  mx-auto mb-6
+  @apply mx-auto mb-6
   leading-7 break-words;
 
   /* LISTS */
 
-  ul, ol { 
-    @apply mb-4
+  ul,
+  ol {
+    @apply mb-4;
   }
-  ul > li { 
-    @apply list-disc
+  ul > li {
+    @apply list-disc;
   }
-  ol > li { 
-    @apply list-decimal
+  ol > li {
+    @apply list-decimal;
   }
-  li { 
+  li {
     @apply ml-8 my-2
     marker:text-zinc-500;
     .checked {
-      @apply text-zinc-400 line-through
+      @apply text-zinc-400 line-through;
     }
   }
 
   /* TYPOGRAPHY */
 
-  strong { 
-    @apply text-zinc-100 font-bold
+  strong {
+    @apply text-zinc-100 font-bold;
   }
-  h1 { 
-    @apply text-4xl
-    text-zinc-200
+  h1 {
+    @apply text-5xl
+    text-zinc-200 
+    /* g-gradient-to-t from-[#aaa] to-white;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
   }
   h2 {
     @apply text-2xl 
-    mt-12 mb-4
+    mt-12 mb-4 bg-gradient-to-t from-black to-white bg-clip-text;
   }
-  h3 { 
+  h3 {
     @apply text-xl 
-    mt-8 mb-2
+    mt-8 mb-2;
   }
-  h4 { 
+  h4 {
     @apply text-lg
-    mt-4 
+    mt-4;
   }
-  .toggle{
+  .toggle {
     &-heading1 {
-      @apply mt-12 mb-4
+      @apply mt-12 mb-4;
     }
     &-heading2 {
-      @apply mt-8 mb-2
+      @apply mt-8 mb-2;
     }
     &-heading3 {
-      @apply mt-4
+      @apply mt-4;
     }
   }
-  a { 
+  a {
     @apply underline
     underline-offset-[0.2rem]
-    text-zinc-200
+    text-zinc-200;
   }
 
-  blockquote { 
+  blockquote {
     @apply border-l-4
     pl-4
     italic
     my-4
     border-l-zinc-600
-    text-zinc-400
+    text-zinc-400;
   }
   table {
     @apply mx-auto my-4;
-    
-    th, td {
+
+    th,
+    td {
       @apply border-x-0 
       border-zinc-800 
       p-2 px-3 
       text-sm
       border-y
-      text-left
+      text-left;
     }
 
-    thead, tbody{
-      tr:first-of-type{
-        th, td {
-          @apply border-t-0
-        }
-      }
-    }
-    
-    tbody{
-      tr:last-of-type{
-        th, td{
-          @apply border-b-0
+    thead,
+    tbody {
+      tr:first-of-type {
+        th,
+        td {
+          @apply border-t-0;
         }
       }
     }
 
-    thead{
-      @apply align-bottom
+    tbody {
+      tr:last-of-type {
+        th,
+        td {
+          @apply border-b-0;
+        }
+      }
+    }
+
+    thead {
+      @apply align-bottom;
     }
   }
 }
@@ -144,7 +154,7 @@ div article {
     @apply border
     rounded-lg
     border-zinc-800
-    bg-zinc-950
+    bg-zinc-950;
   }
   code {
     @apply border-none
@@ -152,50 +162,48 @@ div article {
     px-1
     rounded-sm
     py-[0.15rem]
-    bg-zinc-800
+    bg-zinc-800;
   }
   pre > code {
-    @apply
-    px-0
+    @apply px-0
     py-0
     rounded-none
-    bg-inherit
+    bg-inherit;
   }
 
-  code[class*=language-],
-  pre[class*=language-] {
+  code[class*="language-"],
+  pre[class*="language-"] {
     background-color: unset;
     @apply !m-0 
-    leading-[1.2]
+    leading-[1.2];
   }
-  pre[class*=language-]{
+  pre[class*="language-"] {
     @apply border-none
     rounded-none
-    bg-zinc-950
+    bg-zinc-950;
   }
-
 }
 
 /* BROWSER DEMO */
 
-div.browser{
-  @apply text-sm leading-normal
+div.browser {
+  @apply text-sm leading-normal;
 }
 
 div.browser h1 {
-  @apply text-xl py-2
+  @apply text-xl py-2;
 }
 div.browser h2 {
-  @apply text-lg
+  @apply text-lg;
 }
 
 div.browser nav {
-  @apply my-2 mt-0 flex gap-x-3 gap-y-2 flex-wrap
+  @apply my-2 mt-0 flex gap-x-3 gap-y-2 flex-wrap;
 }
 
 div.browser article {
-  @apply mt-4 p-4 border border-zinc-800 rounded-lg
+  @apply mt-4 p-4 border border-zinc-800 rounded-lg;
 }
-div.browser article h2{
-  @apply text-xl pt-2 pb-1 my-0
+div.browser article h2 {
+  @apply text-xl pt-2 pb-1 my-0;
 }

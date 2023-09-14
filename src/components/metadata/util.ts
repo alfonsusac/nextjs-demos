@@ -72,7 +72,7 @@ export async function getFileName(url: string) {
 }
 
 
-function urlMetadata_withFavicon(url: string, options?: any) {
+async function urlMetadata_withFavicon(url: string, options?: any) {
   if (!options || typeof options !== 'object') options = {}
 
   const opts = Object.assign(
@@ -102,43 +102,33 @@ function urlMetadata_withFavicon(url: string, options?: any) {
     redirect: 'follow'
   }
 
-  return nodefetch(url, requestOpts as any)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`response code ${response.status}`)
-      }
-
-      // rewrite url if our request had to follow redirects to resolve the
-      // final link destination (for example: links shortened by bit.ly)
-      if (response.url) url = response.url
-
-      const contentType = response.headers.get('content-type')
-      const isText = contentType && contentType.startsWith('text')
-      const isHTML = contentType && contentType.includes('html')
-
-      if (!isText || !isHTML) {
-        throw new Error(`unsupported content type: ${contentType}`)
-      }
-
-      return response.text()
-    })
-    .then((body) => {
-      const metadata = parse(url, body, opts) as Record<string, string | boolean | Record<string, string>>
-
-      const $ = cheerio.load(body)
-      const faviconpath = $('link[rel=icon]').first().attr('href')
-      if (faviconpath) {
-        metadata['faviconpath'] = faviconpath
-      }
-      const fluidFaviconpath = $('link[rel=fluid-icon]').first().attr('href')
-      if (fluidFaviconpath) {
-        metadata['fluid-faviconpath'] = fluidFaviconpath
-      }
-      const title2 = $('title').first().text()
-      if (title2) {
-        metadata['title2'] = title2
-      }
-
-      return metadata
-    })
+  const response = await nodefetch(url, requestOpts as any)
+  if (!response.ok) {
+    throw new Error(`response code ${response.status}`)
+  }
+  // rewrite url if our request had to follow redirects to resolve the
+  // final link destination (for example: links shortened by bit.ly)
+  if (response.url) url = response.url
+  const contentType = response.headers.get('content-type')
+  const isText = contentType && contentType.startsWith('text')
+  const isHTML = contentType && contentType.includes('html')
+  if (!isText || !isHTML) {
+    throw new Error(`unsupported content type: ${contentType}`)
+  }
+  const body = await response.text()
+  const metadata = parse(url, body, opts) as Record<string, string | boolean | Record<string, string>>
+  const $ = cheerio.load(body)
+  const faviconpath = $('link[rel=icon]').first().attr('href')
+  if (faviconpath) {
+    metadata['faviconpath'] = faviconpath
+  }
+  const fluidFaviconpath = $('link[rel=fluid-icon]').first().attr('href')
+  if (fluidFaviconpath) {
+    metadata['fluid-faviconpath'] = fluidFaviconpath
+  }
+  const title2 = $('title').first().text()
+  if (title2) {
+    metadata['title2'] = title2
+  }
+  return metadata
 }

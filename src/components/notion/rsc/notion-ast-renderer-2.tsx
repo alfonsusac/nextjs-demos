@@ -9,7 +9,7 @@ import { HeadingBuilder } from "./components/headings"
 import { CalloutBlock, Paragraph, QuoteBlock, ToggleBlock } from "./components/nestables"
 import { ColumnBlock, ColumnListBlock, DividerBlock } from "./components/dividers"
 import { TableBlock, TableRow } from "./components/tables"
-import { LinkBookmark } from "./components/link-previews"
+import { NotionLinkBookmark } from "./components/link-previews"
 import { AudioBlock, EmbedBlock, FileBlock, ImageBlock, PDFBlock, VideoBlock } from "./components/embeds"
 import { CodeBlock, EquationBlock } from "./components/exotic-texts"
 import { Audit } from "@/components/timer"
@@ -87,7 +87,7 @@ export function NotionASTRenderer({ ast, ...rest }: {
 
     // ※ Embeds
     // 'bookmark': () => <></>, // async
-    'bookmark': LinkBookmark, // async
+    'bookmark': NotionLinkBookmark, // async
     'video': VideoBlock,
     // 'image': () => <></>, // async
     'image': ImageBlock, // async

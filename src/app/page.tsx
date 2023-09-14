@@ -5,6 +5,7 @@ import { slug } from 'github-slugger'
 import { cn } from '@/components/typography'
 import { NotionIcon } from '@/components/notion/rsc/images'
 import { getArticleList } from '@/components/notion/data/articles'
+import { LinkBookmark, NotionLinkBookmark } from '@/components/notion/rsc/components/link-previews'
 
 
 export function IconParkSolidBrowser(props: React.SVGProps<SVGSVGElement>) {
@@ -17,25 +18,101 @@ export default async function Home() {
 
   const articles = await getArticleList()
 
+  function Card(P: {
+    title: string
+    children: React.ReactNode
+    href: string
+  }) {
+    return (
+      <Link href={ P.href } className={ cn(
+        "transition-all duration-300",
+        "w-full border border-zinc-900 rounded-xl p-5 bg-gradient-to-bl from-zinc-950 shadow-inner cursor-pointer transition-all group no-underline",
+        "hover:border-zinc-800",
+        "hover:from-zinc-900",
+        "hover:brightness-110"
+      ) }>
+        <div className="text-zinc-200 text-xl font-medium pb-1">
+          { P.title } <span className="text-zinc-600 group-hover:text-blue-500 transition-all">{ '->' }</span>
+        </div>
+        <div className="text-sm text-zinc-400/80">
+          { P.children }
+        </div>
+      </Link>
+    )
+  }
+
   return (
     <article className={ cn(
-      "mx-auto mt-12 max-w-xl",
+      "mx-auto mt-12 max-w-xl w-full",
       "prose-hr:my-4",
-      "prose-h2:mb-4",
-      "prose-h2:text-center",
-
-      "prose-h1:text-4xl",
-      "prose-h1:font-bold",
-
     ) }>
-      <h1 className="text-center text-4xl font-bold">
-       👋 Welcome!
-      </h1>
+      <header className="text-center pt-8 ">
+        <div className="text-6xl">
+          👋
+        </div>
+        <h1 className="text-3xl pt-4 tracking-tight">
+          Welcome to Alfon&apos;s <br /> Next.js Notes and Tricks
+        </h1>
+        <p className="text-sm">
+          Compilation of stuff that I found interesting when using Next.js
+        </p>
+      </header>
 
-      <h2>
+      <div className="p-8">
+
+      </div>
+
+      <section className="flex flex-col w-full justify-stretch gap-5 sm:flex-row">
+        <Card title="Demos" href="/demos">
+          Demonstration on various Next.js features
+        </Card>
+        <Card title="Articles" href="/articles">
+          Thoughts on Next.js, based on experience and experiments.
+        </Card>
+      </section>
+
+      <section className="py-24">
+        <header className="pb-8 text-center">
+          <h2 className="text-xl text-zinc-300 pb-1 m-0">
+            Quick Links
+          </h2>
+          <p className="text-sm m-0 p-0">
+            Websites that I found really helpful
+          </p>
+        </header>
+        <div className="flex flex-col gap-4">
+          <LinkBookmark
+            url='https://nextjs.org/docs'
+            title="Next.js Official Docs"
+            description="Welcome to the Next.js Documentation."
+            // faviconpath="https://images-ext-2.discordapp.net/external/mHySWiQBi7o8dYb5lEIXs57x4TrNR_oEKJTdw7ERgcA/%3Ftitle%3DDocs/https/nextjs.org/api/og"
+            faviconpath="https://nextjs.org/favicon.ico"
+          />
+          <LinkBookmark
+            url='https://nextjs-discord-common-questions.joulev.dev/'
+            title="Joulev's Next.js Discord Common Questions"
+            description="Collection of his answers to some of the most commonly asked questions on the server"
+            faviconpath="https://static.joulev.dev/favicon.ico"
+          />
+          <LinkBookmark
+            url='https://twitter.com/asidorenko_'
+            title='Alex Sidorenko (@asidorenko_)'
+            description='Making short videos about Next.js'
+            faviconpath="https://freelogopng.com/images/all_img/1690643591twitter-x-logo-png.png"
+          />
+          <LinkBookmark
+            url='https://twitter.com/delba_oliveira'
+            title='Delba (@delba_oliveira)'
+            description='Developer Experience @Nextjs and @Vercel ▲'
+            faviconpath="https://freelogopng.com/images/all_img/1690643591twitter-x-logo-png.png"
+          />
+        </div>
+      </section>
+
+      {/* <h2>
         Demos
       </h2>
-      <hr/>
+      <hr />
 
       <div className={ cn(
         "flex flex-col",
@@ -43,25 +120,25 @@ export default async function Home() {
       ) }>
         {
           dirs.map(cat => cat.topics.map(item => <>
-          
+
             <Link className={ cn(
               "p-1.5 px-4 rounded-md",
-              "cursor-pointer",              
+              "cursor-pointer",
               "underline decoration-zinc-700",
 
               "hover:bg-zinc-900 hover:text-white"
             ) }
-            
+
               href={ `/demos/${slug(cat.name)}/${slug(item.title)}` }
             >
               <IconParkSolidBrowser className="inline text-base mr-3 mb-1" />
-              {item.title}
+              { item.title }
             </Link>
-          
-          
+
+
           </>))
         }
-      </div>
+      </div> */}
 
       {/* {
         dirs.flat(1).map(category =>
@@ -78,10 +155,10 @@ export default async function Home() {
       } */}
 
 
-      <h2>
+      {/* <h2>
         Articles
       </h2>
-      <hr/>
+      <hr />
       <ul className="p-0">
         {
           articles.map(r => (
@@ -118,7 +195,7 @@ export default async function Home() {
             </li>
           ))
         }
-      </ul>
+      </ul> */}
 
     </article>
   )

@@ -7,7 +7,7 @@ import { slug } from "github-slugger"
 export default function Demos() {
   return (
     <div className={ cn(
-      "mx-auto mt-4",
+      "mx-auto mt-24",
       "prose-hr:my-4",
       "prose-h2:mb-4",
       "prose-h2:text-center",
@@ -17,10 +17,12 @@ export default function Demos() {
 
       "prose-h4:text-zinc-300"
     ) }>
-      <h1>
-        All Demos
+      <h1 className="mb-3">
+        Demos
       </h1>
-
+      <p>
+        Articles that I wrote related to Next.js
+      </p>
       {/* <hr /> */}
       { dirs.map(category =>
         <>
