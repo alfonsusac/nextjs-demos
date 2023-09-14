@@ -25,11 +25,12 @@ export default async function Home() {
   }) {
     return (
       <Link href={ P.href } className={ cn(
-        "transition-all duration-300",
         "w-full border border-zinc-900 rounded-xl p-5 bg-gradient-to-bl from-zinc-950 shadow-inner cursor-pointer transition-all group no-underline",
+        "transition-all duration-500",
         "hover:border-zinc-800",
         "hover:from-zinc-900",
-        "hover:brightness-110"
+        "hover:brightness-110",
+        "hover:scale-105",
       ) }>
         <div className="text-zinc-200 text-xl font-medium pb-1">
           { P.title } <span className="text-zinc-600 group-hover:text-blue-500 transition-all">{ '->' }</span>
@@ -87,24 +88,28 @@ export default async function Home() {
             description="Welcome to the Next.js Documentation."
             // faviconpath="https://images-ext-2.discordapp.net/external/mHySWiQBi7o8dYb5lEIXs57x4TrNR_oEKJTdw7ERgcA/%3Ftitle%3DDocs/https/nextjs.org/api/og"
             faviconpath="https://nextjs.org/favicon.ico"
+            thumbnail="https://nextjs.org/api/og?title=Docs"
           />
           <LinkBookmark
             url='https://nextjs-discord-common-questions.joulev.dev/'
             title="Joulev's Next.js Discord Common Questions"
             description="Collection of his answers to some of the most commonly asked questions on the server"
             faviconpath="https://static.joulev.dev/favicon.ico"
+            thumbnail="https://cdn.discordapp.com/attachments/1103539595947278397/1151796086357377084/image.png"
           />
           <LinkBookmark
             url='https://twitter.com/asidorenko_'
             title='Alex Sidorenko (@asidorenko_)'
             description='Making short videos about Next.js'
             faviconpath="https://freelogopng.com/images/all_img/1690643591twitter-x-logo-png.png"
-          />
+            // thumbnail="https://pbs.twimg.com/profile_banners/4885926545/1691448655/600x200"
+          /> 
           <LinkBookmark
             url='https://twitter.com/delba_oliveira'
             title='Delba (@delba_oliveira)'
             description='Developer Experience @Nextjs and @Vercel ▲'
             faviconpath="https://freelogopng.com/images/all_img/1690643591twitter-x-logo-png.png"
+            // thumbnail="https://pbs.twimg.com/profile_banners/893035359474524161/1662370145/1500x500"
           />
         </div>
       </section>

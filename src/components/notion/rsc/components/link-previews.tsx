@@ -38,8 +38,9 @@ export async function LinkBookmark(P: {
         "rounded-lg",
         "bg-gradient-to-bl from-zinc-950 shadow-inner",
 
-        "duration-300",
+        "duration-500",
         "hover:border-zinc-800",
+        "hover:scale-105",
       ) }
     >
       <div className="hidden group-hover:block absolute w-full h-full group-hover:bg-zinc-600/10 transition-all bg-gradient- from-zinc-600/20" />
@@ -85,16 +86,22 @@ export async function LinkBookmark(P: {
         </div>
       </div>
 
-      {/* RIGHT */}
-      <div className="w-64">
-        <img
-          src="https://nextjs.org/api/og?title=Docs"
-          alt={ `URL to ${metadata.title}` }
-          className="h-full object-cover"
-        />
-      </div>
+      {/* RIGHT */ }
+      {
+        P.thumbnail ? (
+          <div className="w-64">
+            <img
+              src={ P.thumbnail }
+              alt={ `URL to ${metadata.title}` }
+              className="h-full object-cover"
+            />
+          </div>
+        ): (
+          <></>
+        )
+      }
     </Link>
-  )
+   )
 }
 
 export async function NotionLinkBookmark({
