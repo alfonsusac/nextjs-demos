@@ -92,6 +92,7 @@ export default function RootLayout(p: {
         <div className={ cn(
           "max-w-screen-lg mx-auto w-full gap-6 items-center px-4",
           "flex flex-row",
+          "justify-center"
         ) }>
 
           <div className="text-2xl font-semibold gap-2 items-center py-4 pt-4 hidden sm:flex">
@@ -102,10 +103,10 @@ export default function RootLayout(p: {
               alt="Profile Picture"
               className="rounded-2xl w-6 h-6"
             />
-            <span className="font-light text-zinc-600">/</span>
-            <Link href='/'>
+            {/* <span className="font-light text-zinc-600">/</span> */}
+            {/* <Link href='/'>
               Next.js Notes
-            </Link>
+            </Link> */}
           </div>
 
           <Page className="my-4"

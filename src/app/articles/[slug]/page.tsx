@@ -11,15 +11,11 @@ import { NotionRichText } from "@/components/notion/rsc/rich-texts/parser"
 import { formatDistanceToNow } from "date-fns"
 import { InlineMentionTooltip } from "@/components/notion/client"
 import { NotionPageViews } from "./client"
-import { getArticle } from "@/components/notion/data/articles"
-import { getPageContent } from "@/components/notion/data/helper"
-import { unstable_cache } from 'next/cache'
 import { Audit, audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
-import { nanoid } from 'nanoid'
-import { delay } from '@/lib/cache'
-import { getPageData } from './data'
+import { getPageData } from './page-data'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
+import { cache } from 'react'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -31,6 +27,12 @@ import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2
 //   })
 //   return params
 // }
+
+
+
+
+
+
 
 export async function generateMetadata({ params }: any) {
   const { article } = await getPageData(params.slug)
@@ -132,9 +134,15 @@ export default async function Page({ params }: any) {
         >
           /articles
         </Link>
-        <h1>
+
+        {/* TITLE */}
+        <h1 className="py-2 pb-4">
           <NotionRichText rich_text={ article.title } />
         </h1>
+
+
+
+        {/* METADATA */}
         <div className="text-sm text-zinc-500">
           Last updated:
           <InlineMentionTooltip
@@ -146,7 +154,7 @@ export default async function Page({ params }: any) {
               { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
             </span>
           </InlineMentionTooltip>
-          { ` ● ` }
+          { `    ` }
           <NotionPageViews
             id={ article.id }
             num={ metadata.views }
@@ -162,6 +170,8 @@ export default async function Page({ params }: any) {
             }
           />
         </div>
+        <hr />
+
       </header>
     )
   }

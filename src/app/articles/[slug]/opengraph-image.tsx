@@ -6,7 +6,7 @@ import { CalloutBlockObjectResponse } from "@notionhq/client/build/src/api-endpo
 import { cn } from "@/components/typography"
 import bg from "./opengraph-image-bg.png"
 import bgtxt from "./opengraph-image-bg.txt"
-import { getPageDetails } from "./data"
+import { getPageDetails } from "./page-data"
 
 // Image metadata
 export const alt = 'Next.js Tricks'
