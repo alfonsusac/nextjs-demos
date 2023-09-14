@@ -18,7 +18,7 @@ type MemoizePropType<Parameters extends unknown[]> = {
          A way to generalize the data caching function in Next.js     
 **/
 
-export function memoizeInside<R extends unknown[], T>(
+export function memoizeTesting<R extends unknown[], T>(
   cb: Callback<R, T>,
   opts?: MemoizePropType<R>
 ) {

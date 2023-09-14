@@ -1,19 +1,12 @@
 import { clearLog } from "@/components/timer"
-import { delay, memoizeInside } from "@/lib/cache"
+import { delay, memoizeTesting } from "@/lib/cache"
 import { nanoid } from "nanoid"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
 
 // Page for testing
 
-async function getnanoid() {
-  await delay(2207)
-  const data = nanoid(4)
-  console.log("midd - " + data)
-  return data
-}
 
-export const getFn = memoizeInside(getnanoid)
 
 export async function generateMetadata() {
   console.log("\n\n--begin (page metadata)--")
