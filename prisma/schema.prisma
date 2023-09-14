@@ -7,8 +7,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // directUrl = env("PROD_DB_URL")
-  url      = env("PROD_DB_URL")
+  directUrl = env("PROD_DB_URL")
+  url      = env("PROD_DB_URL_POOLED")
 }
 
 model Article {
