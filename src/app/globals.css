@@ -216,8 +216,8 @@ div.browser article h2 {
   @apply -left-48 -z-10;
   transform: scale(200%);
   background: 
-    0% center / 50% 100% no-repeat conic-gradient(from 0.25turn at 70% 50%, #132A57, transparent),
-    100% center / 50% 100% no-repeat conic-gradient(from 0.75turn at 30% 50%, transparent, #132A57);
+    0% center / 50% 100% no-repeat conic-gradient(from 0.25turn at 70% 50%, #0c1d42, transparent),
+    100% center / 50% 100% no-repeat conic-gradient(from 0.75turn at 30% 50%, transparent, #0c1d42);
     /* conic-gradient(from 0.75turn at 70% 50%, transparent, #1e1e35); */
   mask: radial-gradient(closest-side, #e66465aa, transparent);
 }

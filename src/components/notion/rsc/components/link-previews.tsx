@@ -30,20 +30,25 @@ export async function LinkBookmark(P: {
         "w-full",
         "flex flex-row items-stretch",
         "border",
-        "border-slate-800",
         "no-underline",
         "group relative overflow-hidden transition-all",
 
-        "border-slate-900",
+        "border-slate-500/10",
+        "bg-gradient-to-bl from-slate-950/30 shadow-inner",
+        "hover:border-slate-800",
+
+
         "rounded-lg",
-        "bg-gradient-to-bl from-slate-950 shadow-inner",
 
         "duration-100",
-        "hover:border-slate-800",
         // "hover:scale-[1.01]",
       ) }
     >
-      <div className="hidden group-hover:block absolute w-full h-full group-hover:bg-slate-600/10 transition-all bg-gradient- from-slate-600/20" />
+      <div className={ cn(
+        "block opacity-0 absolute w-full h-full  transition-all duration-150",
+        "group-hover:bg-slate-800/50",
+        "group-hover:opacity-50"
+      ) } />
       {/* LEFT */}
       <div className="p-4 w-full">
         <div className="text-slate-200 truncate w-full">
