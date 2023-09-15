@@ -1,6 +1,6 @@
 import { inRemotePattern } from "../next/remotePattern"
 import Image from "next/image"
-import { getImage } from "./placeholder"
+import { getCachedImage, getImage } from "./placeholder"
 import { cn } from "../typography"
 
 type NextImageProp = React.ComponentProps<typeof Image>
@@ -23,30 +23,11 @@ export async function NextImage({
 
   if (typeof src === 'string') {
     optimize = inRemotePattern(src)
-    if (!optimize) console.warn(`WARN: Image not found in remotePattern, not optimised: ${src}`)
-
-    
-    const data = await getImage(src)
-
-    if (data) {
-      if (!width || !height) {
-        if(data.width)
-          _width = data.width
-        if(data.height)
-          _height = data.height
-      } else {
-        _width = width,
-        _height = height
-      }
-      
-      if(data.base64)
-        _blurDataURL = data.base64
-    }
-
+    if (!optimize)
+      console.info(`WARN: Image not found in remotePattern, not optimised: ${src}`)
+    // const { base64 } = await getCachedImage(src)
+    // _blurDataURL = base64 ?? undefined
   }
-
-
-
 
   return (
     <Image
@@ -54,19 +35,15 @@ export async function NextImage({
       className={ cn(className, (unoptimized ?? !optimize) ? 'not-optimize' : 'optimized') }
       src={ src }
       alt={ alt }
-      width={ _width }
-      height={ _height }
+      width={ 1920 }
+      height={ 1920 }
       sizes='100vw'
-      // fill
-      // width={ 30 }
-      // height={ 30 }
-      placeholder="blur"
-      blurDataURL={ _blurDataURL }
+      // placeholder="blur"
+      // blurDataURL={ _blurDataURL }
       style={ {
         aspectRatio: `${_width} / ${_height}`
-      }}
+      } }
       { ...props }
     />
   )
-
 }

@@ -2,8 +2,6 @@ import 'katex/dist/katex.min.css'
 import { cn } from "@/components/typography"
 import { Sidebar } from "@/app/demos/layout"
 import { ToCSidebar } from "@/components/toc/client"
-import { convertChildrenToAST } from "@/components/notion/parser/parser"
-import { extractHeadings } from "@/components/notion/notion-toc/rsc"
 import { CommentSection } from "@/components/giscus"
 import { NotionIcon, NotionImage } from "@/components/notion/rsc/images"
 import Link from "next/link"
@@ -13,11 +11,8 @@ import { InlineMentionTooltip } from "@/components/notion/client"
 import { NotionPageViews } from "./client"
 import { Audit, audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
-import { getPageData } from './page-data'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
-import { cache } from 'react'
-import { unstable_cache } from 'next/cache'
-import { nanoid } from 'nanoid'
+import { getCachedPageDetails, getCachedPageMetadata } from './page-data'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -30,9 +25,8 @@ import { nanoid } from 'nanoid'
 //   return params
 // }
 
-
 export async function generateMetadata({ params }: any) {
-  const { article } = await getPageData(params.slug)
+  const { article } = await getCachedPageDetails(params.slug)
   return {
     title: article.flattenedTitle,
     description: "Next.js Notes, Tips and Tricks - by @alfonsusac",
@@ -42,39 +36,12 @@ export async function generateMetadata({ params }: any) {
 export default async function Page({ params }: any) {
 
   clearLog()
-  const a = new Audit("Generating Page")
-  const { article, content, ast } = await getPageData(params.slug)
+  const timer = new Audit("Generating Page", false)
 
-  const randomid = await unstable_cache(
-    async () => {      
-      return await unstable_cache(
-        async () => nanoid(4)
-      ) ()
-    }
-  )()
+  const { article, ast, headings } = await getCachedPageDetails(params.slug) // On-Demand Revalidation
+  const metadata = await getCachedPageMetadata(article.id) // revalidate: 3600
 
-  console.log(`-  RandomID: ${ast}`)
-
-  // const ast = await audit(
-  //   'Convert ListBlock to AST',
-  //   async () => await convertChildrenToAST(content),
-  // )
-  const headings = await audit(
-    'Extract Headings',
-    async () => extractHeadings(ast),
-  )
-
-  // Dynamic Data
-  const metadata = await audit(
-    'Retrieve Page Metadata',
-    async () => await getPageMetadata(article.id)
-  )
-
-  a.total()
-  console.info("Done generating page!")
-  console.info("Rendering Page...")
-
-  // return <></>
+  timer.total()
 
   return (
     <>
@@ -98,7 +65,7 @@ export default async function Page({ params }: any) {
         {/* LEFT */ }
         <article className="max-w-article m-0 w-full mx-auto md:mr-0">
           <Header />
-          <NotionASTRenderer ast={ ast } />
+          <NotionASTRenderer ast={ast} />
           <CommentSection />
           <footer className="mt-12 py-12 border-t border-t-slate-600 text-slate-500 text-sm space-y-2 leading-normal">
             <FooterContent />
@@ -146,8 +113,6 @@ export default async function Page({ params }: any) {
         <h1 className="py-2 pb-4">
           <NotionRichText rich_text={ article.title } />
         </h1>
-
-
 
         {/* METADATA */}
         <div className="text-sm text-slate-500">
@@ -232,37 +197,3 @@ export default async function Page({ params }: any) {
 
 
 
-async function getPageMetadata(id: string) {
-
-  const metadata = {
-    views: 0
-  }
-
-  try {
-
-    const res = await supabase
-      .from('Article')
-      .select('views')
-      .eq('id', id)
-
-    // console.log(res)
-
-    const views = res.data?.[0]?.views
-
-    if (!views) {
-      await supabase
-        .from('Article')
-        .insert({ id, views: 0 })
-    }
-
-    if (views) {
-      metadata.views = views
-    }
-
-  } catch (error) {
-    console.log("Error getting views")
-    console.error(error)
-  }
-
-  return metadata
-}
