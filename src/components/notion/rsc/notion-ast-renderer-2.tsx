@@ -109,13 +109,7 @@ export function NotionASTRenderer({ ast, ...rest }: {
     'root': () => <></>,
 
   }
-
-  const audit = new Audit('', false)
-
   const RenderResult = <NotionASTRendererRecursor node={ ast } componentMap={ defaultComponents } />
-
-  audit.mark('Render Content')
-
   return RenderResult
 }
 
