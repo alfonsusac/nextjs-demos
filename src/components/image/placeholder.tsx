@@ -4,7 +4,65 @@ import sizeof from 'object-sizeof'
 import { unstable_cache } from 'next/cache'
 import { Audit } from '../timer'
 import { convertBMPtoPNG } from './bmp-processor'
-import probe, {} from "probe-image-size"
+import probe, { } from "probe-image-size"
+import { memoize } from 'nextjs-better-unstable-cache'
+
+export const getCachedImage = memoize(
+  getImage2,
+  {
+    revalidateTags: (src) => ['image', src],
+    log: ['datacache', 'verbose'],
+    duration: 30
+  }
+)
+
+async function getImage2(src: string) {
+  try {
+    // Get file buffer
+    let buffer = Buffer.from(await (await fetch2(src)).arrayBuffer())
+
+    // Convert unsupported format
+    if (get_url_extension(src) === 'bmp') {
+      console.log("Converting BPM to PNG")
+      buffer = await convertBMPtoPNG(buffer)
+    }
+    try {
+      // Generate placeholder data
+      const plaiceholder = await getPlaiceholder(buffer, { size: 10, removeAlpha: true })
+      const data = {
+        base64: plaiceholder.base64,
+        src,
+        height: plaiceholder.metadata.height,
+        width: plaiceholder.metadata.width,
+      }
+      // Finish
+      console.log("- Size of GetImage Cached: " + sizeof(buffer) + " Bytes")
+      return data
+    } catch (error) {
+      // Fetch via probing
+      console.error("Error at generating placeholder.")
+      console.log(error)
+      const meta = await probe(src)
+      return {
+        base64: null,
+        src,
+        height: meta.height,
+        width: meta.width
+      }
+    }
+  } catch (error) {
+    // Error
+    console.error("Error at fetching src.")
+    console.log(error)
+    return {
+      base64: null,
+      src,
+      height: null,
+      width: null
+    }
+  }
+}
+
 
 
 export async function getImage(src: string) {
@@ -62,7 +120,7 @@ export async function getImage(src: string) {
     {
       tags: ['image', src],
     }
-  )();
+  )()
 
   audit.total()
   return cache
