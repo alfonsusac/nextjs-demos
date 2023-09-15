@@ -48,10 +48,6 @@ export function ImageBlock({
   node,
 }: NotionComponentProp<'image'>) {
 
-  const url =
-    'external' in node.props ? node.props.external.url :
-      'file' in node.props ? node.props.file.url : ''
-
   return (
     <div className={ cn(className, "my-2 relative w-full p-2") }>
       <NotionImage

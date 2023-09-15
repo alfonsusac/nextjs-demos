@@ -16,6 +16,7 @@ export async function LinkBookmark(P: {
   variant?: "1" | "2"
 }) {
   const { variant = "1" } = P
+  
   const metadata = !P.title ? await getMetaInfo(P.url) : {
     title: P.title,
     description: P.description,
@@ -36,7 +37,6 @@ export async function LinkBookmark(P: {
         "border-slate-500/10",
         "bg-gradient-to-bl from-slate-950/30 shadow-inner",
         "hover:border-slate-800",
-
 
         "rounded-lg",
 

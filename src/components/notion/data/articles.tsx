@@ -3,6 +3,7 @@ import { notion } from "../../../lib/notion"
 import { PageObjectResponse, RichTextItemResponse, RichTextPropertyItemObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import { flattenRichText } from "../rsc/rich-texts/utils"
 
+
 const ARTICLE_DATABASE_ID = '3a6b7f9f0fed440e924494b2c64dc10d'
 
 
