@@ -32,7 +32,11 @@ import { Prisma } from '@prisma/client'
 // }
 
 export async function generateMetadata({ params }: any) {
-  const { article } = await getCachedPageDetails(params.slug)
+  const res = await getPageData(params.slug) // 3600 BGR
+  if (!res) notFound()
+  const {
+    article,
+  } = res
   return {
     title: article.flattenedTitle,
     description: "Next.js Notes, Tips and Tricks - by @alfonsusac",
@@ -48,21 +52,19 @@ export default async function Page({ params }: any) {
   // 2. Check if data exist -> notFound() if not
   
   // LOCAL MACHINE ONLY
-  // if (process.env.NODE_ENV === 'development') {
-  //   const article = await getArticle(params.slug)
-  //   const content = await getPageContent(article.id)
-  //   const ast = await convertChildrenToAST(content)
+  if (process.env.NODE_ENV === 'development') {
+    const article = await getArticle(params.slug)
+    const content = await getPageContent(article.id)
+    const ast = await convertChildrenToAST(content)
 
-  //   // Add if not exist, edit if exist.
-  //   await supabase.from('Article').upsert({
-  //     id: article.id,
-  //     slug: params.slug,
-  //     content: {
-  //       ast: JSON.parse(JSON.stringify(ast)),
-  //       article, 
-  //     } as Prisma.JsonObject
-  //   })
-  // }
+    // Add if not exist, edit if exist.
+    await supabase.from('Article').upsert({
+      id: article.id,
+      slug: params.slug,
+      content: JSON.parse(JSON.stringify(ast)) as Prisma.JsonObject,
+      data: article as Prisma.JsonObject
+    })
+  }
 
   // Fetch article data from supabase
   const res = await getPageData(params.slug) // 3600 BGR
