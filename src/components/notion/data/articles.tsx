@@ -32,8 +32,6 @@ function transformPageData(result: PageObjectResponse) {
 }
 
 
-
-
 export const getArticleList = cache(
   async () => {
     const response = await notion.databases.query({
