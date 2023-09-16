@@ -18,8 +18,15 @@ export async function convertChildrenToAST(
   // Get function that would be called to fetch children
   const fetchChildrenFn = options?.fetchChildrenFn
     ?? unstable_cache(async (id) => {
-      return await notion.blocks.children.list({ block_id: id })
-    })
+      try {
+        const res = await notion.blocks.children.list({ block_id: id })
+        // console.log(res)
+        return res
+      } catch (error) {
+        console.log("ERRORRRR")
+        console.log(error) 
+      }
+    }) ?? undefined
   
   // Define Default Mapping Behavior
   const defaultMapToASTFnMap: MapToASTFnMap = {
@@ -33,7 +40,7 @@ export async function convertChildrenToAST(
     ? { ...defaultMapToASTFnMap, ...options.ASTCallbackMap } : defaultMapToASTFnMap
 
   const root = new NotionASTNode()
-  await mapBlockListToAST(data.results, root, fetchChildrenFn, mapToASTFnMap)
+  await mapBlockListToAST(data.results, root, mapToASTFnMap, fetchChildrenFn)
 
 
   return root
@@ -46,8 +53,8 @@ export async function convertChildrenToAST(
 async function mapBlockListToAST(
   list: ListBlockChildrenResponse['results'],
   currentNode: NotionASTNode,
-  fetchChildrenFn: (id: string) => Promise<ListBlockChildrenResponse>,
-  ASTCallbackMap: MapToASTFnMap
+  ASTCallbackMap: MapToASTFnMap,
+  fetchChildrenFn?: (id: string) => Promise<ListBlockChildrenResponse | undefined> ,
 ) {
   await Promise.allSettled(list.map(async unknownblock => {
 
@@ -61,8 +68,9 @@ async function mapBlockListToAST(
 
     // Explore Children
     if (block.has_children === true) {
-      const children = await fetchChildrenFn(block.id)
-      await mapBlockListToAST(children.results, newNode, fetchChildrenFn, ASTCallbackMap)
+      const children = await fetchChildrenFn?.(block.id)
+      if(children)
+        await mapBlockListToAST(children.results, newNode, ASTCallbackMap, fetchChildrenFn)
     }
 
   }))
