@@ -13,7 +13,9 @@ datasource db {
 
 model Article {
   id String @id @unique
+  slug String @unique
   views Int @default(0)
+  content Json?
 } 
 
 model Links {
