@@ -44,15 +44,21 @@ export interface Database {
       }
       Article: {
         Row: {
+          content: Json | null
           id: string
+          slug: string
           views: number
         }
         Insert: {
+          content?: Json | null
           id: string
+          slug: string
           views?: number
         }
         Update: {
+          content?: Json | null
           id?: string
+          slug?: string
           views?: number
         }
         Relationships: []
@@ -86,17 +92,12 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      incrementpageview:
-        | {
-            Args: Record<PropertyKey, never>
-            Returns: undefined
-          }
-        | {
-            Args: {
-              row_id: string
-            }
-            Returns: undefined
-          }
+      incrementpageview: {
+        Args: {
+          row_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
