@@ -81,6 +81,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "encoding": "^0.1.13",
     "postcss-import": "^15.1.0",
-    "postcss-nesting": "^12.0.1"
+    "postcss-nesting": "^12.0.1",
+    "supabase": "^1.93.0"
   }
 }
