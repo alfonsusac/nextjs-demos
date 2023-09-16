@@ -57,12 +57,46 @@ export interface Database {
         }
         Relationships: []
       }
+      Links: {
+        Row: {
+          description: string | null
+          faviconURL: string | null
+          thumbnailURL: string | null
+          title: string | null
+          url: string
+        }
+        Insert: {
+          description?: string | null
+          faviconURL?: string | null
+          thumbnailURL?: string | null
+          title?: string | null
+          url: string
+        }
+        Update: {
+          description?: string | null
+          faviconURL?: string | null
+          thumbnailURL?: string | null
+          title?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      incrementpageview:
+        | {
+            Args: Record<PropertyKey, never>
+            Returns: undefined
+          }
+        | {
+            Args: {
+              row_id: string
+            }
+            Returns: undefined
+          }
     }
     Enums: {
       [_ in never]: never
