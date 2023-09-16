@@ -8,11 +8,11 @@ import Link from "next/link"
 import { NotionRichText } from "@/components/notion/rsc/rich-texts/parser"
 import { formatDistanceToNow } from "date-fns"
 import { InlineMentionTooltip } from "@/components/notion/client"
-import { NotionPageViews } from "./client"
+import { NotionPageViews } from "./page.client"
 import { Audit, audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
-import { getCachedPageDetails, getCachedPageMetadata } from './page-data'
+import { getCachedPageDetails, getCachedPageMetadata } from './page.data'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -45,27 +45,13 @@ export default async function Page({ params }: any) {
 
   return (
     <>
-      <NotionImage
-        alt="Page Cover"
-        nprop={ article.cover as any }
-        className={ cn(
-          "w-full h-60 object-cover",
-          "after:bg-gradient-to-t after:from-slate-800 after:to-transparent",
-          "absolute",
-          "top-0 left-0 right-0 m-0",
-          "max-w-none flex"
-        ) }
-        id={ article.id }
-      />
-      {
-        article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
-      }
+      <PageCover />
       <div className="flex gap-4 mx-auto">
 
         {/* LEFT */ }
         <article className="max-w-article m-0 w-full mx-auto md:mr-0">
           <Header />
-          <NotionASTRenderer ast={ast} />
+          <NotionASTRenderer ast={ ast } />
           <CommentSection />
           <footer className="mt-12 py-12 border-t border-t-slate-600 text-slate-500 text-sm space-y-2 leading-normal">
             <FooterContent />
@@ -96,6 +82,28 @@ export default async function Page({ params }: any) {
     </>
   )
 
+  function PageCover() {
+    return (
+      <>
+        <NotionImage
+          alt="Page Cover"
+          nprop={ article.cover as any }
+          className={ cn(
+            "w-full h-60 object-cover",
+            "after:bg-gradient-to-t after:from-slate-800 after:to-transparent",
+            "absolute",
+            "top-0 left-0 right-0 m-0",
+            "max-w-none flex"
+          ) }
+          id={ article.id }
+        />
+        {
+          article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
+        }
+      </>
+    )
+  }
+
   function Header() {
     return (
       <header className="my-8 mt-8 space-y-2 relative">
@@ -109,91 +117,49 @@ export default async function Page({ params }: any) {
           /articles
         </Link>
 
-        {/* TITLE */}
+        {/* TITLE */ }
         <h1 className="py-2 pb-4">
           <NotionRichText rich_text={ article.title } />
         </h1>
 
-        {/* METADATA */}
-        <div className="text-sm text-slate-500">
-          Last updated:
-          <InlineMentionTooltip
-            content={
-              (new Date(article.last_edited_time)).toLocaleString()
-            }
-          >
+        {/* METADATA */ }
+        <div className="text-sm text-slate-500 flex flex-row gap-4 flex-wrap items-center">
+          <InlineMentionTooltip content={ (new Date(article.last_edited_time)).toLocaleString() }>
             <span className="ml-1 rounded-md p-1 hover:bg-slate-900/80">
               { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
             </span>
           </InlineMentionTooltip>
-          { `    ` }
-          <NotionPageViews
-            id={ article.id }
-            num={ metadata.views }
-            loadView={
-              async (id, prev) => {
-                'use server'
-                const res = await supabase
-                  .from('Article')
-                  .update({ views: prev + 1 })
-                  .eq('id', id)
-                  .select('views')
-              }
-            }
+          <NotionPageViews cachedNum={ metadata.views }
+            onLoadView={ async () => {
+              'use server'
+              if(process.env.NODE_ENV === 'production')
+                await supabase.rpc('incrementpageview', { row_id: article.id })
+            } }
           />
         </div>
-        <hr />
 
       </header>
-    )
-  }
-
-  function FooterContent() {
-    return (
-      <>
-        <p>
-          The content on this website are purely written by Alfon to help people better understand how Next.js works and are not affiliated with Vercel (unofficial).
-        </p>
-        <p>
-          If you have any comments for improvement on the website or the content feel free to visit <a href="https://github.com/alfonsusac/nextjs-demos/issues">the respository</a> which is 100% open source.
-        </p>
-        <p>
-          Written by <a href="https://github.com/alfonsusac">@alfonsusac</a>
-        </p>
-      </>
     )
   }
 }
 
 
-// ❌ this doesn't work
-// export async function getPageDetails(slug: string) {
+function PageViews() {
 
-//   const getCachedData = unstable_cache(
-//     async () => {
-//       console.log("CACHE MISS! GET PAGE DETAILS")
-//       const article = await getArticle(slug)
-//       const content = await getPageContent(article.id)
-//       return { article, content }
-//     },
-//     [slug],
-//     {
-//       tags: ['articles', slug],
-//     }
-//   )
+}
 
-//   const getMemoizedData = cache(
-//     async () => {
-//       console.log("Is this getting logged? " + Math.random())
-//       return await getCachedData()
-//     }
-//   )
-
-//   return getMemoizedData()
-// }
-
-// @ts-ignore
-// export const getMemoizedPageDetails = cache(getPageDetails)
-
-
-
+function FooterContent() {
+  return (
+    <>
+      <p>
+        The content on this website are purely written by Alfon to help people better understand how Next.js works and are not affiliated with Vercel (unofficial).
+      </p>
+      <p>
+        If you have any comments for improvement on the website or the content feel free to visit <a href="https://github.com/alfonsusac/nextjs-demos/issues">the respository</a> which is 100% open source.
+      </p>
+      <p>
+        Written by <a href="https://github.com/alfonsusac">@alfonsusac</a>
+      </p>
+    </>
+  )
+}
