@@ -15,3 +15,11 @@ model Article {
   id String @id @unique
   views Int @default(0)
 } 
+
+model Links {
+  url String @id @unique
+  title String?
+  description String?
+  faviconURL String?
+  thumbnailURL String?
+}
