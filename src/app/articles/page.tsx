@@ -18,7 +18,7 @@ export default async function Articles() {
     articles = await getArticleList()
   }
 
-
+  articles?.sort( (a, b) => parseInt(a.created_time) - parseInt(b.created_time) )
   return (
     <div className={ cn(
       "mx-auto mt-24",
@@ -57,9 +57,9 @@ export default async function Articles() {
                       { r.flattenedTitle }
                     </div>
                     <div className="text-xs text-slate-500">
-                      { new Date(r.last_edited_time).toDateString() }
+                      { new Date(r.created_time).toDateString() }
                       <span className="pl-4">
-                        { prodArticles?.find(a => r.id === a.id) ? "Rendered" : null }
+                        { (res?.data?.find(a => r.id === a.id)?.views ?? "n/a" )+ " views" }
                       </span>
                     </div>
                   </div>
