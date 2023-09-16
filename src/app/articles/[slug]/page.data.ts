@@ -11,7 +11,7 @@ export const getPageData = memoize(
     const res = await supabase.from('Article').select('*').eq('slug', slug)
     
     // find unique
-    if (!res.data) return undefined
+    if (!res.data || !res.data[0]) return false
     const content = res.data[0].content as any
 
     return {
