@@ -1,9 +1,33 @@
 import { getArticle } from "@/components/notion/data/articles"
 import { getPageContent } from "@/components/notion/data/helper"
 import { extractHeadings } from "@/components/notion/notion-toc/rsc"
+import { NotionASTNode } from "@/components/notion/parser/node"
 import { convertChildrenToAST } from "@/components/notion/parser/parser"
 import supabase from "@/lib/supabase"
 import { memoize } from 'nextjs-better-unstable-cache'
+
+export const getPageData = memoize(
+  async function getPageData(slug: string) {
+    const res = await supabase.from('Article').select('*').eq('slug', slug)
+    
+    // find unique
+    if (!res.data) return undefined
+    const content = res.data[0].content as any
+
+    return {
+      ...res.data[0],
+      ast: content.ast as NotionASTNode,
+      article: content.article as Awaited<ReturnType<typeof getArticle>>
+    }
+  },
+  {
+    // persist: false,
+    duration: 3600,
+    log: ['datacache', 'verbose'],
+    logid: "Get Page Data",
+  }
+)
+
 
 export const getCachedPageDetails = memoize(
   getPageDetails,
@@ -13,13 +37,13 @@ export const getCachedPageDetails = memoize(
   }
 )
 
-export const getCachedPageMetadata = memoize(
-  getPageMetadata,
-  {
-    duration: 3600,
-    log: ['datacache', 'verbose']
-  }
-)
+// export const getCachedPageMetadata = memoize(
+//   getPageMetadata,
+//   {
+//     duration: 3600,
+//     log: ['datacache', 'verbose']
+//   }
+// )
 
 export async function getPageDetails(slug: string) {
   const article = await getArticle(slug)
@@ -38,23 +62,23 @@ function loremIpsumDolorSitAmetConsecteturAdipiscingElitSedNonRisusSuspendisseLe
   return JSON.parse(JSON.stringify(obj))
 }
 
-async function getPageMetadata(id: string) {
-  const metadata = { views: 0 }
-  try {
-    const res = await supabase.from('Article').select('views').eq('id', id)
-    const views = res.data?.[0]?.views
-    if (!views) {
-      await supabase.from('Article').insert({ id, views: 0 })
-    }
-    if (views) {
-      metadata.views = views
-    }
-  } catch (error) {
-    console.log("Error getting views")
-    console.error(error)
-  }
-  return metadata
-}
+// async function getPageMetadata(id: string) {
+//   const metadata = { views: 0 }
+//   try {
+//     const res = await supabase.from('Article').select('views').eq('id', id)
+//     const views = res.data?.[0]?.views
+//     if (!views) {
+//       await supabase.from('Article').insert({ id, views: 0 })
+//     }
+//     if (views) {
+//       metadata.views = views
+//     }
+//   } catch (error) {
+//     console.log("Error getting views")
+//     console.error(error)
+//   }
+//   return metadata
+// }
 
 
 

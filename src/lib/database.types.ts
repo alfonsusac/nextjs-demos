@@ -44,19 +44,19 @@ export interface Database {
       }
       Article: {
         Row: {
-          content: Json | null
+          content: Json
           id: string
           slug: string
           views: number
         }
         Insert: {
-          content?: Json | null
+          content: Json
           id: string
           slug: string
           views?: number
         }
         Update: {
-          content?: Json | null
+          content?: Json
           id?: string
           slug?: string
           views?: number

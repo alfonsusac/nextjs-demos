@@ -12,7 +12,13 @@ import { NotionPageViews } from "./page.client"
 import { Audit, audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer'
-import { getCachedPageDetails, getCachedPageMetadata } from './page.data'
+import { getCachedPageDetails, getPageData } from './page.data'
+import { getArticle } from '@/components/notion/data/articles'
+import { getPageContent } from '@/components/notion/data/helper'
+import { convertChildrenToAST } from '@/components/notion/parser/parser'
+import { extractHeadings } from '@/components/notion/notion-toc/rsc'
+import { notFound } from 'next/navigation'
+import { Prisma } from '@prisma/client'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -38,14 +44,45 @@ export default async function Page({ params }: any) {
   clearLog()
   const timer = new Audit("Generating Page", false)
 
-  const { article, ast, headings } = await getCachedPageDetails(params.slug) // On-Demand Revalidation
-  const metadata = await getCachedPageMetadata(article.id) // revalidate: 3600
+  // 1. Generate Page on Local
+  // 2. Check if data exist -> notFound() if not
+  
+  // LOCAL MACHINE ONLY
+  // if (process.env.NODE_ENV === 'development') {
+  //   const article = await getArticle(params.slug)
+  //   const content = await getPageContent(article.id)
+  //   const ast = await convertChildrenToAST(content)
+
+  //   // Add if not exist, edit if exist.
+  //   await supabase.from('Article').upsert({
+  //     id: article.id,
+  //     slug: params.slug,
+  //     content: {
+  //       ast: JSON.parse(JSON.stringify(ast)),
+  //       article, 
+  //     } as Prisma.JsonObject
+  //   })
+  // }
+
+  // Fetch article data from supabase
+  const res = await getPageData(params.slug) // 3600 BGR
+  if(!res) notFound()
+  const {
+    id: pageID,
+    article,
+    ast,
+    views
+  } = res
+  const headings = extractHeadings(ast)
+
+
+  // const { article, ast, headings } = await getCachedPageDetails(params.slug) // On-Demand Revalidation
+  // const metadata = await getCachedPageMetadata(pageID) // revalidate: 3600
 
   timer.total()
-
   return (
     <>
-      <NotionImage id={ article.id } nprop={ article.cover as any }
+      <NotionImage id={ pageID } nprop={ article.cover as any }
         alt="Page Cover"
         className="object-cover    w-full h-60    overflow-hidden    absolute    top-0 left-0 right-0 m-0"
       />
@@ -115,7 +152,7 @@ export default async function Page({ params }: any) {
             </span>
           </InlineMentionTooltip>
 
-          <NotionPageViews cachedNum={ metadata.views }
+          <NotionPageViews cachedNum={ views }
             onLoadView={ async () => {
               'use server'
               if (process.env.NODE_ENV === 'production')
