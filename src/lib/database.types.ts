@@ -45,18 +45,21 @@ export interface Database {
       Article: {
         Row: {
           content: Json
+          data: Json
           id: string
           slug: string
           views: number
         }
         Insert: {
           content: Json
+          data: Json
           id: string
           slug: string
           views?: number
         }
         Update: {
           content?: Json
+          data?: Json
           id?: string
           slug?: string
           views?: number
