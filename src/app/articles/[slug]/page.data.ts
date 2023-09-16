@@ -10,14 +10,15 @@ export const getPageData = memoize(
   async function getPageData(slug: string) {
     const res = await supabase.from('Article').select('*').eq('slug', slug)
     
+    console.log(res)
+
     // find unique
     if (!res.data || !res.data[0]) return false
-    const content = res.data[0].content as any
 
     return {
       ...res.data[0],
-      ast: content.ast as NotionASTNode,
-      article: content.article as Awaited<ReturnType<typeof getArticle>>
+      ast: res.data[0].content as unknown as NotionASTNode,
+      article: res.data[0].data as Awaited<ReturnType<typeof getArticle>>
     }
   },
   {
