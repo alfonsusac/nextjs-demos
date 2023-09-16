@@ -8,8 +8,8 @@
     "start": "next start",
     "prod": "next build && next start",
     "lint": "next lint",
-    "migrate init": "prisma migrate dev --name init && supabase gen types typescript --project-id yjccvjyuflpawraittig > database.types.ts",
-    "types": "supabase gen types typescript --project-id yjccvjyuflpawraittig > database.types.ts",
+    "migrate": "prisma migrate dev && supabase gen types typescript --project-id yjccvjyuflpawraittig > src/lib/database.types.ts",
+    "types": "supabase gen types typescript --project-id yjccvjyuflpawraittig > src/lib/database.types.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {
