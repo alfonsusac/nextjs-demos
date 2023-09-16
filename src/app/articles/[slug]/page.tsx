@@ -45,14 +45,22 @@ export default async function Page({ params }: any) {
 
   return (
     <>
-      <PageCover />
-      <div className="flex gap-4 mx-auto">
+      <NotionImage id={ article.id } nprop={ article.cover as any }
+        alt="Page Cover"
+        className="object-cover    w-full h-60    overflow-hidden    absolute    top-0 left-0 right-0 m-0"
+      />
+      { article.cover && <div className="h-40 w-0 flex-grow" /> }
 
+      {/* WRAPPER */ }
+      <div className="flex gap-4 mx-auto">
         {/* LEFT */ }
         <article className="max-w-article m-0 w-full mx-auto md:mr-0">
           <Header />
+
           <NotionASTRenderer ast={ ast } />
+          
           <CommentSection />
+
           <footer className="mt-12 py-12 border-t border-t-slate-600 text-slate-500 text-sm space-y-2 leading-normal">
             <FooterContent />
           </footer>
@@ -82,60 +90,39 @@ export default async function Page({ params }: any) {
     </>
   )
 
-  function PageCover() {
-    return (
-      <>
-        <NotionImage
-          alt="Page Cover"
-          nprop={ article.cover as any }
-          className={ cn(
-            "w-full h-60 object-cover",
-            "after:bg-gradient-to-t after:from-slate-800 after:to-transparent",
-            "absolute",
-            "top-0 left-0 right-0 m-0",
-            "max-w-none flex"
-          ) }
-          id={ article.id }
-        />
-        {
-          article.cover ? <div className="h-40 w-0 flex-grow"></div> : null
-        }
-      </>
-    )
-  }
 
   function Header() {
     return (
-      <header className="my-8 mt-8 space-y-2 relative">
-        <NotionIcon icon={ article.icon }
-          className="text-5xl m-0 block w-12 h-12 mb-4"
-        />
-        <Link
-          className="text-sm p-2 rounded-md text-slate-400 hover:bg-slate-900 decoration-slate-600 underline-offset-4 -mx-2"
+      <header className="py-8 pb-12 space-y-2 relative">
+        <NotionIcon icon={ article.icon } className="text-5xl m-0 block w-12 h-12 mb-4"/>
+        <Link className="text-sm p-2 rounded-md text-slate-400 hover:bg-slate-900 decoration-slate-600 underline-offset-4 -mx-2"
           href="/articles"
         >
           /articles
         </Link>
 
         {/* TITLE */ }
-        <h1 className="py-2 pb-4">
+        <h1 className="py-2 pb-2">
           <NotionRichText rich_text={ article.title } />
         </h1>
 
         {/* METADATA */ }
-        <div className="text-sm text-slate-500 flex flex-row gap-4 flex-wrap items-center">
+        <div className="text-sm text-slate-500 flex flex-row gap-3 flex-wrap items-center">
+
           <InlineMentionTooltip content={ (new Date(article.last_edited_time)).toLocaleString() }>
-            <span className="ml-1 rounded-md p-1 hover:bg-slate-900/80">
+            <span className="ml-1 rounded-md p-1 px-2 -translate-x-2 hover:bg-slate-900/80">
               { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
             </span>
           </InlineMentionTooltip>
+
           <NotionPageViews cachedNum={ metadata.views }
             onLoadView={ async () => {
               'use server'
-              if(process.env.NODE_ENV === 'production')
+              if (process.env.NODE_ENV === 'production')
                 await supabase.rpc('incrementpageview', { row_id: article.id })
             } }
           />
+
         </div>
 
       </header>
@@ -143,10 +130,6 @@ export default async function Page({ params }: any) {
   }
 }
 
-
-function PageViews() {
-
-}
 
 function FooterContent() {
   return (
