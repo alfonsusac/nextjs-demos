@@ -8,8 +8,10 @@ const notionClientSingleton = () => {
     timeoutMs: 5000,
     logLevel: LogLevel.DEBUG, 
     logger(level: LogLevel, message: string, extraInfo: Record<string, unknown>) {
-      console.log(`Notion: ${chalk.cyan(level)} ${message}`)
-      console.log(chalk.gray(JSON.stringify(extraInfo, null,2)))
+      // console.log(`Notion: ${chalk.cyan(level)} ${message}`)
+      if (level === LogLevel.WARN)
+        console.log(`Notion: ${chalk.redBright(level)} ${message}`)
+      console.log(`${message} ${ chalk.gray(JSON.stringify(extraInfo))}`)
     }
   })
 }
