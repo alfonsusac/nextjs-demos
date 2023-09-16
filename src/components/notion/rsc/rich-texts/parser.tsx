@@ -9,8 +9,10 @@ import { InlineMentionTooltip } from "../../client"
 import { cn } from "@/components/typography"
 import { convertColorToClassname } from "./classname"
 import { parseNotionHref } from "./href"
+import { Suspense } from "react"
+import LoadingLine from "./loading"
 
-export function NotionRichText(p: {
+export async function NotionRichText(p: {
   rich_text: RichTextItemResponse[]
 }) {
 
@@ -79,7 +81,11 @@ export function NotionRichText(p: {
 
     switch (t.type) {
       case 'text':
-        return <InlineText key={ i } />
+        return (
+          <Suspense fallback={ <LoadingLine text="Loading" />}>
+            <InlineText key={ i } />
+          </Suspense>
+        )
       case 'equation':
         return <InlineEquation key={ i } />
       case 'mention':
