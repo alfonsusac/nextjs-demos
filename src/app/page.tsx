@@ -28,9 +28,7 @@ export default async function Home() {
         "w-full border border-slate-500/10 rounded-xl p-5 bg-gradient-to-bl from-slate-900/20 shadow-inner cursor-pointer transition-all group no-underline",
         "transition-all duration-500",
         "hover:border-slate-800",
-        // "hover:from-slate-800/25",
         "hover:bg-slate-800/25"
-        // "hover:scale-105",
       ) }>
         <div className="text-slate-200 text-xl font-medium pb-1">
           { P.title } <span className="text-slate-600 group-hover:text-blue-500 transition-all">{ '->' }</span>

@@ -11,7 +11,7 @@ import { InlineMentionTooltip } from "@/components/notion/client"
 import { NotionPageViews } from "./page.client"
 import { Audit, audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
-import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer-2'
+import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer'
 import { getCachedPageDetails, getCachedPageMetadata } from './page.data'
 
 // ! Server action not working yet in static routes.

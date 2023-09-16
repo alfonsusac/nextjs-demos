@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { getMetaInfo } from "@/components/metadata/util"
-import { NotionComponentProp } from "../notion-ast-renderer-2"
+import { NotionComponentProp } from "../notion-ast-renderer"
 import { cn } from "@/components/typography"
 import { CaptionNode } from "./common"
 import { Audit } from "@/components/timer"
