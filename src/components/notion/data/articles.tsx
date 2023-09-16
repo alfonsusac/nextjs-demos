@@ -8,7 +8,7 @@ const ARTICLE_DATABASE_ID = '3a6b7f9f0fed440e924494b2c64dc10d'
 
 
 
-export type ArticlePageData = ReturnType<typeof transformPageData>
+export type TransformedPageData = ReturnType<typeof transformPageData> 
 
 function transformPageData(result: PageObjectResponse) {
   const { parent, ...page } = result as PageObjectResponse
@@ -40,7 +40,7 @@ export const getArticleList = cache(
       database_id: ARTICLE_DATABASE_ID,
       filter: {
         and: [
-          { property: 'Published', checkbox: { equals: true } },
+          { property: 'Publish', checkbox: { equals: true } },
           { property: 'slug', rich_text: { is_not_empty: true } }
         ]
       }
@@ -50,7 +50,6 @@ export const getArticleList = cache(
         return transformPageData(result as PageObjectResponse)
       }
     )
-
   }
 )
 
