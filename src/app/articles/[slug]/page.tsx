@@ -9,10 +9,10 @@ import { NotionRichText } from "@/components/notion/rsc/rich-texts/parser"
 import { formatDistanceToNow } from "date-fns"
 import { InlineMentionTooltip } from "@/components/notion/client"
 import { NotionPageViews } from "./page.client"
-import { Audit, audit, clearLog } from '@/components/timer'
+import { Audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer'
-import { getCachedPageDetails, getPageData } from './page.data'
+import { getPageData } from './page.data'
 import { getArticle } from '@/components/notion/data/articles'
 import { getPageContent } from '@/components/notion/data/helper'
 import { convertChildrenToAST } from '@/components/notion/parser/parser'
