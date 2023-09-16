@@ -1,13 +1,23 @@
 import Link from 'next/link'
 import { cn } from "@/components/typography"
 import { NotionIcon } from "@/components/notion/rsc/images"
-import { getArticleList } from "@/components/notion/data/articles"
+import { TransformedPageData, getArticleList } from "@/components/notion/data/articles"
+import supabase from '@/lib/supabase'
 
 export const revalidate = 600 // 10 minutes
 
 export default async function Articles() {
 
-  const articles = await getArticleList()
+
+
+  const res = await supabase.from("Article").select("*")
+
+  let articles = res.data?.map(a => a.data as TransformedPageData)
+  let prodArticles = articles
+  if (process.env.NODE_ENV === 'development') {
+    articles = await getArticleList()
+  }
+
 
   return (
     <div className={ cn(
@@ -24,7 +34,7 @@ export default async function Articles() {
       </p>
       <ul className="p-0 pt-12">
         {
-          articles.map(r => (
+          articles?.map(r => (
             <li key={ r.id } className="list-none m-0 transition-all group -my-2 sm:-mx-8">
 
               <Link
@@ -48,6 +58,9 @@ export default async function Articles() {
                     </div>
                     <div className="text-xs text-slate-500">
                       { new Date(r.last_edited_time).toDateString() }
+                      <span className="pl-4">
+                      { prodArticles?.find(a => r.id === a.id) ? "Rendered" : null }
+                      </span>
                     </div>
                   </div>
 
