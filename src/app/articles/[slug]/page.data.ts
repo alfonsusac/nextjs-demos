@@ -2,10 +2,24 @@ import { getArticle } from "@/components/notion/data/articles"
 import { getPageContent } from "@/components/notion/data/helper"
 import { extractHeadings } from "@/components/notion/notion-toc/rsc"
 import { convertChildrenToAST } from "@/components/notion/parser/parser"
-import { memoizeTesting } from "@/lib/cache"
 import supabase from "@/lib/supabase"
-import { revalidateTag, unstable_cache } from "next/cache"
 import { memoize } from 'nextjs-better-unstable-cache'
+
+export const getCachedPageDetails = memoize(
+  getPageDetails,
+  {
+    revalidateTags: (slug) => ['articles', slug],
+    log: ['datacache', 'verbose'],
+  }
+)
+
+export const getCachedPageMetadata = memoize(
+  getPageMetadata,
+  {
+    duration: 3600,
+    log: ['datacache', 'verbose']
+  }
+)
 
 export async function getPageDetails(slug: string) {
   const article = await getArticle(slug)
@@ -24,24 +38,13 @@ function loremIpsumDolorSitAmetConsecteturAdipiscingElitSedNonRisusSuspendisseLe
   return JSON.parse(JSON.stringify(obj))
 }
 
-export const getCachedPageDetails = memoizeTesting(
-  getPageDetails,
-  {
-    revalidateTags: (slug) => ['articles', slug],
-    log: ['datacache', 'verbose'],
-  }
-)
-
 async function getPageMetadata(id: string) {
   const metadata = { views: 0 }
   try {
-    const res = await supabase.from('Article')
-      .select('views')
-      .eq('id', id)
+    const res = await supabase.from('Article').select('views').eq('id', id)
     const views = res.data?.[0]?.views
     if (!views) {
-      await supabase.from('Article')
-        .insert({ id, views: 0 })
+      await supabase.from('Article').insert({ id, views: 0 })
     }
     if (views) {
       metadata.views = views
@@ -53,13 +56,7 @@ async function getPageMetadata(id: string) {
   return metadata
 }
 
-export const getCachedPageMetadata = memoize(
-  getPageMetadata,
-  {
-    duration: 3600,
-    log: ['datacache', 'verbose']
-  }
-)
+
 
 
 // const bgodr = unstable_cache(
