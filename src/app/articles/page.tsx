@@ -59,7 +59,7 @@ export default async function Articles() {
                     <div className="text-xs text-slate-500">
                       { new Date(r.last_edited_time).toDateString() }
                       <span className="pl-4">
-                      { prodArticles?.find(a => r.id === a.id) ? "Rendered" : null }
+                        { prodArticles?.find(a => r.id === a.id) ? "Rendered" : null }
                       </span>
                     </div>
                   </div>
