@@ -38,42 +38,16 @@ export default function RootLayout(p: {
 
   return (
     <html lang="en">
+      <body className={ cn(`${inter.className}  flex  flex-col  min-h-screen`) }>
 
-      <body className={ cn(`${inter.className} 
-        flex 
-        flex-col 
-        min-h-screen
-      `) }>
-
-        <Header className={ cn(`
-          sticky 
-          top-0 
-          bg-black 
-          z-50 
-          shadow-xl 
-          shadow-black 
-
-          sm:pt-4 
-          sm:px-8`
-        ) } />
-
-        <Content className={ cn(`
-            max-w-screen-lg
-            w-full
-            mx-auto
-            px-4
-            mt-8 
-            mb-[20vh]
-            flex flex-row gap-4
-            min-h-screen
-          `) }>
-
-            { p.children }
-
+        <Header className="sticky  top-0  z-50  sm:px-8  bg-black" />
+        <div className="h-14  w-screen bg-black  z-10  absolute top-0" />
+        
+        <Content className={ `max-w-screen-lg  w-full  mx-auto  px-4  mt-8   mb-[20vh]
+                              flex flex-row    gap-4   min-h-screen` }>
+          { p.children }
         </Content>
-
       </body>
-
     </html>
   )
 
@@ -81,20 +55,12 @@ export default function RootLayout(p: {
     className: string
   }) {
     return (
-      <header className={ cn(p.className, `
-        h-14
-        flex
-        flex-row
-        gap-6
-        items-center
-      `) }>
-
+      <header className={ cn(p.className, `h-14 flex flex-row gap-6 items-center`) }>
         <div className={ cn(
           "max-w-screen-lg mx-auto w-full gap-6 items-center px-4",
           "flex flex-row",
           "justify-center"
         ) }>
-
           <div className="text-2xl font-semibold gap-2 items-center py-4 pt-4 hidden sm:flex">
             <Image
               src="https://avatars.githubusercontent.com/u/20208219?v=4"
@@ -103,22 +69,18 @@ export default function RootLayout(p: {
               alt="Profile Picture"
               className="rounded-2xl w-6 h-6"
             />
-            {/* <span className="font-light text-slate-600">/</span> */}
+            {/* <span className="font-light text-slate-600">/</span> */ }
             {/* <Link href='/'>
               Next.js Notes
             </Link> */}
           </div>
-
           <Page className="my-4"
             as="div" label="▼ Home" path='/' />
           <Page className="my-4"
             as="div" label="▧ Demos" path='/demos' />
           <Page className="my-4"
             as="div" label="◩ Articles" path='/articles' />
-
         </div>
-
-
       </header>
     )
   }
@@ -155,7 +117,7 @@ const dirs: {
     {
       name: "Caching",
       topics: [
-        { title: "Data Cache"}
+        { title: "Data Cache" }
       ]
     }
   ]
