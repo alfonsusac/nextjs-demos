@@ -3,6 +3,7 @@ import { getPageContent } from "@/components/notion/data/helper"
 import { extractHeadings } from "@/components/notion/notion-toc/rsc"
 import { NotionASTNode } from "@/components/notion/parser/node"
 import { convertChildrenToAST } from "@/components/notion/parser/parser"
+import { memoizeTesting } from "@/lib/cache"
 import supabase from "@/lib/supabase"
 import { memoize } from 'nextjs-better-unstable-cache'
 
@@ -24,27 +25,18 @@ export const getPageData = memoize(
   {
     // persist: false,
     duration: 3600,
-    log: ['datacache', 'verbose'],
+    log: ['datacache', 'verbose', 'dedupe'],
     logid: "Get Page Data",
   }
 )
 
-
-export const getCachedPageDetails = memoize(
+export const getCachedPageDetails = memoizeTesting(
   getPageDetails,
   {
     revalidateTags: (slug) => ['articles', slug],
-    log: ['datacache', 'verbose'],
+    log: ['datacache', 'verbose', 'dedupe'],
   }
 )
-
-// export const getCachedPageMetadata = memoize(
-//   getPageMetadata,
-//   {
-//     duration: 3600,
-//     log: ['datacache', 'verbose']
-//   }
-// )
 
 export async function getPageDetails(slug: string) {
   const article = await getArticle(slug)
