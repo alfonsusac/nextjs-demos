@@ -35,7 +35,7 @@ export async function LinkBookmark(P: {
           href={ P.url }
           className={ cn(P.className,
             "w-full h-32",
-            "flex flex-row items-stretch",
+            "flex items-start",
             "border",
             "no-underline",
             "group relative overflow-hidden transition-all",
@@ -56,7 +56,7 @@ export async function LinkBookmark(P: {
         <div
           className={ cn(P.className,
             "w-full h-32",
-            "flex flex-row items-stretch",
+            "flex items-start",
             "border",
             "no-underline",
             "group relative overflow-hidden transition-all",
@@ -86,7 +86,7 @@ export async function LinkBookmark(P: {
         "group-hover:opacity-50"
       ) } />
       {/* LEFT */ }
-      <div className="p-4 pt-3">
+      <div className="p-4 pt-3 grow basis-0 shrink self-stretch overflow-hidden">
         <div className={ cn("text-slate-200 truncate w-full h-[1lh]") }>
           {
             P.loading ? (
@@ -101,8 +101,6 @@ export async function LinkBookmark(P: {
             <svg className="inline align-text-top text-slate-400 " xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M7 7h10m0 0v10m0-10L7 17"></path></svg>
           }
         </div>
-
-
         <div className={ cn(
           "text-sm text-slate-400",
           "mt-1 mb-2 h-10 w-full",
@@ -149,7 +147,7 @@ export async function LinkBookmark(P: {
       {/* RIGHT */ }
       {
         P.thumbnail ? (
-          <div className="w-64">
+          <div className="w-48 grow-0 shrink-0 self-stretch hidden sm:block">
             <img
               src={ P.thumbnail }
               alt={ `URL to ${metadata.title}` }

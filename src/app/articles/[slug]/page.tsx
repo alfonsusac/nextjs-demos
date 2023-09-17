@@ -54,8 +54,11 @@ export default async function Page({ params }: any) {
   // LOCAL MACHINE ONLY
   if (process.env.NODE_ENV === 'development') {
     const article = await getArticle(params.slug)
+    timer.mark(" (dev) get article")
     const content = await getPageContent(article.id)
+    timer.mark(" (dev) get page content")
     const ast = await convertChildrenToAST(content)
+    timer.mark(" (dev) convert children to ast")
 
     // Add if not exist, edit if exist.
     await supabase.from('Article').upsert({

@@ -3,6 +3,7 @@ import { cn } from "@/components/typography"
 import { NotionIcon } from "@/components/notion/rsc/images"
 import { TransformedPageData, getArticleList } from "@/components/notion/data/articles"
 import supabase from '@/lib/supabase'
+import { delay } from '@/lib/cache'
 
 export const revalidate = 600 // 10 minutes
 
@@ -14,7 +15,10 @@ export default async function Articles() {
 
   let articles = res.data?.map(a => a.data as TransformedPageData)
   let prodArticles = articles
+  
   if (process.env.NODE_ENV === 'development') {
+    console.log("Hello this is node_env dev")
+    await delay(10000)
     articles = await getArticleList()
   }
 

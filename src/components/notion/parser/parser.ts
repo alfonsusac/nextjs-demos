@@ -3,6 +3,8 @@ import { NotionASTNode, NotionASTNodeType } from "./node"
 import { notion } from "../../../lib/notion"
 import { unstable_cache } from "next/cache"
 import { Audit } from "@/components/timer"
+import retry from 'async-retry';
+import { verbose } from "@/lib/logger"
 
 export type BlockType = BlockObjectResponse['type']
 export type MapToAST = (newNode: NotionASTNode, currentNode: NotionASTNode) => void
@@ -19,11 +21,22 @@ export async function convertChildrenToAST(
   const fetchChildrenFn = options?.fetchChildrenFn
     ?? unstable_cache(async (id) => {
       try {
-        const res = await notion.blocks.children.list({ block_id: id })
-        // console.log(res)
+        const res = await retry(
+          async (bail) => {
+            try {
+              const res = await notion.blocks.children.list({ block_id: id })
+              // console.log(JSON.stringify(res))
+              return res
+            } catch (error: any) {
+              if(!JSON.stringify(error).includes('timed out')) bail(error)
+              verbose("RETRYING!", 4)
+              
+              throw error
+            }
+          }
+        ) 
         return res
       } catch (error) {
-        console.log("ERRORRRR")
         console.log(error) 
       }
     }) ?? undefined

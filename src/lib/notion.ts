@@ -11,7 +11,7 @@ const notionClientSingleton = () => {
       // console.log(`Notion: ${chalk.cyan(level)} ${message}`)
       if (level === LogLevel.WARN)
         console.log(`Notion: ${chalk.redBright(level)} ${message}`)
-      console.log(`${message} ${ chalk.gray(JSON.stringify(extraInfo))}`)
+      console.log(`${level}: ${message} ${ chalk.gray(JSON.stringify(extraInfo))}`)
     }
   })
 }

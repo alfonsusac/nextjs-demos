@@ -16,8 +16,6 @@ export function IconParkSolidBrowser(props: React.SVGProps<SVGSVGElement>) {
 
 export default async function Home() {
 
-  const articles = await getArticleList()
-
   function Card(P: {
     title: string
     children: React.ReactNode
@@ -88,7 +86,6 @@ export default async function Home() {
             url='https://nextjs.org/docs'
             title="Next.js Official Docs"
             description="Welcome to the Next.js Documentation."
-            // faviconpath="https://images-ext-2.discordapp.net/external/mHySWiQBi7o8dYb5lEIXs57x4TrNR_oEKJTdw7ERgcA/%3Ftitle%3DDocs/https/nextjs.org/api/og"
             faviconpath="https://nextjs.org/favicon.ico"
             thumbnail="https://nextjs.org/api/og?title=Docs"
           />
@@ -98,6 +95,13 @@ export default async function Home() {
             description="Collection of his answers to some of the most commonly asked questions on the server"
             faviconpath="https://static.joulev.dev/favicon.ico"
             thumbnail="https://cdn.discordapp.com/attachments/1103539595947278397/1151796086357377084/image.png"
+          />
+          <LinkBookmark
+            url='https://github.com/vercel/next.js/discussions/29628'
+            title="Next.js Resources Compiled by Lee Robinson"
+            description="This is a discussion thread on GitHub where users share their articles, videos, courses, and blogs about Next.js"
+            faviconpath="https://github.githubassets.com/favicons/favicon-dark.svg"
+            thumbnail="https://nextjs.org/api/og?title=Resources"
           />
           <LinkBookmark
             url='https://twitter.com/asidorenko_'

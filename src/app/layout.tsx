@@ -2,10 +2,8 @@ import Image from 'next/image'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Category, Content, Page } from './client'
-import Link from "next/link"
 import "prism-themes/themes/prism-one-dark.min.css"
 import MDX_RoutingComputation from "./demos/routing/static-vs-dynamic-computation/content.mdx"
-import MDX_Test from "./demos/routing/static-vs-dynamic-computation/text.mdx"
 import { cn } from '@/components/typography'
 
 const inter = Inter({
@@ -38,7 +36,7 @@ export default function RootLayout(p: {
 
   return (
     <html lang="en">
-      <body className={ cn(`${inter.className}  flex  flex-col  min-h-screen`) }>
+      <body className={ cn(`${inter.className}   min-h-screen `) }>
 
         <Header className="sticky  top-0  z-50  sm:px-8  bg-black" />
         <div className="h-14  w-screen bg-black  z-10  absolute top-0" />
