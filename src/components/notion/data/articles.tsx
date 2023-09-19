@@ -6,9 +6,7 @@ import { flattenRichText } from "../rsc/rich-texts/utils"
 
 const ARTICLE_DATABASE_ID = '3a6b7f9f0fed440e924494b2c64dc10d'
 
-
-
-export type TransformedPageData = ReturnType<typeof transformPageData> 
+export type TransformedNotionPageData = ReturnType<typeof transformPageData> 
 
 function transformPageData(result: PageObjectResponse) {
   const { parent, ...page } = result as PageObjectResponse
@@ -23,11 +21,13 @@ function transformPageData(result: PageObjectResponse) {
     id: string
   }
   const rawTitle = flattenRichText(nameProp.title)
+  
   return {
     ...page,
     title: nameProp.title,
     flattenedTitle: rawTitle,
     slug: flattenRichText(slugProp.rich_text),
+    views: null as null | number
   }
 }
 
