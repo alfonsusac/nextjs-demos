@@ -21,8 +21,7 @@ const nextConfig = {
       use: 'raw-loader',
     })
     return config
-  }
-  
+  },
 }
 
 const withMDX = createMDX({
