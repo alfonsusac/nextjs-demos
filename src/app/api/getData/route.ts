@@ -17,6 +17,8 @@ const ARTICLE_DATABASE_ID = '3a6b7f9f0fed440e924494b2c64dc10d'
 //"test-image-cover--headings"
 //"5261ab10-b496-4fac-a499-661259b5b876"
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
 
   // const data = await getPageDetails("stress-test-notion-2")
@@ -40,9 +42,11 @@ export async function GET() {
   //   page_size: 1000,
   // })
 
-  const data = await notion.blocks.retrieve({
-    block_id: "5261ab10-b496-4fac-a499-661259b5b876",
-  })
+  // const data = await notion.blocks.retrieve({
+  //   block_id: "5261ab10-b496-4fac-a499-661259b5b876",
+  // })
+
+  const data = Math.random().toPrecision(3)
 
   audit.total()
   const date = Date.now()
