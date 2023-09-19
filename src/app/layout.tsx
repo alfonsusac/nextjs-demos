@@ -25,7 +25,8 @@ export const metadata = {
   creator: '@alfonsusac',
   openGraph: {
     siteName: 'Next.js Tricks',
-  }
+  },
+  metadataBase: new URL('https://nextjs-tricks.vercel.app/')
 }
 
 const layoutGenerationTime = new Date()
