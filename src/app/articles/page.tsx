@@ -3,13 +3,10 @@ import { cn } from "@/components/typography"
 import { NotionIcon } from "@/components/notion/rsc/images"
 import { TransformedNotionPageData, getArticleList } from "@/components/notion/data/articles"
 import supabase from '@/lib/supabase'
-import { delay } from '@/lib/cache'
-import { ErrorBoundary, ErrorBoundaryProps, FallbackProps } from 'react-error-boundary'
-import { Suspense } from 'react'
-import { JSONStringify } from '@/components/tool'
+import { Suspense, cache } from 'react'
 import { ArticleList_Error } from './client'
 import { memoize } from 'nextjs-better-unstable-cache'
-import { convertObjectArraytoMap } from '@/lib/utils'
+import { unstable_cache } from 'next/cache'
 
 export const revalidate = 600 // 10 minutes
 
@@ -21,16 +18,41 @@ const getArticlesFromSupabase = memoize(
   }
 )
 
-export default async function ArticlesPage() {
+const cachedData = memoize(
+  async () => Math.random().toPrecision(3),
+  {
+    duration: 20
+  }
+)
+const cachedData2 = memoize(
+  async () => Math.random().toPrecision(3),
+  {
+    duration: 5
+  }
+)
+
+async function getRan() {
+  return Math.random().toPrecision(3)
+}
+
+export default async function ArticlesPage({ searchParams }: any) {
   console.log("Article List Rendered")
 
-  const res = await fetch("https://random-data-api.com/api/v2/beers", {
-    cache: 'force-cache',
+  const getCachedRan1 = await unstable_cache(getRan, [], {revalidate: 20})()
+  const getCachedRan2 = await unstable_cache(getRan, [], { revalidate: 5 })()
+  const rng1 = (await (await fetch("https://random-data-api.com/api/v2/beers", {
     next: {
-      tags: ['articles']
+      tags: ['articles'],
+      revalidate: 20
     }
-  })
-  const data = (await res.json()).id as number
+  })).json()).id
+
+  const rng2 = (await (await fetch("https://random-data-api.com/api/v2/beers", {
+    next: {
+      tags: ['articles'],
+      revalidate:10
+    }
+  })).json()).id
 
   return (
     <div className="mx-auto mt-24   max-w-article   prose-hr:my-8   prose-h1:text-5xl  flex flex-col gap-12">
@@ -41,11 +63,17 @@ export default async function ArticlesPage() {
       </header>
 
       <div>
-        {Math.random().toPrecision(3)}
+        { getCachedRan1 }
       </div>
 
       <div>
-        { data }
+        { getCachedRan2 }
+      </div>
+      <div>
+        { rng1 }
+      </div>
+      <div>
+        { rng2 }
       </div>
 
       <ArticleList_Error>

@@ -26,7 +26,7 @@ export function memoizeTesting<R extends unknown[], T>(
   const { // default values
     persist = true,
     duration = Infinity,
-    log = ['datacache', 'dedupe', 'verbose'],
+    log = [],
     revalidateTags: revalidateTagsFn,
     additionalCacheKey: additionalCacheKeyFn,
   } = opts ?? {}
