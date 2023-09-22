@@ -225,7 +225,7 @@ div.browser article h2 {
 
 
 /* SHORTCUTS */
-@layer utilities {
+@layer components {
   .row {
     @apply flex flex-row items-start justify-start gap-2
   }

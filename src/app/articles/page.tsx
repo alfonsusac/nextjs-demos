@@ -14,28 +14,28 @@ export default async function ArticleListPage() {
   ])
 
   return (
-    <section className={"mx-auto mt-24 max-w-article flex flex-col gap-12 prose-hr:my-8 prose-h1:text-5xl"}>
-      <header>
+    <section className={ "mx-auto mt-12 max-w-article flex flex-col prose-hr:my-8 prose-h1:text-5xl divide-y divide-slate-600" }>
+      <header className="py-4">
         <h1>Articles</h1>
         <p>Articles that I wrote related to Next.js</p>
       </header>
 
-      <div>
+      {/* <div className="col gap-12"> */}
         { articles.map(article => (
           <Link key={ article.id } href={ `/articles/${article.slug}` }
-            className="row gap-3 py-4 leading-tight transition-all rounded-md no-underline cursor-pointer"
+            className="row gap-3 py-6 leading-tight transition-all no-underline cursor-pointer"
           >
-              <NotionIcon icon={ article.icon } />
-            <div className="col">
+            <NotionIcon icon={ article.icon } />
+            <div className="col gap-0.5">
               <div className="title">{ article.flattenedTitle }</div>
-              <div className="row gap-2">
-                <div className="description">{ (metadata.find(a => article.id === a.id)?.views ?? "0") +"  views" }</div>
-                <div className="info">{ format(new Date(article.created_time),"dd/mm/yyyy")  }</div>
+              <div className="row gap-2 text-sm">
+                <div className="description">{ (metadata.find(a => article.id === a.id)?.views ?? "0") + "  views" }</div>
+                <div className="info">{ format(new Date(article.created_time), "dd/mm/yyyy") }</div>
               </div>
             </div>
           </Link>
-        ) ) }
-      </div>
+        )) }
+      {/* </div> */}
 
     </section>
   )
