@@ -221,3 +221,25 @@ div.browser article h2 {
     /* conic-gradient(from 0.75turn at 70% 50%, transparent, #1e1e35); */
   mask: radial-gradient(closest-side, #e66465aa, transparent);
 }
+
+
+
+/* SHORTCUTS */
+@layer utilities {
+  .row {
+    @apply flex flex-row items-start justify-start gap-2
+  }
+  .col {
+    @apply flex flex-col items-start justify-start gap-2
+  }
+  .title {
+    @apply font-semibold text-white
+  }
+  .body {
+    @apply text-slate-300
+  }
+  .info {
+    @apply text-slate-500
+  }
+}
+
