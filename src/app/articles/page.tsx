@@ -20,22 +20,20 @@ export default async function ArticleListPage() {
         <p>Articles that I wrote related to Next.js</p>
       </header>
 
-      {/* <div className="col gap-12"> */}
-        { articles.map(article => (
-          <Link key={ article.id } href={ `/articles/${article.slug}` }
-            className="row gap-3 py-6 leading-tight transition-all no-underline cursor-pointer"
-          >
-            <NotionIcon icon={ article.icon } />
-            <div className="col gap-0.5">
-              <div className="title">{ article.flattenedTitle }</div>
-              <div className="row gap-2 text-sm">
-                <div className="description">{ (metadata.find(a => article.id === a.id)?.views ?? "0") + "  views" }</div>
-                <div className="info">{ format(new Date(article.created_time), "dd/mm/yyyy") }</div>
-              </div>
+      { articles.map(article => (
+        <Link key={ article.id } href={ `/articles/${article.slug}` }
+          className="row gap-3 py-6 leading-tight transition-all no-underline cursor-pointer"
+        >
+          <NotionIcon icon={ article.icon } />
+          <div className="col gap-0.5">
+            <div className="title">{ article.flattenedTitle }</div>
+            <div className="row gap-2 text-sm">
+              <div className="description">{ (metadata.find(a => article.id === a.id)?.views ?? "0") + "  views" }</div>
+              <div className="info">{ format(new Date(article.created_time), "dd/mm/yyyy") }</div>
             </div>
-          </Link>
-        )) }
-      {/* </div> */}
+          </div>
+        </Link>
+      )) }
 
     </section>
   )
