@@ -8,20 +8,29 @@ const ARTICLE_DATABASE_ID = '3a6b7f9f0fed440e924494b2c64dc10d'
 
 export const getArticleList = cache(
   async () => {
-    const response = await notion.databases.query({
-      database_id: ARTICLE_DATABASE_ID,
-      filter: {
-        and: [
-          { property: 'Publish', checkbox: { equals: true } },
-          { property: 'slug', rich_text: { is_not_empty: true } }
-        ]
+    
+    try {
+      if (Math.random() > 0.5) {
+        throw "Intentional error: getArticleList"
       }
-    })
-    return response.results.map(
-      result => {
-        return transformPageData(result as PageObjectResponse)
-      }
-    )
+      const response = await notion.databases.query({
+        database_id: ARTICLE_DATABASE_ID,
+        filter: {
+          and: [
+            { property: 'Publish', checkbox: { equals: true } },
+            { property: 'slug', rich_text: { is_not_empty: true } }
+          ]
+        }
+      })
+      return response.results.map(
+        result => {
+          return transformPageData(result as PageObjectResponse)
+        }
+      )
+    } catch (error) {
+      console.log(error)
+      return []
+    }
   }
 )
 
