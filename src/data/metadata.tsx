@@ -1,5 +1,4 @@
 import { cache } from "react"
-import { notion } from "../../../lib/notion"
 import { NumberPropertyItemObjectResponse, PageObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 
 

@@ -1,11 +1,11 @@
-import { getArticle } from "@/components/notion/data/articles"
-import { getPageContent } from "@/components/notion/data/helper"
+import { getArticle } from "@/data/articles"
 import { extractHeadings } from "@/components/notion/notion-toc/rsc"
 import { NotionASTNode } from "@/components/notion/parser/node"
 import { convertChildrenToAST } from "@/components/notion/parser/parser"
 import { memoizeTesting } from "@/lib/cache"
 import supabase from "@/lib/supabase"
 import { memoize } from 'nextjs-better-unstable-cache'
+import { getPageContent } from "@/data/helper"
 
 export const getPageData = memoize(
   async function getPageData(slug: string) {

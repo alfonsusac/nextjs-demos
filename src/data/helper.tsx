@@ -1,4 +1,4 @@
-import { notion } from "../../../lib/notion"
+import notion from "@/lib/notion"
 import { cache } from "react"
 
 export const getPageContent = cache(

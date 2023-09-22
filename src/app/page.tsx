@@ -4,7 +4,7 @@ import { titleCase } from 'title-case'
 import { slug } from 'github-slugger'
 import { cn } from '@/components/typography'
 import { NotionIcon } from '@/components/notion/rsc/images'
-import { getArticleList } from '@/components/notion/data/articles'
+import { getArticleList } from '@/data/articles'
 import { LinkBookmark, NotionLinkBookmark } from '@/components/notion/rsc/components/link-previews'
 
 

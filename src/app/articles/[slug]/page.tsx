@@ -13,12 +13,12 @@ import { Audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
 import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer'
 import { getPageData } from './page.data'
-import { getArticle } from '@/components/notion/data/articles'
-import { getPageContent } from '@/components/notion/data/helper'
+import { getArticle } from '@/data/articles'
 import { convertChildrenToAST } from '@/components/notion/parser/parser'
 import { extractHeadings } from '@/components/notion/notion-toc/rsc'
 import { notFound } from 'next/navigation'
 import { Prisma } from '@prisma/client'
+import { getPageContent } from '@/data/helper'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
