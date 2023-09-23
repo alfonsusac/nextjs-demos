@@ -2,7 +2,7 @@ import { getArticle } from "@/data/articles"
 import { extractHeadings } from "@/components/notion/notion-toc/rsc"
 import { NotionASTNode } from "@/components/notion/parser/node"
 import { convertChildrenToAST } from "@/components/notion/parser/parser"
-import { memoizeTesting } from "@/lib/cache"
+import { memoizeTesting } from "@/lib/memoize"
 import supabase from "@/lib/supabase"
 import { memoize } from 'nextjs-better-unstable-cache'
 import { getPageContent } from "@/data/helper"
@@ -55,40 +55,3 @@ function loremIpsumDolorSitAmetConsecteturAdipiscingElitSedNonRisusSuspendisseLe
   return JSON.parse(JSON.stringify(obj))
 }
 
-// async function getPageMetadata(id: string) {
-//   const metadata = { views: 0 }
-//   try {
-//     const res = await supabase.from('Article').select('views').eq('id', id)
-//     const views = res.data?.[0]?.views
-//     if (!views) {
-//       await supabase.from('Article').insert({ id, views: 0 })
-//     }
-//     if (views) {
-//       metadata.views = views
-//     }
-//   } catch (error) {
-//     console.log("Error getting views")
-//     console.error(error)
-//   }
-//   return metadata
-// }
-
-
-
-
-// const bgodr = unstable_cache(
-//   unstable_cache(
-//     getPageDetails,
-//     [], { revalidate: 1 }
-//   ),
-//   [], { tags: ['data'] }
-// )
-
-// revalidateTag('data') 
-// First access
-// 1. will MISS, run outer unstable_cache
-// 2. will MISS, run inner unstable_cache, returning old data
-// 3.  background revalidated
-
-// Second access
-// 1. will HIT cached outer unstable_cache

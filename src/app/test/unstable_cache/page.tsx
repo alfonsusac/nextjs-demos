@@ -1,5 +1,5 @@
 import { clearLog } from "@/components/timer"
-import { delay, memoizeTesting } from "@/lib/cache"
+import { delay, memoizeTesting } from "@/lib/memoize"
 import { nanoid } from "nanoid"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"

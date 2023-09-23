@@ -1,4 +1,4 @@
-import { delay, memoizeTesting } from "@/lib/cache"
+import { delay, memoizeTesting } from "@/lib/memoize"
 import { nanoid } from "nanoid"
 
 async function getnanoid() {

@@ -233,10 +233,10 @@ div.browser article h2 {
     @apply flex flex-col items-start justify-start gap-2
   }
   .title {
-    @apply font-semibold text-white
+    @apply font-normal text-white
   }
   .body {
-    @apply text-slate-300
+    @apply text-slate-400
   }
   .info {
     @apply text-slate-500

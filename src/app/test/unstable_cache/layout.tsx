@@ -1,4 +1,4 @@
-import { delay } from "@/lib/cache"
+import { delay } from "@/lib/memoize"
 import { nanoid } from "nanoid"
 import { unstable_cache } from "next/cache"
 import { getFn } from "./data"

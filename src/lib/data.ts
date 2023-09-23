@@ -2,17 +2,18 @@ import notion from "./notion"
 import { flattenRichText } from "@/components/notion/rsc/rich-texts/utils"
 import { PageObjectResponse, RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
 import supabase from "./supabase"
+import { memoize } from "nextjs-better-unstable-cache"
 
 const database_id = '3a6b7f9f0fed440e924494b2c64dc10d'
 
 export const Data = {
   
+  // Notion
   async getArticle(slug: string) {
     const response = await notion.databases.query({
       database_id,
       filter: { property: "slug", rich_text: { equals: slug } }
     })
-
     return transformPageData(response.results[0] as PageObjectResponse)
   },
 
@@ -30,6 +31,7 @@ export const Data = {
     return response.results.map(result => transformPageData(result as PageObjectResponse))
   },
 
+  // Supabase
   async getArticleListMetadata() {
     return (await supabase.from("Article").select("*")).data ?? []
   }
@@ -59,4 +61,3 @@ function transformPageData(result: PageObjectResponse) {
     views: null as null | number
   }
 }
-

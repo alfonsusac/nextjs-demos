@@ -1,7 +1,7 @@
 import type { Callback } from "@/helper/types"
 
 export const Procedure = {
-  prefetchForStatic<R extends any>(cb: Callback<any, R>, fallback: R) {
+  prepareForStatic<R extends any>(cb: Callback<any, R>, fallback: R) {
     try {
       return cb()
     } catch (error) {

@@ -4,9 +4,7 @@ export default function Layout(p: {
   return (
     <div className="w-full mx-4">
       {/* LEFT */ }
-      <div>
-        { p.children }
-      </div>
+      { p.children }
     </div>
   )
 }
