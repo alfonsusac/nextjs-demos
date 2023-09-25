@@ -1,5 +1,5 @@
 import { CodeRSC } from "@/components/code-snippet/rsc"
-import { NotionComponentProp } from "../notion-ast-renderer"
+import { NotionComponentProp } from "../renderer/notion-ast-renderer"
 import { KaTeXRSC } from "@/components/katex/rsc"
 import { flattenRichText } from "../rich-texts/utils"
 import Mermaid from "../../mermaid/mermaid"

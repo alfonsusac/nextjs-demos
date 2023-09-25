@@ -1,5 +1,5 @@
 import { cn } from "@/components/typography"
-import { NotionComponentProp } from "../notion-ast-renderer"
+import { NotionComponentProp } from "../renderer/notion-ast-renderer"
 import { NotionImage } from "../images"
 import { CaptionNode } from "./common"
 import { getFileName } from "@/components/metadata/util"

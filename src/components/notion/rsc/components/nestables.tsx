@@ -1,6 +1,6 @@
 import { cn } from "@/components/typography"
 import { Toggle } from "../../client"
-import { NotionComponentProp } from "../notion-ast-renderer"
+import { NotionComponentProp } from "../renderer/notion-ast-renderer"
 import { NotionIcon } from "../images"
 import { RichTextNode } from "./common"
 

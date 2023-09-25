@@ -1,5 +1,5 @@
 import { cn } from "@/components/typography"
-import { NotionComponentProp } from "../notion-ast-renderer"
+import { NotionComponentProp } from "../renderer/notion-ast-renderer"
 
 export function DividerBlock() {
 

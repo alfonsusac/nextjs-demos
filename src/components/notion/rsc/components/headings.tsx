@@ -1,6 +1,6 @@
 import { H2, H3, H4, cn } from "@/components/typography"
 import { Toggle } from "../../client"
-import { NotionComponentProp } from "../notion-ast-renderer"
+import { NotionComponentProp } from "../renderer/notion-ast-renderer"
 import { RichTextNode } from "./common"
 import { slug } from "github-slugger"
 import { flattenRichText } from "../rich-texts/utils"
