@@ -1,4 +1,5 @@
 import { NotionIcon } from "@/components/notion/rsc/images"
+import { Cache } from "@/lib/cache"
 import { Data } from "@/lib/data"
 import { Procedure } from "@/lib/procedures"
 import { format, getYear } from "date-fns"
@@ -10,8 +11,8 @@ export default async function ArticleListPage() {
 
   // Get data
   const [articles, metadata] = await Procedure.parallel([
-    Procedure.prepareForStatic(Data.getArticleList, []),
-    Procedure.prepareForStatic(Data.getArticleListMetadata, [])
+    Procedure.prepareForStatic(Cache.getArticleList, []),
+    Procedure.prepareForStatic(Cache.getArticleListMetadata, [])
   ])
 
   // Process data

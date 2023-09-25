@@ -6,7 +6,6 @@ import * as Tooltip from '@radix-ui/react-tooltip'
 import { useState } from "react"
 import { cn } from "../typography"
 import Image from "next/image"
-import { ErrorBoundary } from "react-error-boundary"
 import * as Dialog from '@radix-ui/react-dialog'
 
 

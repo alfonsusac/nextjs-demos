@@ -1,22 +1,16 @@
 import notion from "./notion"
 import { flattenRichText } from "@/components/notion/rsc/rich-texts/utils"
-import { PageObjectResponse, RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
+import { ListBlockChildrenResponse, PageObjectResponse, RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
 import supabase from "./supabase"
 import { memoize } from "nextjs-better-unstable-cache"
+import { validateBlock } from "@/components/notion/utils"
+import { delay } from "./memoize"
 
 const database_id = '3a6b7f9f0fed440e924494b2c64dc10d'
 
 export const Data = {
   
   // Notion
-  async getArticle(slug: string) {
-    const response = await notion.databases.query({
-      database_id,
-      filter: { property: "slug", rich_text: { equals: slug } }
-    })
-    return transformPageData(response.results[0] as PageObjectResponse)
-  },
-
   async getArticleList() {
     const response = await notion.databases.query({
       database_id,
@@ -31,6 +25,14 @@ export const Data = {
     return response.results.map(result => transformPageData(result as PageObjectResponse))
   },
 
+
+  async getChildren(block_id: string) {
+    // await delay(2000)
+    // if(Math.random() > 0.2) throw "Intentional getChildren Error"
+    const response = await notion.blocks.children.list({ block_id })
+    return response.results.map(block => validateBlock(block))
+  },
+
   // Supabase
   async getArticleListMetadata() {
     return (await supabase.from("Article").select("*")).data ?? []
@@ -39,6 +41,7 @@ export const Data = {
 
 
 
+export type TransformedNotionPageData = ReturnType<typeof transformPageData>
 
 function transformPageData(result: PageObjectResponse) {
   const { parent, ...page } = result as PageObjectResponse

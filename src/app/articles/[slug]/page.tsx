@@ -11,14 +11,11 @@ import { InlineMentionTooltip } from "@/components/notion/client"
 import { NotionPageViews } from "./page.client"
 import { Audit, clearLog } from '@/components/timer'
 import supabase from '@/lib/supabase'
-import { NotionASTRenderer } from '@/components/notion/rsc/notion-ast-renderer'
-import { getPageData } from './page.data'
-import { getArticle } from '@/data/articles'
-import { convertChildrenToAST } from '@/components/notion/parser/parser'
-import { extractHeadings } from '@/components/notion/notion-toc/rsc'
+import { PageRenderer } from '@/components/notion/rsc/renderer/notion-ast-renderer'
 import { notFound } from 'next/navigation'
-import { Prisma } from '@prisma/client'
-import { getPageContent } from '@/data/helper'
+import { Cache } from '@/lib/cache'
+import { TransformedNotionPageData } from '@/lib/data'
+import { Procedure } from '@/lib/procedures'
 
 // ! Server action not working yet in static routes.
 // export const dynamicParams = false
@@ -32,11 +29,8 @@ import { getPageContent } from '@/data/helper'
 // }
 
 export async function generateMetadata({ params }: any) {
-  const res = await getPageData(params.slug) // 3600 BGR
-  if (!res) notFound()
-  const {
-    article,
-  } = res
+  const article = await Cache.getArticle(params.slug)
+  if (!article) notFound()
   return {
     title: article.flattenedTitle,
     description: "Next.js Notes, Tips and Tricks - by @alfonsusac",
@@ -48,46 +42,21 @@ export default async function Page({ params }: any) {
   clearLog()
   const timer = new Audit("Generating Page", false)
 
-  // 1. Generate Page on Local
-  // 2. Check if data exist -> notFound() if not
-  
-  // LOCAL MACHINE ONLY
-  if (process.env.NODE_ENV === 'development') {
-    const article = await getArticle(params.slug)
-    timer.mark(" (dev) get article")
-    const content = await getPageContent(article.id)
-    timer.mark(" (dev) get page content")
-    const ast = await convertChildrenToAST(content)
-    timer.mark(" (dev) convert children to ast")
+  const [article, metadata] = await Procedure.parallel([
+    Cache.getArticle(params.slug),
+    Cache.getArticleMetadata(params.slug)
+  ])
 
-    // Add if not exist, edit if exist.
-    await supabase.from('Article').upsert({
-      id: article.id,
-      slug: params.slug,
-      content: JSON.parse(JSON.stringify(ast)) as Prisma.JsonObject,
-      data: article as Prisma.JsonObject
-    })
+  // const article = await Cache.getArticle(params.slug)
+  if (!article) {
+    console.log("Console Not Found??")
+    notFound()
   }
-
-  // Fetch article data from supabase
-  const res = await getPageData(params.slug) // 3600 BGR
-  if(!res) notFound()
-  const {
-    id: pageID,
-    article,
-    ast,
-    views
-  } = res
-  const headings = extractHeadings(ast)
-
-
-  // const { article, ast, headings } = await getCachedPageDetails(params.slug) // On-Demand Revalidation
-  // const metadata = await getCachedPageMetadata(pageID) // revalidate: 3600
 
   timer.total()
   return (
     <>
-      <NotionImage id={ pageID } nprop={ article.cover as any }
+      <NotionImage id={ article.id } nprop={ article.cover as any }
         alt="Page Cover"
         className="object-cover    w-full h-60    overflow-hidden    absolute    top-0 left-0 right-0 m-0"
       />
@@ -97,10 +66,14 @@ export default async function Page({ params }: any) {
       <div className="flex gap-4 mx-auto">
         {/* LEFT */ }
         <article className="max-w-article m-0 w-full mx-auto md:mr-0">
-          <Header />
+          <Header article={ article } views={ metadata?.views ?? 0 } />
 
-          <NotionASTRenderer ast={ ast } />
-          
+          {/* <RunEffect /> */ }
+
+          <PageRenderer blockID={ article.id } />
+
+          {/* <NotionASTRenderer ast={ ast } /> */ }
+
           <CommentSection />
 
           <footer className="mt-12 py-12 border-t border-t-slate-600 text-slate-500 text-sm space-y-2 leading-normal">
@@ -123,7 +96,7 @@ export default async function Page({ params }: any) {
                 depth={ 3 }
                 className=""
                 listClassName="text-sm"
-                items={ headings }
+              // items={ headings }
               />
             </li>
           </Sidebar>
@@ -133,45 +106,50 @@ export default async function Page({ params }: any) {
   )
 
 
-  function Header() {
-    return (
-      <header className="py-8 pb-12 space-y-2 relative">
-        <NotionIcon icon={ article.icon } className="text-5xl m-0 block w-12 h-12 mb-4"/>
-        <Link className="text-sm p-2 rounded-md text-slate-400 hover:bg-slate-900 decoration-slate-600 underline-offset-4 -mx-2"
-          href="/articles"
-        >
-          /articles
-        </Link>
 
-        {/* TITLE */ }
-        <h1 className="py-2 pb-2">
-          <NotionRichText rich_text={ article.title } />
-        </h1>
-
-        {/* METADATA */ }
-        <div className="text-sm text-slate-500 flex flex-row gap-3 flex-wrap items-center">
-
-          <InlineMentionTooltip content={ (new Date(article.last_edited_time)).toLocaleString() }>
-            <span className="ml-1 rounded-md p-1 px-2 -translate-x-2 hover:bg-slate-900/80">
-              { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
-            </span>
-          </InlineMentionTooltip>
-
-          <NotionPageViews cachedNum={ views }
-            onLoadView={ async () => {
-              'use server'
-              if (process.env.NODE_ENV === 'production')
-                await supabase.rpc('incrementpageview', { row_id: article.id })
-            } }
-          />
-
-        </div>
-
-      </header>
-    )
-  }
 }
 
+
+function Header({ article, views }: {
+  article: TransformedNotionPageData
+  views: number
+}) {
+  return (
+    <header className="py-8 pb-12 space-y-2 relative">
+      <NotionIcon icon={ article.icon } className="text-5xl m-0 block w-12 h-12 mb-4" />
+      <Link className="text-sm p-2 rounded-md text-slate-400 hover:bg-slate-900 decoration-slate-600 underline-offset-4 -mx-2"
+        href="/articles"
+      >
+        /articles
+      </Link>
+
+      {/* TITLE */ }
+      <h1 className="py-2 pb-2">
+        <NotionRichText rich_text={ article.title } />
+      </h1>
+
+      {/* METADATA */ }
+      <div className="text-sm text-slate-500 flex flex-row gap-3 flex-wrap items-center">
+
+        <InlineMentionTooltip content={ (new Date(article.last_edited_time)).toLocaleString() }>
+          <span className="ml-1 rounded-md p-1 px-2 -translate-x-2 hover:bg-slate-900/80">
+            { '@' + formatDistanceToNow(new Date(article.last_edited_time), { addSuffix: true }) }
+          </span>
+        </InlineMentionTooltip>
+
+        <NotionPageViews cachedNum={ views }
+          onLoadView={ async () => {
+            'use server'
+            if (process.env.NODE_ENV === 'production')
+              await supabase.rpc('incrementpageview', { row_id: article.id })
+          } }
+        />
+
+      </div>
+
+    </header>
+  )
+}
 
 function FooterContent() {
   return (

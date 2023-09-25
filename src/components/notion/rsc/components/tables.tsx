@@ -1,16 +1,32 @@
 import { cn } from "@/components/typography"
-import { NotionComponentProp } from "../notion-ast-renderer"
+import { NotionComponentProp } from "../renderer/notion-ast-renderer"
 import { NodeTypes } from "../../types"
 import { NotionRichText } from "../rich-texts/parser"
+import { convertBlockListToASTSync } from "../../parser/parser"
+import { Cache } from "@/lib/cache"
 
-export function TableBlock({
+export async function TableBlock({
   className,
   node,
 }: NotionComponentProp<'table'>) {
 
   const { has_row_header, has_column_header } = node.props
-  const rows = node.children as NodeTypes['table_row'][]
+
+  if (!node.has_children) return <>No child</>
+  
+  let rows = node.children as NodeTypes['table_row'][]
+
+
+  // Important!!!
+  // if (!rows.length) {
+  //   rows = convertBlockListToASTSync(await Cache.getChildren(node.id)).children as NodeTypes['table_row'][]
+  // }
+  // if (!rows.length) return <>Incomplete Table</>
+  
+
+
   const [headRow, ...rest] = rows
+
 
   return (
     <table className={ className } >

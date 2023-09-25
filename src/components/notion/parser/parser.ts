@@ -52,9 +52,37 @@ export async function convertChildrenToAST(
   const mapToASTFnMap: MapToASTFnMap = options?.ASTCallbackMap
     ? { ...defaultMapToASTFnMap, ...options.ASTCallbackMap } : defaultMapToASTFnMap
 
+
   const root = new NotionASTNode()
   await mapBlockListToAST(data.results, root, mapToASTFnMap, fetchChildrenFn)
 
+
+  return root
+}
+
+export function convertBlockListToASTSync(
+  blockList: BlockObjectResponse[],
+  ASTCallbackMap?: MapToASTFnMap,
+) {
+  // Create New Root
+  const root = new NotionASTNode()
+
+  // Define Default Mapping Behavior
+  const defaultMapToASTFnMap: MapToASTFnMap = {
+    'bulleted_list_item': GroupListTogether,
+    'numbered_list_item': GroupListTogether,
+    'to_do': GroupListTogether
+  }
+
+  // Assign default mapping behavior and override from custom maps
+  const mapToASTFnMap: MapToASTFnMap = ASTCallbackMap
+    ? { ...defaultMapToASTFnMap, ...ASTCallbackMap } : defaultMapToASTFnMap
+  
+  // Iterate Each BlockList to be processed with the new root.
+  blockList.forEach(block => {
+    const node = new NotionASTNode(block)
+    getMapToASTFunction(mapToASTFnMap, block.type)(node, root)
+  })
 
   return root
 }
@@ -73,7 +101,7 @@ async function mapBlockListToAST(
 
     // Convert Notion Blocks into Notion AST Node
     const block = validateBlock(unknownblock)
-    const newNode = new NotionASTNode(validateBlock(unknownblock))
+    const newNode = new NotionASTNode(block)
 
     // Map the node in to the AST
     const mapToAST = getMapToASTFunction(ASTCallbackMap, block.type)
@@ -89,6 +117,21 @@ async function mapBlockListToAST(
   }))
 }
 
+// Finds function in the Map, uses default if not found.
+function getMapToASTFunction(ASTCallbackMap: MapToASTFnMap, type: BlockType) {
+  return ASTCallbackMap[type] ?? ((newNode, currentNode) => {
+    currentNode.pushChild(newNode)
+  })
+}
+
+export async function convertBlockToAST(
+  unknownblock: BlockObjectResponse | PartialBlockObjectResponse
+) {
+  // Convert Notion Blocks into Notion AST Node
+  const block = validateBlock(unknownblock)
+  return new NotionASTNode(block)
+}
+
 function validateBlock(unknownblock: PartialBlockObjectResponse | BlockObjectResponse) {
   if (
     'type' in unknownblock === false
@@ -100,12 +143,7 @@ function validateBlock(unknownblock: PartialBlockObjectResponse | BlockObjectRes
   return unknownblock as BlockObjectResponse
 }
 
-// Finds function in the Map, uses default if not found.
-function getMapToASTFunction(ASTCallbackMap: MapToASTFnMap, type: BlockType) {
-  return ASTCallbackMap[type] ?? ((newNode, currentNode) => {
-    currentNode.pushChild(newNode)
-  })
-}
+
 
 const GroupListTogether: MapToAST = (newNode, currentNode) => {
 
