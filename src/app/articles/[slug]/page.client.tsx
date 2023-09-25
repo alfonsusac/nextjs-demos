@@ -10,7 +10,6 @@ export function NotionPageViews(p: {
 
   useEffect(() => {
     if (!mount) {
-      console.log("Hello");
       setMount(true);
       p.onLoadView()
     }
