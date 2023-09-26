@@ -185,7 +185,7 @@ export type InputComponents = (
 // }
 
 
-function NodeRenderer({ node, componentMap, children }: {
+async function NodeRenderer({ node, componentMap, children }: {
   node: NotionASTNode,
   componentMap: NotionASTComponentMap,
   children?: React.ReactNode
@@ -193,6 +193,19 @@ function NodeRenderer({ node, componentMap, children }: {
   const Component = componentMap[node.type]
   if (!Component) return <></>
   console.log("NotionASTNodeComponent: " + node.type)
+
+  try {
+    (await (Component as any)({ node }))
+  } catch (error: any) {
+    console.error(error)
+    return <div>
+      Error Rendering block id { node.id }
+      <div className="opacity-50">
+        {error.toString()}
+      </div>
+    </div>
+  }
+
   return (
     <Component node={ node as never }>
       { node.children && node.children.map((child, index) => (
@@ -200,11 +213,13 @@ function NodeRenderer({ node, componentMap, children }: {
       ))
       }
       { node.has_children && (
-        <Suspense fallback="Loading nested blocks..">
+        <Suspense fallback="Loading nested blocks.." >
           <PageRenderer blockID={ node.id } />
         </Suspense>
       )
       }
     </Component>
   )
+
+
 }
