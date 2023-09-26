@@ -14,20 +14,15 @@ export async function TableBlock({
 
   if (!node.has_children) return <>No child</>
   
-  let rows = node.children as NodeTypes['table_row'][]
-
+  let rows = node.children as (NodeTypes['table_row'])[]
 
   // Important!!!
-  // if (!rows.length) {
-  //   rows = convertBlockListToASTSync(await Cache.getChildren(node.id)).children as NodeTypes['table_row'][]
-  // }
-  // if (!rows.length) return <>Incomplete Table</>
-  
-
+  if (!rows.length) {
+    rows = convertBlockListToASTSync(await Cache.getChildren(node.id)).children as NodeTypes['table_row'][]
+    if (!rows.length) return <>Incomplete Table</>
+  }
 
   const [headRow, ...rest] = rows
-
-
   return (
     <table className={ className } >
       {
@@ -48,10 +43,10 @@ export async function TableBlock({
       }
       <tbody>
         {
-          (has_column_header ? rest : rows).map((c, i) =>
+          (has_column_header ? rest : rows).map((cell, i) =>
             <tr key={ i }>
               {
-                c.props.cells.map((c, i) =>
+                cell.props.cells.map((c, i) =>
 
                   has_row_header && i === 0 ? (
 
