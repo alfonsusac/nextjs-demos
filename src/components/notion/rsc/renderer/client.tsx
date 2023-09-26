@@ -8,12 +8,14 @@ export function RendererErrorBoundary({ children }: {
 }) {
   
   return (
-    <ErrorBoundary fallback={
-        <span>
-          <span>Error rendering component.</span>
-          <span className="underline cursor-pointer italic">retry</span>
-        </span>
-    }>
+    <ErrorBoundary
+      fallback={<>Error! (RendererErrorBoundary)</>}
+      onError={ (error, info) => {
+        console.log("Logging Error Boundary:")
+        console.log(error)
+        console.log(info)
+      } }
+    >
       {children}
     </ErrorBoundary>
   )
